@@ -367,6 +367,14 @@
   .class-badge.cls-12 { background: rgba(255,107,107,0.15); color: #ff6b6b; }
   .class-badge.cls-drop { background: rgba(179,102,255,0.15); color: #b366ff; }
 
+  .conn-status {
+    display: inline-block; font-size: 0.65rem; padding: 0.15rem 0.6rem;
+    border-radius: 99px; margin-left: 0.5rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .conn-status.online { background: rgba(0,229,160,0.15); color: var(--accent); }
+  .conn-status.offline { background: rgba(255,85,102,0.15); color: var(--danger); }
+
   @media (max-width: 800px) {
     .app { grid-template-columns: 1fr; }
     .sidebar {
@@ -721,8 +729,8 @@
     </section>
 
     <section class="page" id="rooms">
-      <h1>Study Rooms</h1>
-      <p class="subtitle">Admin room banata hai, code share karta hai, koi bhi same browser ke tab se join karta hai.</p>
+      <h1>Study Rooms <span class="conn-status offline" id="connStatus">● Offline</span></h1>
+      <p class="subtitle">Admin room banaye, code share kare. Koi bhi kisi bhi device se join kar sakta hai.</p>
 
       <div class="grid">
         <div class="card">
@@ -738,7 +746,7 @@
         </div>
         <div class="card">
           <div class="stat-label">Join Room</div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">Code daalo, andar aa jao.</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Code daalo, andar aa jao. Kisi bhi device se.</div>
           <div class="input-row" style="margin-bottom:0.6rem;">
             <input type="text" id="roomCodeInput" placeholder="Room code (e.g. A1B2C3)">
           </div>
@@ -759,6 +767,7 @@
             </div>
             <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
               <button class="btn sm" id="copyCodeBtn">Copy Code</button>
+              <button class="btn sm" id="copyLinkBtn">Copy Link</button>
               <button class="btn sm danger" id="leaveRoomBtn">Leave</button>
             </div>
           </div>
@@ -783,7 +792,7 @@
         </div>
 
         <div class="stat-sub" style="margin-top:0.5rem;">
-          Naya tab kholo, same URL pe jao, "Study Rooms" mein same code daal ke join karo.
+          Link kisi bhi phone pe bhej — woh code ke saath khul jayega, seedha join ho jayega.
         </div>
       </div>
     </section>
@@ -826,6 +835,54 @@
 </div>
 
 <script>
+// ============================================================
+//  FIREBASE SETUP — Config yahan hai
+// ============================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push, onValue, set, remove, onDisconnect, query, limitToLast }
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCbRyG9x_dc2RxJ902KWF55IFigX_PcHX4",
+  authDomain: "jeewar-90553.firebaseapp.com",
+  databaseURL: "https://jeewar-90553-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "jeewar-90553",
+  storageBucket: "jeewar-90553.firebasestorage.app",
+  messagingSenderId: "369414033029",
+  appId: "1:369414033029:web:9179275034ed05910be3ec"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
+
+// Make available globally for the IIFE below
+window.__firebase = { db, ref, push, onValue, set, remove, onDisconnect, query, limitToLast };
+
+// Update conn status
+const connRef = ref(db, '.info/connected');
+onValue(connRef, (snap) => {
+  const status = document.getElementById('connStatus');
+  if (!status) return;
+  if (snap.val() === true) {
+    status.classList.remove('offline');
+    status.classList.add('online');
+    status.textContent = '● Online';
+  } else {
+    status.classList.remove('online');
+    status.classList.add('offline');
+    status.textContent = '● Offline';
+  }
+});
+
+// Signal that firebase is ready
+window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+<script>
+// Wait for firebase to be ready
+window.addEventListener('firebaseReady', () => {
+  const { db, ref, push, onValue, set, remove, onDisconnect, query, limitToLast } = window.__firebase;
+
 (() => {
   const $ = s => document.querySelector(s);
   const $$ = s => document.querySelectorAll(s);
@@ -906,16 +963,9 @@
     '12': { label: '12th', badge: 'cls-12', examDate: '2027-01-24T09:00:00', examLabel: 'JEE Main 2027' },
     'drop': { label: 'Dropper', badge: 'cls-drop', examDate: '2026-01-24T09:00:00', examLabel: 'JEE Main 2026' }
   };
-
-  function getStoredClass() {
-    return localStorage.getItem('jee_class') || null;
-  }
-  function showClassModal() {
-    document.getElementById('classModal').classList.add('show');
-  }
-  function hideClassModal() {
-    document.getElementById('classModal').classList.remove('show');
-  }
+  function getStoredClass() { return localStorage.getItem('jee_class') || null; }
+  function showClassModal() { document.getElementById('classModal').classList.add('show'); }
+  function hideClassModal() { document.getElementById('classModal').classList.remove('show'); }
   function setClass(cls) {
     localStorage.setItem('jee_class', cls);
     applyClass(cls);
@@ -936,17 +986,11 @@
   }
   function initClassSelector() {
     const stored = getStoredClass();
-    if (stored) {
-      applyClass(stored);
-    } else {
-      showClassModal();
-    }
+    if (stored) applyClass(stored); else showClassModal();
     document.querySelectorAll('.class-opt').forEach(btn => {
       btn.addEventListener('click', () => setClass(btn.dataset.class));
     });
-    document.getElementById('skipClassBtn').addEventListener('click', () => {
-      setClass('12');
-    });
+    document.getElementById('skipClassBtn').addEventListener('click', () => setClass('12'));
     const badge = document.getElementById('classBadge');
     if (badge) {
       badge.addEventListener('click', (e) => {
@@ -962,10 +1006,8 @@
     const jeeDate = new Date(examDateStr);
     const now = new Date();
     const diff = jeeDate - now;
-
     const labelEl = document.querySelector('.countdown .label');
     if (labelEl) labelEl.textContent = examLabel + ' Countdown';
-
     if (diff <= 0) {
       $('#jeeCountdown').textContent = 'EXAM TIME';
       $('#daysLeft').textContent = '0';
@@ -1495,8 +1537,6 @@
     const pending = store.tasks.filter(t => !t.done);
     if (pending.length) insights.push({ icon:'◷', color:'purple', title:`Pending: ${pending[0].text}`, body:`${pending[0].subject} ka task pending hai. Abhi nipta de.` });
 
-    insights.push({ icon:'▶', color:'purple', title:'DOH PW portal ready', body:'Batch videos dekhne ka time hai? Ek click mein khol.' });
-
     return insights.slice(0, 6);
   }
   function renderInsights() {
@@ -1544,22 +1584,21 @@
       if (!store.mocks.length) return 'Koi mock log nahi hai, boss man. Pehla mock de aur log kar.';
       const last = store.mocks[store.mocks.length-1];
       const pct = (last.score/last.total)*100;
-      return `Last mock: ${last.name} — ${last.score}/${last.total} (${pct.toFixed(0)}%). ${pct < 50 ? 'Analysis kar, weak areas note kar.' : 'Solid hai, aise hi chal.'}`;
+      return `Last mock: ${last.name} — ${last.score}/${last.total} (${pct.toFixed(0)}%).`;
     }
-    if (/streak|consistent/.test(query)) return `Tera streak ${store.streak} din ka hai. ${store.streak >= 7 ? 'Boss level consistency.' : '7 din tak le ja, phir dekha jayega.'}`;
-    if (/mistake|galti|error/.test(query)) return `Mistake log mein ${store.mistakes.length} entries hai. Revision ke waqt woh padh.`;
-    if (/time|hours|ghante|minute/.test(query)) return `All-time: ${(store.totalMinutes/60).toFixed(1)} ghante. Today: ${store.todayMinutes} min. Goal: 480 min.`;
-    if (/pw|batch|lecture|video|doh/.test(query)) return `DOH PW portal: https://dohstudy-web-pw.vercel.app/ — login karke batches, schedule, tests sab dekh.`;
-    return `Boss man, ye try kar:\n• "aaj kya karu" — daily plan\n• "weak" — weakest subject\n• "progress" — overall status\n• "mock" — last mock score\n• "streak" — consistency check\n• "pw" — PW portal link`;
+    if (/streak|consistent/.test(query)) return `Tera streak ${store.streak} din ka hai.`;
+    if (/mistake|galti|error/.test(query)) return `Mistake log mein ${store.mistakes.length} entries hai.`;
+    if (/time|hours|ghante|minute/.test(query)) return `All-time: ${(store.totalMinutes/60).toFixed(1)} ghante. Today: ${store.todayMinutes} min.`;
+    if (/pw|batch|lecture|video|doh/.test(query)) return `DOH PW portal: https://dohstudy-web-pw.vercel.app/`;
+    return `Try: "aaj kya karu", "weak", "progress", "mock", "streak", "pw"`;
   }
   $('#aiSend').addEventListener('click', () => {
     const q = $('#aiInput').value.trim();
     if (!q) return;
     const reply = aiAnswer(q);
     const chat = $('#aiChat');
-    const msgId = 'msg_' + Date.now();
     chat.insertAdjacentHTML('afterbegin', `
-      <div class="card" id="${msgId}" style="border-left:3px solid var(--accent-2);">
+      <div class="card" style="border-left:3px solid var(--accent-2);">
         <div class="stat-label">Tune poocha</div>
         <div style="font-size:0.85rem; margin:0.3rem 0 0.7rem; color:var(--text);">${esc(q)}</div>
         <div class="stat-label">Axiom Coach</div>
@@ -1570,13 +1609,12 @@
   });
   $('#aiInput').addEventListener('keydown', e => e.key === 'Enter' && $('#aiSend').click());
 
-  // ================= STUDY ROOMS (BroadcastChannel) =================
-  let roomChannel = null;
+  // ================= STUDY ROOMS (Firebase) =================
   let currentRoom = null;
   let currentUser = null;
   let isAdmin = false;
-  let roomMemberCount = 1;
-  let knownMembers = new Set();
+  let roomUnsub = null;
+  let membersUnsub = null;
 
   function genRoomCode() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -1585,111 +1623,98 @@
     return code;
   }
 
-  function initRoomUI() {
-    $('#createRoomBtn').addEventListener('click', () => {
-      const name = $('#roomNameInput').value.trim() || 'Study Room';
-      const adminName = $('#adminNameInput').value.trim() || 'Admin';
-      const code = genRoomCode();
+  async function createRoom() {
+    const name = $('#roomNameInput').value.trim() || 'Study Room';
+    const adminName = $('#adminNameInput').value.trim() || 'Admin';
+    const code = genRoomCode();
+    try {
+      await set(ref(db, 'rooms/' + code + '/meta'), {
+        name, admin: adminName, createdAt: Date.now()
+      });
       enterRoom(code, name, adminName, true);
-    });
+    } catch (err) {
+      alert('Room nahi bana, boss man. Firebase check kar: ' + err.message);
+    }
+  }
 
-    $('#joinRoomBtn').addEventListener('click', () => {
-      const code = $('#roomCodeInput').value.trim().toUpperCase();
-      const guestName = $('#guestNameInput').value.trim() || 'Guest';
-      if (!code) return alert('Room code daalo, boss man.');
-      enterRoom(code, 'Room ' + code, guestName, false);
-    });
-
-    $('#leaveRoomBtn').addEventListener('click', leaveRoom);
-    $('#copyCodeBtn').addEventListener('click', () => {
-      if (!currentRoom) return;
-      navigator.clipboard.writeText(currentRoom).then(() => {
-        const b = $('#copyCodeBtn');
-        b.textContent = 'Copied!';
-        setTimeout(() => b.textContent = 'Copy Code', 1500);
-      }).catch(() => alert('Code: ' + currentRoom));
-    });
-    $('#sendMsgBtn').addEventListener('click', sendChatMessage);
-    $('#chatInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') sendChatMessage();
-    });
-
-    const params = new URLSearchParams(location.search);
-    const r = params.get('room');
-    if (r && $('#roomCodeInput')) $('#roomCodeInput').value = r.toUpperCase();
+  async function joinRoom() {
+    const code = $('#roomCodeInput').value.trim().toUpperCase();
+    const guestName = $('#guestNameInput').value.trim() || 'Guest';
+    if (!code) return alert('Room code daalo, boss man.');
+    try {
+      const metaRef = ref(db, 'rooms/' + code + '/meta');
+      const snapshot = await new Promise(resolve => onValue(metaRef, resolve, { onlyOnce: true }));
+      if (!snapshot.exists()) {
+        alert('Room nahi mila. Code check kar.');
+        return;
+      }
+      const meta = snapshot.val();
+      enterRoom(code, meta.name, guestName, false);
+    } catch (err) {
+      alert('Join nahi hua: ' + err.message);
+    }
   }
 
   function enterRoom(code, name, userName, admin) {
-    if (roomChannel) roomChannel.close();
+    if (roomUnsub) roomUnsub();
+    if (membersUnsub) membersUnsub();
+
     currentRoom = code;
     currentUser = userName;
     isAdmin = admin;
-    roomMemberCount = 1;
-    knownMembers = new Set([userName]);
-
-    roomChannel = new BroadcastChannel('jee_room_' + code);
-
-    roomChannel.onmessage = (e) => {
-      const msg = e.data;
-      if (msg.type === 'chat') {
-        appendChatMessage(msg.user, msg.text, msg.time, msg.user === currentUser);
-      } else if (msg.type === 'hello') {
-        if (!knownMembers.has(msg.user)) {
-          knownMembers.add(msg.user);
-          roomMemberCount = knownMembers.size;
-          updateMemberCount();
-          appendSystemMessage(`${msg.user} room mein aa gaya`);
-        }
-        roomChannel.postMessage({ type: 'iamhere', user: currentUser });
-      } else if (msg.type === 'iamhere') {
-        if (!knownMembers.has(msg.user)) {
-          knownMembers.add(msg.user);
-          roomMemberCount = knownMembers.size;
-          updateMemberCount();
-        }
-      } else if (msg.type === 'bye') {
-        if (knownMembers.has(msg.user)) {
-          knownMembers.delete(msg.user);
-          roomMemberCount = knownMembers.size;
-          updateMemberCount();
-          appendSystemMessage(`${msg.user} room chhod diya`);
-        }
-      }
-    };
-
-    roomChannel.postMessage({ type: 'hello', user: currentUser });
 
     $('#roomActive').style.display = 'block';
     $('#roomTitle').textContent = name;
     $('#roomCodeDisplay').textContent = code;
     $('#adminBadge').style.display = admin ? 'inline' : 'none';
     $('#chatBox').innerHTML = '';
-    appendSystemMessage(`Room "${name}" joined as ${userName}${admin ? ' (Admin)' : ''}`);
-    updateMemberCount();
+    appendSystemMessage(`Room "${name}" mein join ho gaya as ${userName}`);
+
+    // presence
+    const myPresenceRef = ref(db, 'rooms/' + code + '/members/' + userName);
+    set(myPresenceRef, { online: true, joinedAt: Date.now() });
+    onDisconnect(myPresenceRef).remove();
+
+    membersUnsub = onValue(ref(db, 'rooms/' + code + '/members'), snap => {
+      const count = snap.exists() ? Object.keys(snap.val()).length : 0;
+      $('#roomMembers').textContent = count;
+    });
+
+    const msgsRef = query(ref(db, 'rooms/' + code + '/messages'), limitToLast(100));
+    let firstLoad = true;
+    roomUnsub = onValue(msgsRef, snap => {
+      const box = $('#chatBox');
+      if (firstLoad) { box.innerHTML = ''; firstLoad = false; }
+      if (!snap.exists()) return;
+      box.innerHTML = '';
+      const msgs = snap.val();
+      Object.values(msgs).forEach(m => {
+        appendChatMessage(m.user, m.text, m.time, m.user === currentUser);
+      });
+    });
   }
 
   function leaveRoom() {
-    if (roomChannel) {
-      roomChannel.postMessage({ type: 'bye', user: currentUser });
-      roomChannel.close();
-      roomChannel = null;
+    if (currentRoom && currentUser) {
+      try { remove(ref(db, 'rooms/' + currentRoom + '/members/' + currentUser)); } catch(e){}
     }
-    currentRoom = null;
-    currentUser = null;
-    isAdmin = false;
-    roomMemberCount = 1;
-    knownMembers = new Set();
+    if (roomUnsub) { roomUnsub(); roomUnsub = null; }
+    if (membersUnsub) { membersUnsub(); membersUnsub = null; }
+    currentRoom = null; currentUser = null; isAdmin = false;
     $('#roomActive').style.display = 'none';
     $('#chatBox').innerHTML = '';
   }
 
   function sendChatMessage() {
-    const text = $('#chatInput').value.trim();
-    if (!text || !roomChannel) return;
-    const time = new Date().toLocaleTimeString();
-    roomChannel.postMessage({ type: 'chat', user: currentUser, text, time });
-    appendChatMessage(currentUser, text, time, true);
-    $('#chatInput').value = '';
+    const input = $('#chatInput');
+    const text = input.value.trim();
+    if (!text || !currentRoom) return;
+    push(ref(db, 'rooms/' + currentRoom + '/messages'), {
+      user: currentUser,
+      text: text,
+      time: new Date().toLocaleTimeString()
+    });
+    input.value = '';
   }
 
   function appendChatMessage(user, text, time, isMine) {
@@ -1727,8 +1752,33 @@
     box.scrollTop = box.scrollHeight;
   }
 
-  function updateMemberCount() {
-    $('#roomMembers').textContent = roomMemberCount;
+  function initRoomUI() {
+    $('#createRoomBtn').addEventListener('click', createRoom);
+    $('#joinRoomBtn').addEventListener('click', joinRoom);
+    $('#leaveRoomBtn').addEventListener('click', leaveRoom);
+    $('#sendMsgBtn').addEventListener('click', sendChatMessage);
+    $('#chatInput').addEventListener('keydown', e => e.key === 'Enter' && sendChatMessage());
+    $('#copyCodeBtn').addEventListener('click', () => {
+      if (!currentRoom) return;
+      navigator.clipboard.writeText(currentRoom).then(() => {
+        const b = $('#copyCodeBtn');
+        b.textContent = 'Copied!';
+        setTimeout(() => b.textContent = 'Copy Code', 1500);
+      });
+    });
+    $('#copyLinkBtn').addEventListener('click', () => {
+      if (!currentRoom) return;
+      const link = location.origin + location.pathname + '?room=' + currentRoom;
+      navigator.clipboard.writeText(link).then(() => {
+        const b = $('#copyLinkBtn');
+        b.textContent = 'Link Copied!';
+        setTimeout(() => b.textContent = 'Copy Link', 1500);
+      });
+    });
+
+    const params = new URLSearchParams(location.search);
+    const r = params.get('room');
+    if (r && $('#roomCodeInput')) $('#roomCodeInput').value = r.toUpperCase();
   }
 
   // ================= BACKUP =================
@@ -1755,9 +1805,9 @@
       try {
         const data = JSON.parse(ev.target.result);
         for (const k in data) localStorage.setItem(k, data[k]);
-        alert('Restore ho gaya, boss man. Page reload kar raha hu.');
+        alert('Restore ho gaya, boss man. Reload kar raha hu.');
         location.reload();
-      } catch (err) { alert('File corrupt hai, boss man.'); }
+      } catch (err) { alert('File corrupt hai.'); }
     };
     reader.readAsText(file);
   });
@@ -1840,6 +1890,7 @@
     if (document.getElementById('assistant').classList.contains('active')) renderInsights();
   }, 30000);
 })();
+});
 </script>
 </body>
 </html>
