@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE WAR ROOM</title>
+<style>
+  :root {
+    --bg: #06060a;
+    --surface: rgba(18,18,26,0.85);
+    --surface-2: #1a1a26;
+    --border: #1e1e2e;
+    --accent: #00e5a0;
+    --accent-2: #66aaff;
+    --accent-3: #b366ff;
+    --danger: #ff5566;
+    --warn: #ffaa44;
+    --text: #e8e8f0;
+    --muted: #7788aa;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+  #bg-canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.55; pointer-events: none; }
+  .bg-glow {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(ellipse at 15% 10%, rgba(0,229,160,0.10), transparent 45%),
+      radial-gradient(ellipse at 85% 90%, rgba(102,170,255,0.10), transparent 45%),
+      radial-gradient(ellipse at 50% 50%, rgba(179,102,255,0.06), transparent 60%);
+  }
+  .app {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 240px 1fr; min-height: 100vh;
+  }
+  .sidebar {
+    background: rgba(10,10,16,0.92); backdrop-filter: blur(14px);
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 0.9rem;
+    position: sticky; top: 0; height: 100vh;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 0.25rem;
+  }
+  .logo {
+    font-size: 1.15rem; font-weight: 800; color: var(--accent);
+    margin-bottom: 0.25rem; letter-spacing: -0.02em;
+    padding: 0 0.5rem; text-shadow: 0 0 20px rgba(0,229,160,0.5);
+  }
+  .logo span {
+    color: var(--muted); font-weight: 400; font-size: 0.62rem;
+    display: block; margin-top: 0.2rem; letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .streak-box {
+    background: linear-gradient(135deg, rgba(0,229,160,0.15), rgba(102,170,255,0.1));
+    border: 1px solid rgba(0,229,160,0.3);
+    border-radius: 10px; padding: 0.6rem 0.8rem;
+    margin: 0.8rem 0.4rem 1rem; font-size: 0.75rem;
+  }
+  .streak-box .num { font-size: 1.4rem; font-weight: 800; color: var(--accent); line-height: 1; }
+  .streak-box .lbl { color: var(--muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; }
+  .nav-btn {
+    background: transparent; border: none; color: var(--muted);
+    text-align: left; padding: 0.6rem 0.8rem; border-radius: 8px;
+    font-size: 0.82rem; cursor: pointer; transition: 0.15s;
+    font-family: inherit; display: flex; align-items: center; gap: 0.65rem;
+  }
+  .nav-btn:hover { background: var(--surface-2); color: var(--text); }
+  .nav-btn.active {
+    background: linear-gradient(90deg, rgba(0,229,160,0.15), transparent);
+    color: var(--accent); box-shadow: inset 3px 0 0 var(--accent);
+  }
+  .nav-btn .icon { font-size: 1rem; width: 18px; text-align: center; }
+  .sidebar-footer {
+    margin-top: auto; font-size: 0.62rem; color: #445566;
+    padding: 0.8rem 0.4rem 0.2rem;
+    border-top: 1px solid var(--border); line-height: 1.5;
+  }
+  .main { padding: 2rem 2.2rem; overflow-y: auto; max-height: 100vh; }
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  h1 { font-size: 1.6rem; margin-bottom: 0.25rem; letter-spacing: -0.02em; }
+  h1 .accent { color: var(--accent); }
+  .subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.8rem; }
+  h2 { font-size: 1rem; margin: 1.5rem 0 0.8rem; color: var(--accent-2); letter-spacing: -0.01em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .card {
+    background: var(--surface); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.15rem; transition: 0.2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .stat-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+  .stat-value { font-size: 1.8rem; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; line-height: 1; }
+  .stat-value.blue { color: var(--accent-2); }
+  .stat-value.purple { color: var(--accent-3); }
+  .stat-value.warn { color: var(--warn); }
+  .stat-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.4rem; }
+  .countdown {
+    background: linear-gradient(135deg, rgba(255,85,102,0.12), rgba(179,102,255,0.10));
+    border: 1px solid rgba(255,85,102,0.3);
+    border-radius: 14px; padding: 1.3rem 1.5rem; margin-bottom: 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .countdown .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .countdown .big {
+    font-size: 2.2rem; font-weight: 800; color: var(--danger);
+    letter-spacing: -0.03em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 30px rgba(255,85,102,0.4);
+  }
+  .countdown .sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; }
+  .btn {
+    background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--text); padding: 0.6rem 1.1rem; border-radius: 8px;
+    font-size: 0.82rem; cursor: pointer; font-family: inherit;
+    transition: 0.15s;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.primary { background: var(--accent); color: #06060a; border-color: var(--accent); font-weight: 700; }
+  .btn.primary:hover { opacity: 0.85; color: #06060a; }
+  .btn.danger { color: var(--danger); }
+  .btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+  .btn.sm { padding: 0.4rem 0.75rem; font-size: 0.75rem; }
+  input[type="text"], input[type="number"], input[type="date"], textarea, select {
+    background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--text); padding: 0.65rem 0.85rem; border-radius: 8px;
+    font-family: inherit; font-size: 0.85rem; width: 100%;
+    outline: none; transition: 0.15s;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,229,160,0.1); }
+  textarea { resize: vertical; min-height: 90px; }
+  .input-row { display: flex; gap: 0.6rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .input-row input { flex: 1; min-width: 140px; }
+  .task {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent); border-radius: 8px;
+    padding: 0.8rem 1rem; margin-bottom: 0.55rem;
+    display: flex; align-items: center; gap: 0.8rem; transition: 0.15s;
+  }
+  .task:hover { background: var(--surface-2); }
+  .task.done { opacity: 0.45; border-left-color: var(--muted); }
+  .task.done .task-text { text-decoration: line-through; }
+  .task input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+  .task-text { flex: 1; font-size: 0.88rem; }
+  .task-subject {
+    font-size: 0.62rem; padding: 0.15rem 0.5rem; border-radius: 4px;
+    background: var(--surface-2); color: var(--accent-2);
+    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
+  }
+  .task-subject.PHY { color: #ff6b6b; }
+  .task-subject.CHEM { color: #66ff99; }
+  .task-subject.MATH { color: #66aaff; }
+  .task-del {
+    background: none; border: none; color: #445566;
+    cursor: pointer; font-size: 1.1rem; padding: 0.15rem 0.4rem;
+    border-radius: 4px; transition: 0.15s;
+  }
+  .task-del:hover { color: var(--danger); background: var(--surface-2); }
+  .timer-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem; text-align: center; margin-bottom: 1.5rem;
+  }
+  .timer-display {
+    font-size: 4.5rem; font-weight: 800; color: var(--accent);
+    font-variant-numeric: tabular-nums; letter-spacing: -0.04em;
+    margin-bottom: 1rem; text-shadow: 0 0 40px rgba(0,229,160,0.3); line-height: 1;
+  }
+  .timer-mode {
+    display: inline-block; font-size: 0.7rem; padding: 0.25rem 0.7rem;
+    background: var(--surface-2); border-radius: 99px; margin-bottom: 0.8rem;
+    color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .timer-btns { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+  .subject-row {
+    display: flex; align-items: center; gap: 0.9rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 0.6rem;
+  }
+  .subject-name { width: 100px; font-size: 0.85rem; font-weight: 700; }
+  .subject-name.phy { color: #ff6b6b; }
+  .subject-name.chem { color: #66ff99; }
+  .subject-name.math { color: #66aaff; }
+  .subject-bar-wrap { flex: 1; background: var(--surface-2); height: 8px; border-radius: 99px; overflow: hidden; }
+  .subject-bar { height: 100%; transition: width 0.5s; border-radius: 99px; }
+  .subject-bar.phy { background: linear-gradient(90deg,#ff6b6b,#ffaa44); }
+  .subject-bar.chem { background: linear-gradient(90deg,#66ff99,#00e5a0); }
+  .subject-bar.math { background: linear-gradient(90deg,#66aaff,#b366ff); }
+  .subject-hours { font-size: 0.75rem; color: var(--muted); width: 55px; text-align: right; font-variant-numeric: tabular-nums; }
+  .subject-add {
+    background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--accent); padding: 0.3rem 0.6rem; border-radius: 6px;
+    font-size: 0.72rem; cursor: pointer; font-family: inherit; transition: 0.15s;
+  }
+  .subject-add:hover { background: var(--accent); color: #06060a; }
+  .note-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1rem; }
+  .note {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1rem; position: relative; transition: 0.15s;
+  }
+  .note:hover { border-color: var(--accent-2); transform: translateY(-2px); }
+  .note-title { font-weight: 700; font-size: 0.88rem; margin-bottom: 0.4rem; color: var(--accent-2); padding-right: 1.5rem; }
+  .note-body { font-size: 0.78rem; color: var(--muted); line-height: 1.55; white-space: pre-wrap; max-height: 140px; overflow: hidden; }
+  .note-del { position: absolute; top: 0.7rem; right: 0.7rem; background: none; border: none; color: #445566; cursor: pointer; font-size: 1rem; transition: 0.15s; }
+  .note-del:hover { color: var(--danger); }
+  .pdf-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.9rem 1.1rem; margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 1rem; transition: 0.15s;
+  }
+  .pdf-item:hover { border-color: var(--accent); }
+  .pdf-icon {
+    width: 40px; height: 40px; background: var(--surface-2);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.15rem; flex-shrink: 0;
+  }
+  .pdf-info { flex: 1; min-width: 0; }
+  .pdf-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.15rem; }
+  .pdf-meta { font-size: 0.68rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pdf-actions { display: flex; gap: 0.4rem; }
+  .pdf-actions a, .pdf-actions button {
+    background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--accent); padding: 0.38rem 0.75rem; border-radius: 6px;
+    font-size: 0.72rem; cursor: pointer; text-decoration: none;
+    font-family: inherit; transition: 0.15s;
+  }
+  .pdf-actions a:hover, .pdf-actions button:hover { background: var(--accent); color: #06060a; }
+  .progress-wrap { background: var(--surface-2); border-radius: 99px; height: 8px; overflow: hidden; margin-top: 0.6rem; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 99px; transition: width 0.5s ease; }
+  .chapter-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 0.5rem; }
+  .chapter {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.65rem 0.85rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.8rem; transition: 0.15s;
+  }
+  .chapter:hover { border-color: var(--accent); }
+  .chapter input { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+  .chapter.done { opacity: 0.5; }
+  .chapter.done span { text-decoration: line-through; }
+  .log-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 0.55rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .log-item .score { font-size: 1.2rem; font-weight: 800; color: var(--accent); width: 70px; font-variant-numeric: tabular-nums; }
+  .log-item .score.bad { color: var(--danger); }
+  .log-item .score.mid { color: var(--warn); }
+  .log-item .info { flex: 1; min-width: 150px; }
+  .log-item .info .t { font-size: 0.85rem; font-weight: 600; }
+  .log-item .info .d { font-size: 0.7rem; color: var(--muted); }
+  .formula-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-3); border-radius: 10px;
+    padding: 1rem; margin-bottom: 0.7rem; transition: 0.15s;
+  }
+  .formula-card:hover { border-left-color: var(--accent); }
+  .formula-card .f-title { font-size: 0.85rem; font-weight: 700; color: var(--accent-3); margin-bottom: 0.3rem; }
+  .formula-card .f-body { font-size: 0.8rem; color: var(--muted); font-family: 'Courier New', monospace; line-height: 1.5; }
+  .formula-del { float: right; background: none; border: none; color: #445566; cursor: pointer; font-size: 1rem; }
+  .formula-del:hover { color: var(--danger); }
+  .motivation {
+    background: linear-gradient(135deg, rgba(0,229,160,0.08), rgba(179,102,255,0.08));
+    border: 1px solid rgba(0,229,160,0.25);
+    border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center;
+  }
+  .motivation .quote { font-size: 1rem; font-style: italic; color: var(--text); line-height: 1.6; }
+  .motivation .author { font-size: 0.72rem; color: var(--accent); margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em; }
+  .empty { text-align: center; padding: 2rem; color: #445566; font-size: 0.85rem; }
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2a2a3e; }
+  @media (max-width: 800px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed; bottom: 0; left: 0; right: 0; top: auto;
+      height: auto; flex-direction: row; padding: 0.4rem;
+      border-right: none; border-top: 1px solid var(--border);
+      z-index: 100; overflow-x: auto; gap: 0;
+    }
+    .logo, .streak-box, .sidebar-footer { display: none; }
+    .nav-btn { flex-direction: column; font-size: 0.6rem; padding: 0.4rem 0.55rem; gap: 0.15rem; white-space: nowrap; }
+    .nav-btn .icon { font-size: 1.1rem; }
+    .main { padding: 1.2rem; padding-bottom: 5.5rem; }
+    .timer-display { font-size: 3rem; }
+    .countdown .big { font-size: 1.6rem; }
+    h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="bg-glow"></div>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">JEE<span>WAR ROOM</span></div>
+    <div class="streak-box">
+      <div class="num" id="streakNum">0</div>
+      <div class="lbl">day streak</div>
+    </div>
+    <button class="nav-btn active" data-page="dashboard"><span class="icon">◈</span> Dashboard</button>
+    <button class="nav-btn" data-page="routine"><span class="icon">◷</span> Routine</button>
+    <button class="nav-btn" data-page="timer"><span class="icon">◉</span> Timer</button>
+    <button class="nav-btn" data-page="subjects"><span class="icon">◐</span> Subjects</button>
+    <button class="nav-btn" data-page="syllabus"><span class="icon">✓</span> Syllabus</button>
+    <button class="nav-btn" data-page="timetable"><span class="icon">◫</span> Timetable</button>
+    <button class="nav-btn" data-page="notes"><span class="icon">✎</span> Notes</button>
+    <button class="nav-btn" data-page="formulas"><span class="icon">∑</span> Formulas</button>
+    <button class="nav-btn" data-page="pyq"><span class="icon">◆</span> PYQ Log</button>
+    <button class="nav-btn" data-page="mocks"><span class="icon">▲</span> Mock Tests</button>
+    <button class="nav-btn" data-page="mistakes"><span class="icon">⚠</span> Mistake Log</button>
+    <button class="nav-btn" data-page="marks"><span class="icon">★</span> Marks Tracker</button>
+    <button class="nav-btn" data-page="exammode"><span class="icon">⏱</span> Exam Mode</button>
+    <button class="nav-btn" data-page="pdfs"><span class="icon">▤</span> PDF Library</button>
+    <button class="nav-btn" data-page="pw"><span class="icon">▶</span> PW Courses</button>
+    <button class="nav-btn" data-page="rooms"><span class="icon">◍</span> Study Rooms</button>
+    <button class="nav-btn" data-page="assistant"><span class="icon">✦</span> AI Coach</button>
+    <button class="nav-btn" data-page="backup"><span class="icon">⬇</span> Backup</button>
+    <div class="sidebar-footer">offline · localStorage · no login</div>
+  </aside>
+
+  <main class="main">
+    <!-- DASHBOARD -->
+    <section class="page active" id="dashboard">
+      <h1>Dashboard <span class="accent">//</span></h1>
+      <p class="subtitle">Aaj ka scene, boss man.</p>
+      <div class="countdown">
+        <div>
+          <div class="label">JEE Main 2026 Countdown</div>
+          <div class="big" id="jeeCountdown">--</div>
+          <div class="sub" id="jeeDateSub">Loading...</div>
+        </div>
+        <div>
+          <div class="label">Days Left</div>
+          <div class="big" id="daysLeft" style="color:var(--accent)">--</div>
+        </div>
+      </div>
+      <div class="motivation">
+        <div class="quote" id="motivationQuote">"Loading..."</div>
+        <div class="author" id="motivationAuthor">— Axiom</div>
+      </div>
+      <div class="grid">
+        <div class="card"><div class="stat-label">Tasks Pending</div><div class="stat-value" id="statTasks">0</div><div class="stat-sub" id="statTasksSub">sab clear</div></div>
+        <div class="card"><div class="stat-label">Today's Study</div><div class="stat-value blue" id="statTime">0m</div><div class="stat-sub">focus total</div></div>
+        <div class="card"><div class="stat-label">Total Hours</div><div class="stat-value purple" id="statTotal">0h</div><div class="stat-sub">all-time grind</div></div>
+        <div class="card"><div class="stat-label">Mocks Given</div><div class="stat-value warn" id="statMocks">0</div><div class="stat-sub" id="statAvg">avg --</div></div>
+      </div>
+      <h2>Daily Goal (8h)</h2>
+      <div class="card">
+        <div class="progress-wrap"><div class="progress-bar" id="dailyProgress" style="width:0%"></div></div>
+        <div class="stat-sub" id="dailyProgressText" style="margin-top:0.6rem;">0 / 8 hours</div>
+      </div>
+    </section>
+
+    <!-- ROUTINE -->
+    <section class="page" id="routine">
+      <h1>Daily Routine</h1>
+      <p class="subtitle">Aaj ka plan. Ek ek karke tick karo.</p>
+      <div class="input-row">
+        <input type="text" id="taskInput" placeholder="Task likho...">
+        <select id="taskSubject" style="max-width:130px;">
+          <option value="PHY">Physics</option>
+          <option value="CHEM">Chemistry</option>
+          <option value="MATH">Math</option>
+          <option value="GEN">General</option>
+        </select>
+        <button class="btn primary" id="addTask">+ Add</button>
+      </div>
+      <div id="taskList"></div>
+    </section>
+
+    <!-- TIMER -->
+    <section class="page" id="timer">
+      <h1>Study Timer</h1>
+      <p class="subtitle">Pomodoro. Focus karo, break lo.</p>
+      <div class="timer-box">
+        <div class="timer-mode" id="timerMode">Focus</div>
+        <div class="timer-display" id="timerDisplay">25:00</div>
+        <div class="timer-btns">
+          <button class="btn primary" id="timerStart">Start</button>
+          <button class="btn" id="timerPause">Pause</button>
+          <button class="btn danger" id="timerReset">Reset</button>
+        </div>
+        <div style="margin-top:1.5rem; display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
+          <button class="btn sm" data-preset="25" data-mode="Focus">25 focus</button>
+          <button class="btn sm" data-preset="45" data-mode="Focus">45 focus</button>
+          <button class="btn sm" data-preset="60" data-mode="Focus">60 focus</button>
+          <button class="btn sm" data-preset="5" data-mode="Break">5 break</button>
+          <button class="btn sm" data-preset="10" data-mode="Break">10 break</button>
+        </div>
+      </div>
+      <h2>Today's Sessions</h2>
+      <div class="card">
+        <div class="stat-label">Minutes Studied Today</div>
+        <div class="stat-value blue" id="timerToday">0</div>
+      </div>
+    </section>
+
+    <!-- SUBJECTS -->
+    <section class="page" id="subjects">
+      <h1>Subjects</h1>
+      <p class="subtitle">Har subject pe kitna time diya.</p>
+      <div class="subject-row">
+        <div class="subject-name phy">Physics</div>
+        <div class="subject-bar-wrap"><div class="subject-bar phy" id="barPhy" style="width:0%"></div></div>
+        <div class="subject-hours" id="hrsPhy">0h</div>
+        <button class="subject-add" data-subject="phy">+1h</button>
+      </div>
+      <div class="subject-row">
+        <div class="subject-name chem">Chemistry</div>
+        <div class="subject-bar-wrap"><div class="subject-bar chem" id="barChem" style="width:0%"></div></div>
+        <div class="subject-hours" id="hrsChem">0h</div>
+        <button class="subject-add" data-subject="chem">+1h</button>
+      </div>
+      <div class="subject-row">
+        <div class="subject-name math">Math</div>
+        <div class="subject-bar-wrap"><div class="subject-bar math" id="barMath" style="width:0%"></div></div>
+        <div class="subject-hours" id="hrsMath">0h</div>
+        <button class="subject-add" data-subject="math">+1h</button>
+      </div>
+    </section>
+
+    <!-- SYLLABUS -->
+    <section class="page" id="syllabus">
+      <h1>JEE Syllabus Tracker</h1>
+      <p class="subtitle">Chapter complete hue toh tick karo. Progress apne aap banega.</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+        <div class="card"><div class="stat-label">Physics</div><div class="stat-value" id="sylPhyPct">0%</div></div>
+        <div class="card"><div class="stat-label">Chemistry</div><div class="stat-value blue" id="sylChemPct">0%</div></div>
+        <div class="card"><div class="stat-label">Math</div><div class="stat-value purple" id="sylMathPct">0%</div></div>
+        <div class="card"><div class="stat-label">Overall</div><div class="stat-value warn" id="sylTotalPct">0%</div></div>
+      </div>
+      <h2>Physics</h2>
+      <div class="chapter-list" id="sylPhy"></div>
+      <h2>Chemistry</h2>
+      <div class="chapter-list" id="sylChem"></div>
+      <h2>Math</h2>
+      <div class="chapter-list" id="sylMath"></div>
+    </section>
+
+    <!-- TIMETABLE -->
+    <section class="page" id="timetable">
+      <h1>Weekly Timetable</h1>
+      <p class="subtitle">Fixed schedule. Roz yahi follow karo.</p>
+      <div class="input-row">
+        <select id="ttDay" style="max-width:120px;">
+          <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+          <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+        </select>
+        <input type="text" id="ttTime" placeholder="Time (e.g. 6-8 AM)" style="max-width:140px;">
+        <input type="text" id="ttTask" placeholder="What to study...">
+        <button class="btn primary" id="addTt">+ Add</button>
+      </div>
+      <div id="ttList"></div>
+    </section>
+
+    <!-- NOTES -->
+    <section class="page" id="notes">
+      <h1>Notes</h1>
+      <p class="subtitle">Quick notes. Formula, concept, mistake — kuch bhi.</p>
+      <div class="input-row">
+        <input type="text" id="noteTitle" placeholder="Title..." style="max-width:220px;">
+        <input type="text" id="noteBody" placeholder="Content...">
+        <button class="btn primary" id="addNote">+ Save</button>
+      </div>
+      <div class="note-grid" id="noteGrid"></div>
+    </section>
+
+    <!-- FORMULAS -->
+    <section class="page" id="formulas">
+      <h1>Formula Sheet</h1>
+      <p class="subtitle">Important formulas ek jagah. Revision fast.</p>
+      <div class="input-row">
+        <input type="text" id="fTitle" placeholder="Formula name..." style="max-width:200px;">
+        <input type="text" id="fBody" placeholder="F = ma  |  E = mc²">
+        <button class="btn primary" id="addFormula">+ Add</button>
+      </div>
+      <div id="formulaList"></div>
+    </section>
+
+    <!-- PYQ -->
+    <section class="page" id="pyq">
+      <h1>PYQ Log</h1>
+      <p class="subtitle">Previous Year Questions practice. Track karo.</p>
+      <div class="input-row">
+        <input type="text" id="pyqTopic" placeholder="Topic (e.g. Rotational Motion)">
+        <input type="number" id="pyqSolved" placeholder="Solved" style="max-width:100px;">
+        <input type="number" id="pyqTotal" placeholder="Total" style="max-width:100px;">
+        <button class="btn primary" id="addPyq">+ Log</button>
+      </div>
+      <div id="pyqList"></div>
+    </section>
+
+    <!-- MOCKS -->
+    <section class="page" id="mocks">
+      <h1>Mock Test Log</h1>
+      <p class="subtitle">Har mock ka score. Progress dikhega.</p>
+      <div class="input-row">
+        <input type="text" id="mockName" placeholder="Mock name (e.g. AITS-1)" style="max-width:200px;">
+        <input type="number" id="mockScore" placeholder="Score" style="max-width:100px;">
+        <input type="number" id="mockTotal" placeholder="Out of" style="max-width:100px;">
+        <button class="btn primary" id="addMock">+ Log</button>
+      </div>
+      <div id="mockList"></div>
+    </section>
+
+    <!-- MISTAKES -->
+    <section class="page" id="mistakes">
+      <h1>Mistake Log</h1>
+      <p class="subtitle">Har galti yahan likho. Revision ke waqt yahi goldmine hai.</p>
+      <div class="input-row">
+        <input type="text" id="misSubject" placeholder="Subject (Phy/Chem/Math)" style="max-width:140px;">
+        <input type="text" id="misDesc" placeholder="Mistake kya thi?">
+        <button class="btn primary" id="addMis">+ Add</button>
+      </div>
+      <div id="misList"></div>
+    </section>
+
+    <!-- MARKS -->
+    <section class="page" id="marks">
+      <h1>Marks Tracker</h1>
+      <p class="subtitle">Chapter-wise test marks. Weak areas dikhenge.</p>
+      <div class="input-row">
+        <input type="text" id="mkChapter" placeholder="Chapter">
+        <input type="number" id="mkScore" placeholder="Score" style="max-width:100px;">
+        <input type="number" id="mkTotal" placeholder="Out of" style="max-width:100px;">
+        <button class="btn primary" id="addMk">+ Add</button>
+      </div>
+      <div id="mkList"></div>
+    </section>
+
+    <!-- EXAM MODE -->
+    <section class="page" id="exammode">
+      <h1>Exam Mode</h1>
+      <p class="subtitle">3 ghante, no break. Real JEE simulation.</p>
+      <div class="timer-box">
+        <div class="timer-mode">JEE Main — 180 min</div>
+        <div class="timer-display" id="examDisplay">3:00:00</div>
+        <div class="timer-btns">
+          <button class="btn primary" id="examStart">Start Exam</button>
+          <button class="btn" id="examPause">Pause</button>
+          <button class="btn danger" id="examReset">Reset</button>
+        </div>
+        <div style="margin-top:1.5rem; display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
+          <button class="btn sm" data-exam="180">JEE Main (3h)</button>
+          <button class="btn sm" data-exam="120">JEE Adv Paper (2h)</button>
+          <button class="btn sm" data-exam="60">Subject Test (1h)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PDFs -->
+    <section class="page" id="pdfs">
+      <h1>PDF Library</h1>
+      <p class="subtitle">Books, notes, DPPs. Link paste karo, browser mein khulega.</p>
+      <div class="input-row">
+        <input type="text" id="pdfTitle" placeholder="Book name..." style="max-width:220px;">
+        <input type="text" id="pdfUrl" placeholder="https://...">
+        <button class="btn primary" id="addPdf">+ Add</button>
+      </div>
+      <div id="pdfList"></div>
+    </section>
+
+    <!-- PW -->
+    <section class="page" id="pw">
+      <h1>PW Course Access</h1>
+      <p class="subtitle">Tera PW subscription, seedha naye tab mein khulega.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="stat-label">PW Official Web</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Login karke apne paid batch access kar.</div>
+          <button class="btn primary" onclick="window.open('https://www.pw.live', '_blank', 'noopener')">▶ Open PW Live</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">PW App Web</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Batch videos, DPP, notes sab yahan.</div>
+          <button class="btn primary" onclick="window.open('https://www.pw.live/study-v2/my-courses', '_blank', 'noopener')">▶ My Courses</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">YouTube (Free PW)</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">PW ke free lectures — legal, safe.</div>
+          <button class="btn" onclick="window.open('https://www.youtube.com/@PhysicsWallah', '_blank', 'noopener')">▶ PW YouTube</button>
+        </div>
+        <div class="card" style="border-left:3px solid #b366ff;">
+          <div class="stat-label">DOH PW <span style="color:#b366ff;">★</span></div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Custom PW portal — login karke batches access kar.</div>
+          <button class="btn primary" onclick="window.open('https://dohstudy-web-pw.vercel.app/', '_blank', 'noopener')" style="background:#b366ff; border-color:#b366ff;">▶ Open DOH PW</button>
+        </div>
+        <div class="card" style="border-left:3px solid #b366ff;">
+          <div class="stat-label">DOH PW — My Batches</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Direct batches page (login required).</div>
+          <button class="btn" onclick="window.open('https://dohstudy-web-pw.vercel.app/', '_blank', 'noopener')">▶ My Batches</button>
+        </div>
+      </div>
+      <h2>Apne Custom Links</h2>
+      <p class="subtitle" style="margin-bottom:1rem;">Jo bhi link chahiye — PW batch, telegram, notes — yahan save kar.</p>
+      <div class="input-row">
+        <input type="text" id="pwName" placeholder="Naam (e.g. Lakshya JEE 2026)" style="max-width:220px;">
+        <input type="text" id="pwUrl" placeholder="https://...">
+        <button class="btn primary" id="addPw">+ Add</button>
+      </div>
+      <div id="pwList"></div>
+    </section>
+
+    <!-- ROOMS -->
+    <section class="page" id="rooms">
+      <h1>Study Rooms</h1>
+      <p class="subtitle">Admin room banata hai, code share karta hai, koi bhi same browser ke tab se join karta hai.</p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="stat-label">Admin — Create Room</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Room banao, code generate hoga.</div>
+          <div class="input-row" style="margin-bottom:0.6rem;">
+            <input type="text" id="roomNameInput" placeholder="Room ka naam...">
+          </div>
+          <div class="input-row" style="margin-bottom:0.6rem;">
+            <input type="text" id="adminNameInput" placeholder="Tera naam (admin)...">
+          </div>
+          <button class="btn primary" id="createRoomBtn">+ Create Room (Admin)</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">Join Room</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Code daalo, andar aa jao.</div>
+          <div class="input-row" style="margin-bottom:0.6rem;">
+            <input type="text" id="roomCodeInput" placeholder="Room code (e.g. A1B2C3)">
+          </div>
+          <div class="input-row" style="margin-bottom:0.6rem;">
+            <input type="text" id="guestNameInput" placeholder="Tera naam...">
+          </div>
+          <button class="btn primary" id="joinRoomBtn">▶ Join Room</button>
+        </div>
+      </div>
+
+      <div id="roomActive" style="display:none;">
+        <div class="card" style="border-left:3px solid var(--accent); margin-bottom:1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <div>
+              <div class="stat-label">Active Room <span id="adminBadge" style="color:var(--accent-3); display:none;">★ ADMIN</span></div>
+              <div style="font-size:1.1rem; font-weight:800; color:var(--accent);" id="roomTitle">—</div>
+              <div class="stat-sub">Code: <span id="roomCodeDisplay" style="color:var(--accent-2); font-weight:700;"></span> · Online: <span id="roomMembers">1</span></div>
+            </div>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              <button class="btn sm" id="copyCodeBtn">Copy Code</button>
+              <button class="btn sm danger" id="leaveRoomBtn">Leave</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="chatBox" style="
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 1rem;
+          height: 400px;
+          overflow-y: auto;
+          margin-bottom: 0.8rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        "></div>
+
+        <div class="input-row">
+          <input type="text" id="chatInput" placeholder="Message likho...">
+          <button class="btn primary" id="sendMsgBtn">Send</button>
+        </div>
+
+        <div class="stat-sub" style="margin-top:0.5rem;">
+          Naya tab kholo, same URL pe jao, "Study Rooms" mein same code daal ke join karo.
+        </div>
+      </div>
+    </section>
+
+    <!-- AI COACH -->
+    <section class="page" id="assistant">
+      <h1>AI Coach <span class="accent">//</span></h1>
+      <p class="subtitle">Tera data padhta hai, seedha bolta hai kya karna hai.</p>
+      <div id="aiInsights" class="grid"></div>
+      <h2>Quick Ask</h2>
+      <div class="input-row">
+        <input type="text" id="aiInput" placeholder="Pooch kuch... (e.g. 'aaj kya karu', 'weak subject', 'progress')">
+        <button class="btn primary" id="aiSend">Ask</button>
+      </div>
+      <div id="aiChat" style="margin-top:1rem;"></div>
+    </section>
+
+    <!-- BACKUP -->
+    <section class="page" id="backup">
+      <h1>Backup & Restore</h1>
+      <p class="subtitle">Apna poora data export karo. Browser clear karne se pehle zaroor.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="stat-label">Export Data</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">JSON file download hogi. Kahin safe rakh.</div>
+          <button class="btn primary" id="exportBtn">⬇ Download Backup</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">Import Data</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Backup file select karo, sab restore ho jayega.</div>
+          <input type="file" id="importFile" accept=".json" style="display:none;">
+          <button class="btn" id="importBtn">⬆ Restore Backup</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">Danger Zone</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Sab data delete. Wapas nahi aayega.</div>
+          <button class="btn danger" id="wipeBtn">⚠ Wipe Everything</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const $$ = s => document.querySelectorAll(s);
+
+  const SYLLABUS = {
+    phy: ['Units & Measurements','Kinematics','Laws of Motion','Work Energy Power','Rotational Motion','Gravitation','Mechanical Properties of Solids','Mechanical Properties of Fluids','Thermal Properties','Thermodynamics','Kinetic Theory','Oscillations','Waves','Electrostatics','Current Electricity','Moving Charges & Magnetism','Magnetism & Matter','EMI','AC','EM Waves','Ray Optics','Wave Optics','Dual Nature','Atoms','Nuclei','Semiconductors'],
+    chem: ['Some Basic Concepts','Structure of Atom','Classification of Elements','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','s-Block','p-Block','Organic Basics','Hydrocarbons','Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','Metallurgy','p-Block (Gr 13-14)','d & f Block','Coordination Compounds','Haloalkanes','Alcohols Phenols Ethers','Aldehydes Ketones Acids','Amines','Biomolecules','Polymers','Chemistry in Everyday Life'],
+    math: ['Sets Relations Functions','Complex Numbers','Quadratic Equations','Matrices','Determinants','Permutations Combinations','Binomial Theorem','Sequences & Series','Limits','Continuity & Differentiability','Differentiation','Application of Derivatives','Integrals','Application of Integrals','Differential Equations','Straight Lines','Circles','Conic Sections','3D Geometry','Vectors','Statistics','Probability','Trigonometry','Inverse Trigonometry','Mathematical Reasoning']
+  };
+
+  const store = {
+    tasks: JSON.parse(localStorage.getItem('jee_tasks') || '[]'),
+    notes: JSON.parse(localStorage.getItem('jee_notes') || '[]'),
+    pdfs:  JSON.parse(localStorage.getItem('jee_pdfs')  || '[]'),
+    formulas: JSON.parse(localStorage.getItem('jee_formulas') || '[]'),
+    pyq: JSON.parse(localStorage.getItem('jee_pyq') || '[]'),
+    mocks: JSON.parse(localStorage.getItem('jee_mocks') || '[]'),
+    mistakes: JSON.parse(localStorage.getItem('jee_mistakes') || '[]'),
+    marks: JSON.parse(localStorage.getItem('jee_marks') || '[]'),
+    timetable: JSON.parse(localStorage.getItem('jee_timetable') || '[]'),
+    pwLinks: JSON.parse(localStorage.getItem('jee_pwLinks') || '[]'),
+    subjects: JSON.parse(localStorage.getItem('jee_subjects') || '{"phy":0,"chem":0,"math":0}'),
+    syllabus: JSON.parse(localStorage.getItem('jee_syllabus') || '{}'),
+    totalMinutes: parseInt(localStorage.getItem('jee_totalMin') || '0'),
+    todayMinutes: parseInt(localStorage.getItem('jee_todayMin') || '0'),
+    todayDate: localStorage.getItem('jee_todayDate') || new Date().toDateString(),
+    streak: parseInt(localStorage.getItem('jee_streak') || '0'),
+    lastActive: localStorage.getItem('jee_lastActive') || '',
+  };
+
+  const today = new Date().toDateString();
+  if (store.todayDate !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    if (store.lastActive === yesterday) store.streak += 1;
+    else if (store.lastActive !== today) store.streak = 1;
+    store.lastActive = today;
+    store.todayDate = today;
+    store.todayMinutes = 0;
+  }
+  if (!store.streak) store.streak = 1;
+  if (!store.lastActive) store.lastActive = today;
+
+  function saveAll() {
+    localStorage.setItem('jee_tasks', JSON.stringify(store.tasks));
+    localStorage.setItem('jee_notes', JSON.stringify(store.notes));
+    localStorage.setItem('jee_pdfs', JSON.stringify(store.pdfs));
+    localStorage.setItem('jee_formulas', JSON.stringify(store.formulas));
+    localStorage.setItem('jee_pyq', JSON.stringify(store.pyq));
+    localStorage.setItem('jee_mocks', JSON.stringify(store.mocks));
+    localStorage.setItem('jee_mistakes', JSON.stringify(store.mistakes));
+    localStorage.setItem('jee_marks', JSON.stringify(store.marks));
+    localStorage.setItem('jee_timetable', JSON.stringify(store.timetable));
+    localStorage.setItem('jee_pwLinks', JSON.stringify(store.pwLinks));
+    localStorage.setItem('jee_subjects', JSON.stringify(store.subjects));
+    localStorage.setItem('jee_syllabus', JSON.stringify(store.syllabus));
+    localStorage.setItem('jee_totalMin', store.totalMinutes);
+    localStorage.setItem('jee_todayMin', store.todayMinutes);
+    localStorage.setItem('jee_todayDate', store.todayDate);
+    localStorage.setItem('jee_streak', store.streak);
+    localStorage.setItem('jee_lastActive', store.lastActive);
+    renderDashboard();
+    renderStreak();
+  }
+  function renderStreak() { $('#streakNum').textContent = store.streak; }
+
+  $$('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.nav-btn').forEach(b => b.classList.remove('active'));
+      $$('.page').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      $('#' + btn.dataset.page).classList.add('active');
+    });
+  });
+
+  function initCountdown() {
+    const jeeDate = new Date('2026-01-24T09:00:00');
+    const now = new Date();
+    const diff = jeeDate - now;
+    if (diff <= 0) {
+      $('#jeeCountdown').textContent = 'EXAM TIME';
+      $('#daysLeft').textContent = '0';
+      $('#jeeDateSub').textContent = 'Go crush it.';
+      return;
+    }
+    const days = Math.floor(diff / 86400000);
+    const hrs = Math.floor((diff % 86400000) / 3600000);
+    const mins = Math.floor((diff % 3600000) / 60000);
+    $('#jeeCountdown').textContent = `${days}d ${hrs}h ${mins}m`;
+    $('#daysLeft').textContent = days;
+    $('#jeeDateSub').textContent = 'Expected: Jan 24, 2026';
+  }
+  initCountdown();
+  setInterval(initCountdown, 60000);
+
+  const QUOTES = [
+    { q: "Arre bhai, aaj ka grind kal ka rank banayega.", a: "Axiom" },
+    { q: "Toppers koi alag species nahi hai. Bas consistent hote hai.", a: "War Room" },
+    { q: "Ek din ka gap bhi rank girada hai. Roz baitho.", a: "Reality Check" },
+    { q: "Formula bhool gaya? 10 min revision. Abhi.", a: "Axiom" },
+    { q: "PYQ is the cheat code. Ignore kiya toh pachtayega.", a: "War Room" },
+    { q: "Mock mein low score aya? Good. Galti yahi pakdi.", a: "Axiom" },
+    { q: "Neend puri kar. Burnout topper ko bhi todta hai.", a: "Coach" },
+    { q: "8 ghante focus > 14 ghante distracted.", a: "Rule" },
+    { q: "Revise, revise, revise. Naya padhne se pehle purana pakka.", a: "Axiom" },
+    { q: "Tera competition bhi thak gaya hai. Tu mat thak.", a: "War Room" }
+  ];
+  function rotateQuote() {
+    const x = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+    $('#motivationQuote').textContent = `"${x.q}"`;
+    $('#motivationAuthor').textContent = `— ${x.a}`;
+  }
+  rotateQuote();
+  setInterval(rotateQuote, 30000);
+
+  function renderDashboard() {
+    const pending = store.tasks.filter(t => !t.done).length;
+    $('#statTasks').textContent = pending;
+    $('#statTasksSub').textContent = pending === 0 ? 'sab clear hai' : 'pending';
+    $('#statTime').textContent = formatMin(store.todayMinutes);
+    $('#statTotal').textContent = (store.totalMinutes / 60).toFixed(1) + 'h';
+    $('#statMocks').textContent = store.mocks.length;
+    if (store.mocks.length) {
+      const avg = store.mocks.reduce((a, m) => a + (m.score / m.total) * 100, 0) / store.mocks.length;
+      $('#statAvg').textContent = `avg ${avg.toFixed(1)}%`;
+    } else $('#statAvg').textContent = 'avg --';
+    const goalMin = 8 * 60;
+    const pct = Math.min(100, (store.todayMinutes / goalMin) * 100);
+    $('#dailyProgress').style.width = pct + '%';
+    $('#dailyProgressText').textContent = `${(store.todayMinutes/60).toFixed(1)} / 8 hours`;
+    $('#timerToday').textContent = store.todayMinutes;
+  }
+  function formatMin(m) { return m < 60 ? m + 'm' : (m/60).toFixed(1) + 'h'; }
+
+  function renderTasks() {
+    const list = $('#taskList');
+    if (!store.tasks.length) { list.innerHTML = '<div class="empty">Koi task nahi. Upar se add karo.</div>'; return; }
+    list.innerHTML = store.tasks.map((t, i) => `
+      <div class="task ${t.done ? 'done' : ''}">
+        <input type="checkbox" data-idx="${i}" ${t.done ? 'checked' : ''}>
+        <span class="task-text">${esc(t.text)}</span>
+        <span class="task-subject ${t.subject}">${t.subject}</span>
+        <button class="task-del" data-idx="${i}">×</button>
+      </div>
+    `).join('');
+    list.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.addEventListener('change', e => {
+        store.tasks[e.target.dataset.idx].done = e.target.checked;
+        saveAll(); renderTasks();
+      });
+    });
+    list.querySelectorAll('.task-del').forEach(b => {
+      b.addEventListener('click', e => {
+        store.tasks.splice(e.target.dataset.idx, 1);
+        saveAll(); renderTasks();
+      });
+    });
+  }
+  $('#addTask').addEventListener('click', () => {
+    const text = $('#taskInput').value.trim();
+    if (!text) return;
+    store.tasks.push({ text, subject: $('#taskSubject').value, done: false });
+    $('#taskInput').value = '';
+    saveAll(); renderTasks();
+  });
+  $('#taskInput').addEventListener('keydown', e => e.key === 'Enter' && $('#addTask').click());
+
+  function renderNotes() {
+    const g = $('#noteGrid');
+    if (!store.notes.length) { g.innerHTML = '<div class="empty">Koi note nahi. Upar se save karo.</div>'; return; }
+    g.innerHTML = store.notes.map((n, i) => `
+      <div class="note">
+        <button class="note-del" data-idx="${i}">×</button>
+        <div class="note-title">${esc(n.title)}</div>
+        <div class="note-body">${esc(n.body)}</div>
+      </div>
+    `).join('');
+    g.querySelectorAll('.note-del').forEach(b => {
+      b.addEventListener('click', e => {
+        store.notes.splice(e.target.dataset.idx, 1);
+        saveAll(); renderNotes();
+      });
+    });
+  }
+  $('#addNote').addEventListener('click', () => {
+    const title = $('#noteTitle').value.trim();
+    const body = $('#noteBody').value.trim();
+    if (!title && !body) return;
+    store.notes.push({ title: title || 'Untitled', body });
+    $('#noteTitle').value = ''; $('#noteBody').value = '';
+    saveAll(); renderNotes();
+  });
+
+  function renderFormulas() {
+    const list = $('#formulaList');
+    if (!store.formulas.length) { list.innerHTML = '<div class="empty">Koi formula nahi. Upar se add karo.</div>'; return; }
+    list.innerHTML = store.formulas.map((f, i) => `
+      <div class="formula-card">
+        <button class="formula-del" data-idx="${i}">×</button>
+        <div class="f-title">${esc(f.title)}</div>
+        <div class="f-body">${esc(f.body)}</div>
+      </div>
+    `).join('');
+    list.querySelectorAll('.formula-del').forEach(b => {
+      b.addEventListener('click', e => {
+        store.formulas.splice(e.target.dataset.idx, 1);
+        saveAll(); renderFormulas();
+      });
+    });
+  }
+  $('#addFormula').addEventListener('click', () => {
+    const title = $('#fTitle').value.trim();
+    const body = $('#fBody').value.trim();
+    if (!title || !body) return;
+    store.formulas.push({ title, body });
+    $('#fTitle').value = ''; $('#fBody').value = '';
+    saveAll(); renderFormulas();
+  });
+
+  function renderPyq() {
+    const list = $('#pyqList');
+    if (!store.pyq.length) { list.innerHTML = '<div class="empty">Koi PYQ log nahi. Upar se add karo.</div>'; return; }
+    list.innerHTML = store.pyq.map((p, i) => {
+      const pct = p.total ? (p.solved / p.total) * 100 : 0;
+      const cls = pct >= 80 ? '' : pct >= 50 ? 'mid' : 'bad';
+      return `<div class="log-item">
+        <div class="score ${cls}">${p.solved}/${p.total}</div>
+        <div class="info"><div class="t">${esc(p.topic)}</div><div class="d">${pct.toFixed(0)}% solved</div></div>
+        <button class="task-del" data-idx="${i}">×</button>
+      </div>`;
+    }).join('');
+    list.querySelectorAll('.task-del').forEach(b => {
+      b.addEventListener('click', e => {
+        store.pyq.splice(e.target.dataset.idx, 1);
+        saveAll(); renderPyq();
+      });
+    });
+  }
+  $('#addPyq').addEventListener('click', () => {
+    const topic = $('#pyqTopic').value.trim();
+    const solved = parseInt($('#pyqSolved').value);
+    const total = parseInt($('#pyqTotal').value);
+    if (!topic || isNaN(solved) || isNaN(total)) return;
+    store.pyq.push({ topic, solved, total });
+    $('#pyqTopic').value = ''; $('#pyqSolved').value = ''; $('#pyqTotal').value = '';
+    saveAll(); renderPyq();
+  });
+
+  function renderMocks() {
+    const list = $('#mockList');
+    if (!store.mocks.length) { list.innerHTML = '<div class="empty">Koi mock log nahi. Upar se add karo.</div>'; return; }
+    list.innerHTML = store.mocks.map((m, i) => {
+      const pct = (m.score / m.total) * 100;
+      const cls = pct >= 70 ? '' : pct >= 45 ? 'mid' : 'bad';
+      return `<div class="log-item">
+        <div class="score ${cls}">${pct.toFixed(0)}%</div>
+        <div class="info"><div class="t">${esc(m.name)}</div><div class="d">${m.score} / ${m.total}</div></div>
+        <button class="task-del" data-idx="${i}">×</button>
+      </div>`;
+    }).join('');
+    list.querySelectorAll('.task-del').forEach(b => {
+      b.addEventListener('click', e => {
+        store.mocks.splice(e.target.dataset.idx, 1);
+        saveAll(); renderMocks();
+      });
+    });
+  }
+  $('#addMock').addEventListener('click', () => {
+    const name = $('#mockName').value.trim();
+    const score = parseFloat($('#mockScore').value);
+    const total = parseFloat($('#mockTotal').value);
+    if (!name || isNaN(score) || isNaN(total) || total <= 0) return;
+    store.mocks.push({ name, score, total });
+    $('#mockName').value = ''; $('#mockScore').value = ''; $('#mockTotal').value = '';
+    saveAll(); renderMocks();
+  });
+
+  function renderMistakes() {
+    const list = $('#misList');
+    if (!store.mistakes.length) { list.innerHTML = '<div class="empty">Koi mistake log nahi. Upar se add karo.</div>'; return; }
+    list.innerHTML = store.mistakes.map((m, i) => `
+      <div class="log-item">
+        <div class="score" style="font-size:0.75rem; width:80px;">${esc(m.subject)}</div>
+        <div class="info"><div class="t">${esc(m.desc)}</div></div>
+        <button class="task-del" data-idx="${i}">×</button>
+      </div>
+    `).join('');
+    list.querySelectorAll('.task-del').forEach(b => {
+      b.addEventListener('click', e => {
+        store.mistakes.splice(e.target.dataset.idx, 1);
+        saveAll(); renderMistakes();
+      });
+    });
+  }
+  $('#addMis').addEventListener('click', () => {
+    const subject = $('#misSubject').value.trim();
+    const desc = $('#misDesc').value.trim();
+    if (!subject || !desc) return;
+    store.mistakes.push({ subject, desc });
+    $('#misSubject').value = ''; $('#misDesc').value = '';
+    saveAll(); renderMistakes();
+  });
+
+  function renderMarks() {
+    const list = $('#mkList');
+    if (!store.marks.length) { list.innerHTML = '<div class="empty">Koi marks log nahi. Upar se add karo.</div>'; return; }
+    list.innerHTML = store.marks.map((m, i) => {
+      const pct = (m.score / m.total) * 100;
+      const cls = pct >= 70 ? '' : pct >= 45 ? 'mid' : 'bad';
+      return `<div class="log-item">
+        <div class="score ${cls}">${pct.toFixed(0)}%</div>
+        <div class="info"><div class="t">${esc(m.chapter)}</div><div class="d">${m.score} / ${m.total}</div></div>
+        <button class="task-del" data-idx="${i}">×</button>
+      </div>`;
+    }).join('');
+    list.querySelectorAll('.task-del').forEach(b => {
+      b.addEventListener('click', e => {
+        store.marks.splice(e.target.dataset.idx, 1);
+        saveAll(); renderMarks();
+      });
+    });
+  }
+  $('#addMk').addEventListener('click', () => {
+    const chapter = $('#mkChapter').value.trim();
+    const score = parseFloat($('#mkScore').value);
+    const total = parseFloat($('#mkTotal').value);
+    if (!chapter || isNaN(score) || isNaN(total) || total <= 0) return;
+    store.marks.push({ chapter, score, total });
+    $('#mkChapter').value = ''; $('#mkScore').value = ''; $('#mkTotal').value = '';
+    saveAll(); renderMarks();
+  });
+
+  function renderTimetable() {
+    const list = $('#ttList');
+    if (!store.timetable.length) { list.innerHTML = '<div class="empty">Koi schedule nahi. Upar se add karo.</div>'; return; }
+    const order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    const sorted = [...store.timetable].sort((a,b) => order.indexOf(a.day) - order.indexOf(b.day));
+    list.innerHTML = sorted.map(t => `
+      <div class="log-item">
+        <div class="score" style="font-size:0.85rem; width:90px;">${esc(t.day)}</div>
+        <div class="info"><div class="t">${esc(t.task)}</div><div class="d">${esc(t.time)}</div></div>
+        <button class="task-del" data-idx="${store.timetable.indexOf(t)}">×</button>
+      </div>
+    `).join('');
+    list.querySelectorAll('.task-del').forEach(b => {
+      b.addEventListener('click', e => {
+        store.timetable.splice(e.target.dataset.idx, 1);
+        saveAll(); renderTimetable();
+      });
+    });
+  }
+  $('#addTt').addEventListener('click', () => {
+    const day = $('#ttDay').value;
+    const time = $('#ttTime').value.trim();
+    const task = $('#ttTask').value.trim();
+    if (!time || !task) return;
+    store.timetable.push({ day, time, task });
+    $('#ttTime').value = ''; $('#ttTask').value = '';
+    saveAll(); renderTimetable();
+  });
+
+  function renderPdfs() {
+    const list = $('#pdfList');
+    if (!store.pdfs.length) { list.innerHTML = '<div class="empty">Koi PDF nahi. Upar link paste karo.</div>'; return; }
+    list.innerHTML = store.pdfs.map((p, i) => `
+      <div class="pdf-item">
+        <div class="pdf-icon">▤</div>
+        <div class="pdf-info"><div class="pdf-title">${esc(p.title)}</div><div class="pdf-meta">${esc(p.url)}</div></div>
+        <div class="pdf-actions">
+          <a href="${escAttr(p.url)}" target="_blank" rel="noopener">Open</a>
+          <button data-idx="${i}">Del</button>
+        </div>
+      </div>
+    `).join('');
+    list.querySelectorAll('.pdf-actions button').forEach(b => {
+      b.addEventListener('click', e => {
+        store.pdfs.splice(e.target.dataset.idx, 1);
+        saveAll(); renderPdfs();
+      });
+    });
+  }
+  $('#addPdf').addEventListener('click', () => {
+    const title = $('#pdfTitle').value.trim();
+    const url = $('#pdfUrl').value.trim();
+    if (!title || !url) return;
+    store.pdfs.push({ title, url });
+    $('#pdfTitle').value = ''; $('#pdfUrl').value = '';
+    saveAll(); renderPdfs();
+  });
+
+  function renderPw() {
+    const list = $('#pwList');
+    if (!store.pwLinks.length) { list.innerHTML = '<div class="empty">Koi custom link nahi. Upar se add karo.</div>'; return; }
+    list.innerHTML = store.pwLinks.map((p, i) => `
+      <div class="pdf-item">
+        <div class="pdf-icon">▶</div>
+        <div class="pdf-info"><div class="pdf-title">${esc(p.name)}</div><div class="pdf-meta">${esc(p.url)}</div></div>
+        <div class="pdf-actions">
+          <a href="${escAttr(p.url)}" target="_blank" rel="noopener">Open</a>
+          <button data-idx="${i}">Del</button>
+        </div>
+      </div>
+    `).join('');
+    list.querySelectorAll('.pdf-actions button').forEach(b => {
+      b.addEventListener('click', e => {
+        store.pwLinks.splice(e.target.dataset.idx, 1);
+        saveAll(); renderPw();
+      });
+    });
+  }
+  $('#addPw').addEventListener('click', () => {
+    const name = $('#pwName').value.trim();
+    const url = $('#pwUrl').value.trim();
+    if (!name || !url) return;
+    store.pwLinks.push({ name, url });
+    $('#pwName').value = ''; $('#pwUrl').value = '';
+    saveAll(); renderPw();
+  });
+
+  function renderSubjects() {
+    const max = Math.max(1, store.subjects.phy, store.subjects.chem, store.subjects.math);
+    ['phy','chem','math'].forEach(s => {
+      const pct = (store.subjects[s] / max) * 100;
+      $(`#bar${cap(s)}`).style.width = pct + '%';
+      $(`#hrs${cap(s)}`).textContent = store.subjects[s] + 'h';
+    });
+  }
+  function cap(s) { return s[0].toUpperCase() + s.slice(1); }
+  $$('.subject-add').forEach(b => {
+    b.addEventListener('click', () => {
+      store.subjects[b.dataset.subject] += 1;
+      saveAll(); renderSubjects();
+    });
+  });
+
+  function sylKey(sub, idx) { return `${sub}_${idx}`; }
+  function renderSyllabus() {
+    ['phy','chem','math'].forEach(sub => {
+      const el = $(`#syl${cap(sub)}`);
+      el.innerHTML = SYLLABUS[sub].map((ch, i) => {
+        const done = !!store.syllabus[sylKey(sub, i)];
+        return `
+          <div class="chapter ${done ? 'done' : ''}">
+            <input type="checkbox" data-sub="${sub}" data-idx="${i}" ${done ? 'checked' : ''}>
+            <span>${ch}</span>
+          </div>
+        `;
+      }).join('');
+      el.querySelectorAll('input[type=checkbox]').forEach(cb => {
+        cb.addEventListener('change', e => {
+          const k = sylKey(e.target.dataset.sub, e.target.dataset.idx);
+          if (e.target.checked) store.syllabus[k] = true;
+          else delete store.syllabus[k];
+          saveAll(); renderSyllabus();
+        });
+      });
+    });
+    ['phy','chem','math'].forEach(sub => {
+      const total = SYLLABUS[sub].length;
+      let done = 0;
+      for (let i = 0; i < total; i++) if (store.syllabus[sylKey(sub, i)]) done++;
+      $(`#syl${cap(sub)}Pct`).textContent = total ? Math.round(done/total*100) + '%' : '0%';
+    });
+    const tAll = SYLLABUS.phy.length + SYLLABUS.chem.length + SYLLABUS.math.length;
+    let dAll = 0;
+    for (const k in store.syllabus) if (store.syllabus[k]) dAll++;
+    $('#sylTotalPct').textContent = tAll ? Math.round(dAll/tAll*100) + '%' : '0%';
+  }
+
+  let timerTotal = 25 * 60, timerLeft = timerTotal, timerId = null, timerRunning = false, sessionStart = null;
+  function fmt(s) {
+    const m = Math.floor(s / 60), sec = s % 60;
+    return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  }
+  function renderTimer() { $('#timerDisplay').textContent = fmt(timerLeft); }
+  $('#timerStart').addEventListener('click', () => {
+    if (timerRunning) return;
+    timerRunning = true;
+    sessionStart = Date.now();
+    timerId = setInterval(() => {
+      timerLeft--; renderTimer();
+      if (timerLeft <= 0) {
+        clearInterval(timerId); timerRunning = false; logSession();
+        try {
+          const ac = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = ac.createOscillator(), g = ac.createGain();
+          osc.connect(g); g.connect(ac.destination);
+          osc.frequency.value = 880;
+          g.gain.setValueAtTime(0.2, ac.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.6);
+          osc.start(); osc.stop(ac.currentTime + 0.6);
+        } catch(e) {}
+        alert('Time up, boss man. Break le ya next session.');
+        timerLeft = timerTotal; renderTimer();
+      }
+    }, 1000);
+  });
+  $('#timerPause').addEventListener('click', () => {
+    if (!timerRunning) return;
+    clearInterval(timerId); timerRunning = false; logSession();
+  });
+  $('#timerReset').addEventListener('click', () => {
+    clearInterval(timerId); timerRunning = false; logSession();
+    timerLeft = timerTotal; renderTimer();
+  });
+  $$('[data-preset]').forEach(b => {
+    b.addEventListener('click', () => {
+      clearInterval(timerId); timerRunning = false; logSession();
+      timerTotal = parseInt(b.dataset.preset) * 60;
+      timerLeft = timerTotal;
+      $('#timerMode').textContent = b.dataset.mode || 'Focus';
+      renderTimer();
+    });
+  });
+  function logSession() {
+    if (!sessionStart) return;
+    const mins = Math.floor((Date.now() - sessionStart) / 60000);
+    if (mins > 0) { store.todayMinutes += mins; store.totalMinutes += mins; saveAll(); }
+    sessionStart = null;
+  }
+
+  let examTotal = 180 * 60, examLeft = examTotal, examId = null, examRunning = false;
+  function fmtExam(s) {
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  }
+  function renderExam() { $('#examDisplay').textContent = fmtExam(examLeft); }
+  $('#examStart').addEventListener('click', () => {
+    if (examRunning) return;
+    examRunning = true;
+    examId = setInterval(() => {
+      examLeft--; renderExam();
+      if (examLeft <= 0) {
+        clearInterval(examId); examRunning = false;
+        alert('Exam over! Pen down, boss man.');
+        examLeft = examTotal; renderExam();
+      }
+    }, 1000);
+  });
+  $('#examPause').addEventListener('click', () => { clearInterval(examId); examRunning = false; });
+  $('#examReset').addEventListener('click', () => { clearInterval(examId); examRunning = false; examLeft = examTotal; renderExam(); });
+  $$('[data-exam]').forEach(b => {
+    b.addEventListener('click', () => {
+      clearInterval(examId); examRunning = false;
+      examTotal = parseInt(b.dataset.exam) * 60;
+      examLeft = examTotal; renderExam();
+    });
+  });
+
+  function getSyllabusProgress() {
+    const out = { phy: {done:0,total:0}, chem: {done:0,total:0}, math: {done:0,total:0} };
+    ['phy','chem','math'].forEach(sub => {
+      out[sub].total = SYLLABUS[sub].length;
+      for (let i = 0; i < SYLLABUS[sub].length; i++) {
+        if (store.syllabus[`${sub}_${i}`]) out[sub].done++;
+      }
+    });
+    return out;
+  }
+  function getMockTrend() {
+    if (store.mocks.length < 2) return null;
+    const last3 = store.mocks.slice(-3);
+    const avg = last3.reduce((a,m) => a + (m.score/m.total)*100, 0) / last3.length;
+    return { avg, last: (store.mocks[store.mocks.length-1].score / store.mocks[store.mocks.length-1].total)*100 };
+  }
+  function getSubjectBalance() {
+    const s = store.subjects;
+    const total = s.phy + s.chem + s.math || 1;
+    return { phy: Math.round((s.phy/total)*100), chem: Math.round((s.chem/total)*100), math: Math.round((s.math/total)*100) };
+  }
+  function generateInsights() {
+    const insights = [];
+    const syl = getSyllabusProgress();
+    const todayPct = Math.min(100, (store.todayMinutes / (8*60)) * 100);
+    const balance = getSubjectBalance();
+    const mockTrend = getMockTrend();
+
+    if (todayPct === 0) insights.push({ icon:'◉', color:'warn', title:'Aaj abhi tak 0 minute', body:'Bhai, utha. Timer start kar. 8 ghante ka goal hai.' });
+    else if (todayPct < 50) insights.push({ icon:'◉', color:'warn', title:`Aaj ${store.todayMinutes} min ho gaye`, body:`Goal ka ${todayPct.toFixed(0)}% bhara. ${(8*60 - store.todayMinutes)} min baaki.` });
+    else if (todayPct >= 100) insights.push({ icon:'✓', color:'accent', title:'Aaj ka 8 ghante ka goal complete', body:'Boss man, aaj ka grind solid tha. Ab rest le.' });
+    else insights.push({ icon:'◉', color:'accent', title:`Aaj ${store.todayMinutes} min ho gaye`, body:`Goal ka ${todayPct.toFixed(0)}% — rukna nahi, aage badh.` });
+
+    const subPct = {
+      phy: (syl.phy.done/syl.phy.total)*100,
+      chem: (syl.chem.done/syl.chem.total)*100,
+      math: (syl.math.done/syl.math.total)*100
+    };
+    const weakest = Object.entries(subPct).sort((a,b) => a[1]-b[1])[0];
+    const weakLabel = { phy: 'Physics', chem: 'Chemistry', math: 'Math' }[weakest[0]];
+    if (weakest[1] < 60) insights.push({ icon:'⚠', color:'warn', title:`${weakLabel} sabse peeche hai (${weakest[1].toFixed(0)}%)`, body:`${syl[weakest[0]].done}/${syl[weakest[0]].total} chapters done. Aaj isko time de.` });
+
+    const minSub = Object.entries(balance).sort((a,b) => a[1]-b[1])[0];
+    const balLabel = { phy: 'Physics', chem: 'Chemistry', math: 'Math' }[minSub[0]];
+    if (Math.max(...Object.values(balance)) - minSub[1] > 25) insights.push({ icon:'◐', color:'warn', title:`${balLabel} ko ignore kar raha hai`, body:`Sirf ${minSub[1]}% time diya. Balance banao.` });
+
+    if (mockTrend) {
+      if (mockTrend.last < mockTrend.avg - 5) insights.push({ icon:'▲', color:'warn', title:`Mock score gira — ${mockTrend.last.toFixed(0)}%`, body:`Recent average ${mockTrend.avg.toFixed(0)}% tha. Analysis kar.` });
+      else if (mockTrend.last > mockTrend.avg + 5) insights.push({ icon:'▲', color:'accent', title:`Mock score badha — ${mockTrend.last.toFixed(0)}%`, body:`Average ${mockTrend.avg.toFixed(0)}% tha. Momentum hold kar.` });
+    }
+
+    if (store.mistakes.length >= 5) insights.push({ icon:'⚠', color:'warn', title:`${store.mistakes.length} mistakes logged`, body:'Ek din nikaal ke sirf mistake log revise kar.' });
+
+    if (store.streak >= 7) insights.push({ icon:'◆', color:'accent', title:`${store.streak} din ka streak`, body:'Consistency hi topper ka raaz hai.' });
+
+    const pending = store.tasks.filter(t => !t.done);
+    if (pending.length) insights.push({ icon:'◷', color:'purple', title:`Pending: ${pending[0].text}`, body:`${pending[0].subject} ka task pending hai. Abhi nipta de.` });
+
+    insights.push({ icon:'▶', color:'purple', title:'DOH PW portal ready', body:'Batch videos dekhne ka time hai? Ek click mein khol.' });
+
+    return insights.slice(0, 6);
+  }
+  function renderInsights() {
+    const grid = $('#aiInsights');
+    const insights = generateInsights();
+    grid.innerHTML = insights.map(i => {
+      const cls = i.color === 'accent' ? '' : i.color === 'warn' ? 'warn' : 'purple';
+      return `
+        <div class="card">
+          <div class="stat-label">${i.icon} Insight</div>
+          <div style="font-size:0.9rem; font-weight:700; margin:0.3rem 0;" class="stat-value ${cls}">${esc(i.title)}</div>
+          <div class="stat-sub">${esc(i.body)}</div>
+        </div>
+      `;
+    }).join('');
+  }
+  function aiAnswer(q) {
+    const query = q.toLowerCase();
+    const syl = getSyllabusProgress();
+    const todayPct = Math.min(100, (store.todayMinutes / (8*60)) * 100);
+
+    if (/aaj|today|kya karu|what to do|plan/.test(query)) {
+      const pending = store.tasks.filter(t => !t.done);
+      const weak = Object.entries({
+        Physics: (syl.phy.done/syl.phy.total)*100,
+        Chemistry: (syl.chem.done/syl.chem.total)*100,
+        Math: (syl.math.done/syl.math.total)*100
+      }).sort((a,b) => a[1]-b[1])[0];
+      return `Boss man, aaj ka plan:\n• ${pending.length} pending tasks hai — pehle woh nipat\n• ${weak[0]} weak hai (${weak[1].toFixed(0)}% done) — usko 2 ghante de\n• Goal ka ${todayPct.toFixed(0)}% bhara — 8h tak pahuncha`;
+    }
+    if (/weak|peeche|backlog/.test(query)) {
+      const weak = Object.entries({
+        Physics: (syl.phy.done/syl.phy.total)*100,
+        Chemistry: (syl.chem.done/syl.chem.total)*100,
+        Math: (syl.math.done/syl.math.total)*100
+      }).sort((a,b) => a[1]-b[1])[0];
+      return `${weak[0]} sabse weak hai, boss man — ${weak[1].toFixed(0)}% chapters done. Aaj isko priority de.`;
+    }
+    if (/progress|kitna|how much/.test(query)) {
+      const total = syl.phy.total + syl.chem.total + syl.math.total;
+      const done = syl.phy.done + syl.chem.done + syl.math.done;
+      return `Overall syllabus: ${done}/${total} chapters (${((done/total)*100).toFixed(0)}%). Today: ${store.todayMinutes} min / 480 min goal.`;
+    }
+    if (/mock|test|score/.test(query)) {
+      if (!store.mocks.length) return 'Koi mock log nahi hai, boss man. Pehla mock de aur log kar.';
+      const last = store.mocks[store.mocks.length-1];
+      const pct = (last.score/last.total)*100;
+      return `Last mock: ${last.name} — ${last.score}/${last.total} (${pct.toFixed(0)}%). ${pct < 50 ? 'Analysis kar, weak areas note kar.' : 'Solid hai, aise hi chal.'}`;
+    }
+    if (/streak|consistent/.test(query)) return `Tera streak ${store.streak} din ka hai. ${store.streak >= 7 ? 'Boss level consistency.' : '7 din tak le ja, phir dekha jayega.'}`;
+    if (/mistake|galti|error/.test(query)) return `Mistake log mein ${store.mistakes.length} entries hai. Revision ke waqt woh padh.`;
+    if (/time|hours|ghante|minute/.test(query)) return `All-time: ${(store.totalMinutes/60).toFixed(1)} ghante. Today: ${store.todayMinutes} min. Goal: 480 min.`;
+    if (/pw|batch|lecture|video|doh/.test(query)) return `DOH PW portal: https://dohstudy-web-pw.vercel.app/ — login karke batches, schedule, tests sab dekh.`;
+    return `Boss man, ye try kar:\n• "aaj kya karu" — daily plan\n• "weak" — weakest subject\n• "progress" — overall status\n• "mock" — last mock score\n• "streak" — consistency check\n• "pw" — PW portal link`;
+  }
+  $('#aiSend').addEventListener('click', () => {
+    const q = $('#aiInput').value.trim();
+    if (!q) return;
+    const reply = aiAnswer(q);
+    const chat = $('#aiChat');
+    const msgId = 'msg_' + Date.now();
+    chat.insertAdjacentHTML('afterbegin', `
+      <div class="card" id="${msgId}" style="border-left:3px solid var(--accent-2);">
+        <div class="stat-label">Tune poocha</div>
+        <div style="font-size:0.85rem; margin:0.3rem 0 0.7rem; color:var(--text);">${esc(q)}</div>
+        <div class="stat-label">Axiom Coach</div>
+        <div style="font-size:0.85rem; white-space:pre-wrap; color:var(--accent);">${esc(reply)}</div>
+      </div>
+    `);
+    $('#aiInput').value = '';
+  });
+  $('#aiInput').addEventListener('keydown', e => e.key === 'Enter' && $('#aiSend').click());
+
+  // ================= STUDY ROOMS (BroadcastChannel) =================
+  let roomChannel = null;
+  let currentRoom = null;
+  let currentUser = null;
+  let isAdmin = false;
+  let roomMemberCount = 1;
+  let knownMembers = new Set();
+
+  function genRoomCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    return code;
+  }
+
+  function initRoomUI() {
+    $('#createRoomBtn').addEventListener('click', () => {
+      const name = $('#roomNameInput').value.trim() || 'Study Room';
+      const adminName = $('#adminNameInput').value.trim() || 'Admin';
+      const code = genRoomCode();
+      enterRoom(code, name, adminName, true);
+    });
+
+    $('#joinRoomBtn').addEventListener('click', () => {
+      const code = $('#roomCodeInput').value.trim().toUpperCase();
+      const guestName = $('#guestNameInput').value.trim() || 'Guest';
+      if (!code) return alert('Room code daalo, boss man.');
+      enterRoom(code, 'Room ' + code, guestName, false);
+    });
+
+    $('#leaveRoomBtn').addEventListener('click', leaveRoom);
+    $('#copyCodeBtn').addEventListener('click', () => {
+      if (!currentRoom) return;
+      navigator.clipboard.writeText(currentRoom).then(() => {
+        const b = $('#copyCodeBtn');
+        b.textContent = 'Copied!';
+        setTimeout(() => b.textContent = 'Copy Code', 1500);
+      }).catch(() => alert('Code: ' + currentRoom));
+    });
+    $('#sendMsgBtn').addEventListener('click', sendChatMessage);
+    $('#chatInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') sendChatMessage();
+    });
+
+    const params = new URLSearchParams(location.search);
+    const r = params.get('room');
+    if (r && $('#roomCodeInput')) $('#roomCodeInput').value = r.toUpperCase();
+  }
+
+  function enterRoom(code, name, userName, admin) {
+    if (roomChannel) roomChannel.close();
+    currentRoom = code;
+    currentUser = userName;
+    isAdmin = admin;
+    roomMemberCount = 1;
+    knownMembers = new Set([userName]);
+
+    roomChannel = new BroadcastChannel('jee_room_' + code);
+
+    roomChannel.onmessage = (e) => {
+      const msg = e.data;
+      if (msg.type === 'chat') {
+        appendChatMessage(msg.user, msg.text, msg.time, msg.user === currentUser);
+      } else if (msg.type === 'hello') {
+        if (!knownMembers.has(msg.user)) {
+          knownMembers.add(msg.user);
+          roomMemberCount = knownMembers.size;
+          updateMemberCount();
+          appendSystemMessage(`${msg.user} room mein aa gaya`);
+        }
+        roomChannel.postMessage({ type: 'iamhere', user: currentUser });
+      } else if (msg.type === 'iamhere') {
+        if (!knownMembers.has(msg.user)) {
+          knownMembers.add(msg.user);
+          roomMemberCount = knownMembers.size;
+          updateMemberCount();
+        }
+      } else if (msg.type === 'bye') {
+        if (knownMembers.has(msg.user)) {
+          knownMembers.delete(msg.user);
+          roomMemberCount = knownMembers.size;
+          updateMemberCount();
+          appendSystemMessage(`${msg.user} room chhod diya`);
+        }
+      }
+    };
+
+    roomChannel.postMessage({ type: 'hello', user: currentUser });
+
+    $('#roomActive').style.display = 'block';
+    $('#roomTitle').textContent = name;
+    $('#roomCodeDisplay').textContent = code;
+    $('#adminBadge').style.display = admin ? 'inline' : 'none';
+    $('#chatBox').innerHTML = '';
+    appendSystemMessage(`Room "${name}" joined as ${userName}${admin ? ' (Admin)' : ''}`);
+    updateMemberCount();
+  }
+
+  function leaveRoom() {
+    if (roomChannel) {
+      roomChannel.postMessage({ type: 'bye', user: currentUser });
+      roomChannel.close();
+      roomChannel = null;
+    }
+    currentRoom = null;
+    currentUser = null;
+    isAdmin = false;
+    roomMemberCount = 1;
+    knownMembers = new Set();
+    $('#roomActive').style.display = 'none';
+    $('#chatBox').innerHTML = '';
+  }
+
+  function sendChatMessage() {
+    const text = $('#chatInput').value.trim();
+    if (!text || !roomChannel) return;
+    const time = new Date().toLocaleTimeString();
+    roomChannel.postMessage({ type: 'chat', user: currentUser, text, time });
+    appendChatMessage(currentUser, text, time, true);
+    $('#chatInput').value = '';
+  }
+
+  function appendChatMessage(user, text, time, isMine) {
+    const box = $('#chatBox');
+    const div = document.createElement('div');
+    div.style.cssText = `
+      align-self: ${isMine ? 'flex-end' : 'flex-start'};
+      max-width: 75%;
+      background: ${isMine ? 'linear-gradient(135deg, rgba(0,229,160,0.2), rgba(102,170,255,0.15))' : 'var(--surface-2)'};
+      border: 1px solid ${isMine ? 'rgba(0,229,160,0.3)' : 'var(--border)'};
+      border-radius: 12px;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      word-wrap: break-word;
+    `;
+    div.innerHTML = `
+      <div style="font-size:0.65rem; color:${isMine ? 'var(--accent)' : 'var(--accent-2)'}; margin-bottom:0.2rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">${esc(user)} · ${esc(time)}</div>
+      <div>${esc(text)}</div>
+    `;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function appendSystemMessage(text) {
+    const box = $('#chatBox');
+    const div = document.createElement('div');
+    div.style.cssText = `
+      align-self: center; font-size: 0.7rem; color: var(--muted);
+      padding: 0.3rem 0.7rem; background: var(--surface-2);
+      border-radius: 99px; border: 1px solid var(--border);
+    `;
+    div.textContent = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function updateMemberCount() {
+    $('#roomMembers').textContent = roomMemberCount;
+  }
+
+  // ================= BACKUP =================
+  $('#exportBtn').addEventListener('click', () => {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k.startsWith('jee_')) data[k] = localStorage.getItem(k);
+    }
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `jee-backup-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+  $('#importBtn').addEventListener('click', () => $('#importFile').click());
+  $('#importFile').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        for (const k in data) localStorage.setItem(k, data[k]);
+        alert('Restore ho gaya, boss man. Page reload kar raha hu.');
+        location.reload();
+      } catch (err) { alert('File corrupt hai, boss man.'); }
+    };
+    reader.readAsText(file);
+  });
+  $('#wipeBtn').addEventListener('click', () => {
+    if (!confirm('Pakka? Sab data delete ho jayega.')) return;
+    if (!confirm('Last warning. Sure hai?')) return;
+    const keys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k.startsWith('jee_')) keys.push(k);
+    }
+    keys.forEach(k => localStorage.removeItem(k));
+    location.reload();
+  });
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+  function escAttr(s) { return esc(s); }
+
+  (function bg() {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+    const COUNT = 70;
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+    for (let i = 0; i < COUNT; i++) {
+      particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*1.6+0.4, hue: Math.random() > 0.5 ? 160 : 215 });
+    }
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < COUNT; i++) {
+        const a = particles[i];
+        for (let j = i + 1; j < COUNT; j++) {
+          const b = particles[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d2 = dx*dx + dy*dy;
+          if (d2 < 16000) {
+            const alpha = (1 - d2/16000) * 0.22;
+            ctx.strokeStyle = `hsla(${a.hue}, 80%, 60%, ${alpha})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+      }
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.8)`;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  renderStreak();
+  renderDashboard();
+  renderTasks();
+  renderNotes();
+  renderFormulas();
+  renderPyq();
+  renderMocks();
+  renderMistakes();
+  renderMarks();
+  renderTimetable();
+  renderPdfs();
+  renderPw();
+  renderSubjects();
+  renderSyllabus();
+  renderTimer();
+  renderExam();
+  renderInsights();
+  initRoomUI();
+  setInterval(() => {
+    if (document.getElementById('assistant').classList.contains('active')) renderInsights();
+  }, 30000);
+})();
+</script>
+</body>
+</html>
