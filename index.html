@@ -295,6 +295,93 @@
     .timer-display { font-size: 3rem; }
     .countdown .big { font-size: 1.6rem; }
     h1 { font-size: 1.3rem; }
+
+  /* CLASS SELECTOR MODAL */
+  .class-modal {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(6,6,10,0.95);
+    backdrop-filter: blur(20px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .class-modal.show { display: flex; }
+  .class-box {
+    background: linear-gradient(135deg, rgba(18,18,26,0.95), rgba(26,26,38,0.95));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 80px rgba(0,229,160,0.15), 0 0 120px rgba(179,102,255,0.1);
+    animation: modalIn 0.4s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .class-box .welcome {
+    font-size: 0.7rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.5rem;
+  }
+  .class-box h2 {
+    font-size: 1.6rem; font-weight: 800; color: var(--accent);
+    letter-spacing: -0.02em; margin-bottom: 0.4rem;
+    text-shadow: 0 0 30px rgba(0,229,160,0.4);
+  }
+  .class-box .sub {
+    color: var(--muted); font-size: 0.85rem;
+    margin-bottom: 2rem; line-height: 1.5;
+  }
+  .class-options {
+    display: grid; grid-template-columns: 1fr;
+    gap: 0.8rem; margin-bottom: 1.5rem;
+  }
+  .class-opt {
+    background: var(--surface-2); border: 2px solid var(--border);
+    border-radius: 14px; padding: 1.2rem 1.4rem;
+    cursor: pointer; transition: 0.2s;
+    display: flex; align-items: center; gap: 1rem;
+    text-align: left; font-family: inherit;
+    color: var(--text); width: 100%;
+  }
+  .class-opt:hover {
+    border-color: var(--accent); transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,229,160,0.15);
+  }
+  .class-opt .emoji {
+    font-size: 1.8rem; width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border-radius: 10px; flex-shrink: 0;
+  }
+  .class-opt .info { flex: 1; }
+  .class-opt .title { font-size: 1rem; font-weight: 700; margin-bottom: 0.15rem; }
+  .class-opt .desc { font-size: 0.72rem; color: var(--muted); }
+  .class-opt[data-class="11"]:hover { border-color: #66aaff; box-shadow: 0 8px 30px rgba(102,170,255,0.15); }
+  .class-opt[data-class="11"] .title { color: #66aaff; }
+  .class-opt[data-class="12"]:hover { border-color: #ff6b6b; box-shadow: 0 8px 30px rgba(255,107,107,0.15); }
+  .class-opt[data-class="12"] .title { color: #ff6b6b; }
+  .class-opt[data-class="drop"]:hover { border-color: #b366ff; box-shadow: 0 8px 30px rgba(179,102,255,0.15); }
+  .class-opt[data-class="drop"] .title { color: #b366ff; }
+  .class-box .skip-btn {
+    background: transparent; border: none; color: var(--muted);
+    font-size: 0.75rem; cursor: pointer; font-family: inherit;
+    text-decoration: underline; padding: 0.4rem;
+  }
+  .class-box .skip-btn:hover { color: var(--text); }
+  .class-badge {
+    display: inline-block; font-size: 0.6rem;
+    padding: 0.15rem 0.5rem; border-radius: 99px;
+    background: rgba(102,170,255,0.15); color: var(--accent-2);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 700; margin-left: 0.4rem; cursor: pointer;
+  }
+  .class-badge.cls-11 { background: rgba(102,170,255,0.15); color: #66aaff; }
+  .class-badge.cls-12 { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+  .class-badge.cls-drop { background: rgba(179,102,255,0.15); color: #b366ff; }
+    
   }
 </style>
 </head>
