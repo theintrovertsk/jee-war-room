@@ -314,253 +314,108 @@
   ::-webkit-scrollbar-thumb:hover { background: #2a2a3e; }
 
   /* AUTH */
-  .auth-modal {
-    position: fixed; inset: 0; z-index: 9998;
-    background: rgba(6,6,10,0.98);
-    backdrop-filter: blur(20px);
-    display: flex; align-items: center; justify-content: center;
-    padding: 1.5rem;
-  }
+  .auth-modal { position: fixed; inset: 0; z-index: 9998; background: rgba(6,6,10,0.98); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
   .auth-modal.hide { display: none; }
-  .auth-box {
-    background: linear-gradient(135deg, rgba(18,18,26,0.98), rgba(26,26,38,0.98));
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 2.5rem 2rem;
-    max-width: 440px;
-    width: 100%;
-    box-shadow: 0 0 100px rgba(0,229,160,0.15), 0 0 150px rgba(179,102,255,0.1);
-    animation: modalIn 0.4s ease;
-  }
-  @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.92) translateY(20px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
+  .auth-box { background: linear-gradient(135deg, rgba(18,18,26,0.98), rgba(26,26,38,0.98)); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem 2rem; max-width: 440px; width: 100%; box-shadow: 0 0 100px rgba(0,229,160,0.15), 0 0 150px rgba(179,102,255,0.1); animation: modalIn 0.4s ease; }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.92) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
   .auth-box .brand { text-align: center; margin-bottom: 2rem; }
-  .auth-box .brand h2 {
-    font-size: 1.7rem; font-weight: 800; color: var(--accent);
-    letter-spacing: -0.02em; text-shadow: 0 0 30px rgba(0,229,160,0.4);
-  }
-  .auth-box .brand p {
-    color: var(--muted); font-size: 0.75rem;
-    margin-top: 0.3rem; letter-spacing: 0.15em; text-transform: uppercase;
-  }
-  .auth-tabs {
-    display: flex; gap: 0.4rem; background: var(--surface-2);
-    padding: 0.3rem; border-radius: 10px; margin-bottom: 1.5rem;
-  }
-  .auth-tab {
-    flex: 1; background: transparent; border: none;
-    color: var(--muted); padding: 0.6rem; border-radius: 8px;
-    font-size: 0.82rem; font-family: inherit; cursor: pointer;
-    transition: 0.15s; font-weight: 600;
-  }
+  .auth-box .brand h2 { font-size: 1.7rem; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; text-shadow: 0 0 30px rgba(0,229,160,0.4); }
+  .auth-box .brand p { color: var(--muted); font-size: 0.75rem; margin-top: 0.3rem; letter-spacing: 0.15em; text-transform: uppercase; }
+  .auth-tabs { display: flex; gap: 0.4rem; background: var(--surface-2); padding: 0.3rem; border-radius: 10px; margin-bottom: 1.5rem; }
+  .auth-tab { flex: 1; background: transparent; border: none; color: var(--muted); padding: 0.6rem; border-radius: 8px; font-size: 0.82rem; font-family: inherit; cursor: pointer; transition: 0.15s; font-weight: 600; }
   .auth-tab.active { background: var(--accent); color: #06060a; }
   .auth-field { margin-bottom: 1rem; }
-  .auth-field label {
-    display: block; font-size: 0.7rem; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem;
-  }
-  .auth-submit {
-    width: 100%; background: var(--accent); color: #06060a;
-    border: none; padding: 0.85rem; border-radius: 10px;
-    font-size: 0.9rem; font-weight: 700; font-family: inherit;
-    cursor: pointer; margin-top: 0.5rem; transition: 0.15s;
-  }
+  .auth-field label { display: block; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+  .auth-submit { width: 100%; background: var(--accent); color: #06060a; border: none; padding: 0.85rem; border-radius: 10px; font-size: 0.9rem; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 0.5rem; transition: 0.15s; }
   .auth-submit:hover { opacity: 0.85; }
   .auth-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-  .auth-error {
-    background: rgba(255,85,102,0.15);
-    border: 1px solid rgba(255,85,102,0.3);
-    color: var(--danger); padding: 0.6rem 0.8rem;
-    border-radius: 8px; font-size: 0.78rem;
-    margin-bottom: 1rem; display: none;
-  }
+  .auth-error { background: rgba(255,85,102,0.15); border: 1px solid rgba(255,85,102,0.3); color: var(--danger); padding: 0.6rem 0.8rem; border-radius: 8px; font-size: 0.78rem; margin-bottom: 1rem; display: none; }
   .auth-error.show { display: block; }
-  .auth-hint {
-    text-align: center; color: var(--muted);
-    font-size: 0.7rem; margin-top: 1rem;
-  }
+  .auth-hint { text-align: center; color: var(--muted); font-size: 0.7rem; margin-top: 1rem; }
 
   /* CLASS */
-  .class-modal {
-    position: fixed; inset: 0; z-index: 9999;
-    background: rgba(6,6,10,0.95);
-    backdrop-filter: blur(20px);
-    display: none; align-items: center; justify-content: center;
-    padding: 1.5rem;
-  }
+  .class-modal { position: fixed; inset: 0; z-index: 9999; background: rgba(6,6,10,0.95); backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 1.5rem; }
   .class-modal.show { display: flex; }
-  .class-box {
-    background: linear-gradient(135deg, rgba(18,18,26,0.95), rgba(26,26,38,0.95));
-    border: 1px solid var(--border);
-    border-radius: 20px; padding: 2.5rem 2rem;
-    max-width: 520px; width: 100%; text-align: center;
-    box-shadow: 0 0 80px rgba(0,229,160,0.15), 0 0 120px rgba(179,102,255,0.1);
-    animation: modalIn 0.4s ease;
-  }
-  .class-box .welcome {
-    font-size: 0.7rem; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.5rem;
-  }
-  .class-box h2 {
-    font-size: 1.6rem; font-weight: 800; color: var(--accent);
-    margin-bottom: 0.4rem; text-shadow: 0 0 30px rgba(0,229,160,0.4);
-  }
+  .class-box { background: linear-gradient(135deg, rgba(18,18,26,0.95), rgba(26,26,38,0.95)); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem 2rem; max-width: 520px; width: 100%; text-align: center; box-shadow: 0 0 80px rgba(0,229,160,0.15), 0 0 120px rgba(179,102,255,0.1); animation: modalIn 0.4s ease; }
+  .class-box .welcome { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.5rem; }
+  .class-box h2 { font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-bottom: 0.4rem; text-shadow: 0 0 30px rgba(0,229,160,0.4); }
   .class-box .sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; line-height: 1.5; }
   .class-options { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin-bottom: 1.5rem; }
-  .class-opt {
-    background: var(--surface-2); border: 2px solid var(--border);
-    border-radius: 14px; padding: 1.2rem 1.4rem;
-    cursor: pointer; transition: 0.2s;
-    display: flex; align-items: center; gap: 1rem;
-    text-align: left; font-family: inherit;
-    color: var(--text); width: 100%;
-  }
-  .class-opt:hover {
-    border-color: var(--accent); transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,229,160,0.15);
-  }
-  .class-opt .emoji {
-    font-size: 1.8rem; width: 48px; height: 48px;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--surface); border-radius: 10px; flex-shrink: 0;
-  }
+  .class-opt { background: var(--surface-2); border: 2px solid var(--border); border-radius: 14px; padding: 1.2rem 1.4rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 1rem; text-align: left; font-family: inherit; color: var(--text); width: 100%; }
+  .class-opt:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,229,160,0.15); }
+  .class-opt .emoji { font-size: 1.8rem; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--surface); border-radius: 10px; flex-shrink: 0; }
   .class-opt .info { flex: 1; }
   .class-opt .title { font-size: 1rem; font-weight: 700; margin-bottom: 0.15rem; }
   .class-opt .desc { font-size: 0.72rem; color: var(--muted); }
   .class-opt[data-class="11"] .title { color: #66aaff; }
   .class-opt[data-class="12"] .title { color: #ff6b6b; }
   .class-opt[data-class="drop"] .title { color: #b366ff; }
-  .class-badge {
-    display: inline-block; font-size: 0.6rem;
-    padding: 0.15rem 0.5rem; border-radius: 99px;
-    background: rgba(102,170,255,0.15); color: var(--accent-2);
-    text-transform: uppercase; letter-spacing: 0.08em;
-    font-weight: 700; margin-left: 0.4rem; cursor: pointer;
-  }
+  .class-badge { display: inline-block; font-size: 0.6rem; padding: 0.15rem 0.5rem; border-radius: 99px; background: rgba(102,170,255,0.15); color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-left: 0.4rem; cursor: pointer; }
   .class-badge.cls-11 { background: rgba(102,170,255,0.15); color: #66aaff; }
   .class-badge.cls-12 { background: rgba(255,107,107,0.15); color: #ff6b6b; }
   .class-badge.cls-drop { background: rgba(179,102,255,0.15); color: #b366ff; }
 
   /* FRIEND */
-  .friend-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 0.55rem;
-    display: flex; align-items: center; gap: 1rem; transition: 0.15s;
-  }
+  .friend-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 0.55rem; display: flex; align-items: center; gap: 1rem; transition: 0.15s; }
   .friend-item:hover { border-color: var(--accent); }
-  .friend-avatar {
-    width: 42px; height: 42px;
-    background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800; color: #06060a; font-size: 1rem; flex-shrink: 0;
-  }
+  .friend-avatar { width: 42px; height: 42px; background: linear-gradient(135deg, var(--accent-2), var(--accent-3)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #06060a; font-size: 1rem; flex-shrink: 0; position: relative; }
+  .online-dot { position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--surface); }
+  .online-dot.on { background: #00e5a0; box-shadow: 0 0 8px #00e5a0; }
+  .online-dot.off { background: #7788aa; }
   .friend-info { flex: 1; min-width: 0; }
   .friend-name { font-weight: 700; font-size: 0.9rem; }
   .friend-sub { font-size: 0.7rem; color: var(--muted); margin-top: 0.15rem; }
   .friend-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-  .friend-actions button {
-    background: var(--surface-2); border: 1px solid var(--border);
-    color: var(--accent); padding: 0.38rem 0.7rem; border-radius: 6px;
-    font-size: 0.72rem; cursor: pointer; font-family: inherit;
-    transition: 0.15s;
-  }
+  .friend-actions button { background: var(--surface-2); border: 1px solid var(--border); color: var(--accent); padding: 0.38rem 0.7rem; border-radius: 6px; font-size: 0.72rem; cursor: pointer; font-family: inherit; transition: 0.15s; }
   .friend-actions button:hover { background: var(--accent); color: #06060a; }
   .friend-actions button.danger { color: var(--danger); }
   .friend-actions button.danger:hover { background: var(--danger); color: white; border-color: var(--danger); }
-  .friend-tabs {
-    display: flex; gap: 0.4rem; margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border); padding-bottom: 0.6rem;
-    overflow-x: auto;
-  }
-  .friend-tab {
-    background: transparent; border: none; color: var(--muted);
-    padding: 0.5rem 0.9rem; border-radius: 8px;
-    font-size: 0.8rem; cursor: pointer; font-family: inherit;
-    transition: 0.15s; white-space: nowrap; font-weight: 600;
-  }
+  .friend-tabs { display: flex; gap: 0.4rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.6rem; overflow-x: auto; }
+  .friend-tab { background: transparent; border: none; color: var(--muted); padding: 0.5rem 0.9rem; border-radius: 8px; font-size: 0.8rem; cursor: pointer; font-family: inherit; transition: 0.15s; white-space: nowrap; font-weight: 600; }
   .friend-tab:hover { color: var(--text); }
-  .friend-tab.active {
-    background: var(--surface-2); color: var(--accent);
-  }
+  .friend-tab.active { background: var(--surface-2); color: var(--accent); }
   .friend-tab-content { display: none; }
   .friend-tab-content.active { display: block; }
 
   /* CHAT */
-  .chat-container {
-    display: grid; grid-template-columns: 260px 1fr; gap: 1rem;
-    height: 560px;
-  }
-  .chat-list {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; overflow-y: auto;
-  }
-  .chat-list-item {
-    padding: 0.8rem 1rem; cursor: pointer;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 0.7rem;
-    transition: 0.15s;
-  }
+  .chat-container { display: grid; grid-template-columns: 260px 1fr; gap: 1rem; height: 560px; }
+  .chat-list { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow-y: auto; }
+  .chat-list-item { padding: 0.8rem 1rem; cursor: pointer; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.7rem; transition: 0.15s; }
   .chat-list-item:hover { background: var(--surface-2); }
   .chat-list-item.active { background: rgba(0,229,160,0.1); border-left: 3px solid var(--accent); }
   .chat-list-item .friend-avatar { width: 36px; height: 36px; font-size: 0.85rem; }
-  .chat-main {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; display: flex; flex-direction: column;
-    overflow: hidden;
-  }
-  .chat-header {
-    padding: 1rem; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 0.8rem;
-  }
-  .chat-messages {
-    flex: 1; overflow-y: auto; padding: 1rem;
-    display: flex; flex-direction: column; gap: 0.5rem;
-  }
-  .chat-input-row {
-    padding: 0.8rem; border-top: 1px solid var(--border);
-    display: flex; gap: 0.5rem;
-  }
-  .chat-msg {
-    max-width: 75%; padding: 0.55rem 0.85rem;
-    border-radius: 12px; font-size: 0.85rem;
-    word-wrap: break-word;
-  }
-  .chat-msg.mine {
-    align-self: flex-end;
-    background: linear-gradient(135deg, rgba(0,229,160,0.2), rgba(102,170,255,0.15));
-    border: 1px solid rgba(0,229,160,0.3);
-  }
-  .chat-msg.theirs {
-    align-self: flex-start;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-  }
-  .chat-msg .msg-time {
-    font-size: 0.6rem; color: var(--muted);
-    margin-top: 0.2rem; text-align: right;
-  }
+  .chat-main { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .chat-header { padding: 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.8rem; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .chat-input-row { padding: 0.8rem; border-top: 1px solid var(--border); display: flex; gap: 0.5rem; }
+  .chat-msg { max-width: 75%; padding: 0.55rem 0.85rem; border-radius: 12px; font-size: 0.85rem; word-wrap: break-word; }
+  .chat-msg.mine { align-self: flex-end; background: linear-gradient(135deg, rgba(0,229,160,0.2), rgba(102,170,255,0.15)); border: 1px solid rgba(0,229,160,0.3); }
+  .chat-msg.theirs { align-self: flex-start; background: var(--surface-2); border: 1px solid var(--border); }
+  .chat-msg .msg-time { font-size: 0.6rem; color: var(--muted); margin-top: 0.2rem; text-align: right; }
+  .chat-msg .tag { color: var(--accent-3); font-weight: 700; }
+  .tick-sent { color: #7788aa; font-size: 0.85rem; margin-left: 0.3rem; font-weight: 700; }
+  .tick-read { color: #00e5a0; font-size: 0.85rem; margin-left: 0.3rem; font-weight: 700; text-shadow: 0 0 6px rgba(0,229,160,0.5); }
+  .react-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 99px; padding: 0.05rem 0.4rem; font-size: 0.7rem; cursor: pointer; font-family: inherit; transition: 0.15s; }
+  .react-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .reaction-chip { background: var(--surface-2); border: 1px solid var(--border); border-radius: 99px; padding: 0.1rem 0.45rem; font-size: 0.7rem; cursor: pointer; transition: 0.15s; }
+  .reaction-chip:hover { border-color: var(--accent); }
+  .emoji-picker { display: flex; gap: 0.3rem; margin-top: 0.3rem; background: var(--surface-2); padding: 0.3rem; border-radius: 8px; border: 1px solid var(--border); flex-wrap: wrap; }
+  .emoji-picker span { cursor: pointer; font-size: 1.15rem; padding: 0.15rem; border-radius: 4px; transition: 0.15s; }
+  .emoji-picker span:hover { background: var(--surface); transform: scale(1.2); }
+  .emoji-tray { display: none; position: absolute; bottom: 65px; right: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.6rem; gap: 0.2rem; flex-wrap: wrap; max-width: 280px; z-index: 10; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+  .emoji-tray.show { display: flex; }
+  .emoji-tray span { cursor: pointer; font-size: 1.3rem; padding: 0.25rem; border-radius: 4px; transition: 0.15s; }
+  .emoji-tray span:hover { background: var(--surface-2); transform: scale(1.15); }
+  .typing-indicator { font-size: 0.7rem; color: var(--accent-2); font-style: italic; height: 16px; padding: 0 1rem; }
 
   /* ADMIN */
-  .admin-pass-box {
-    max-width: 400px; margin: 0 auto;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; padding: 2rem;
-    text-align: center;
-  }
+  .admin-pass-box { max-width: 400px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; text-align: center; }
   .admin-pass-box h2 { color: var(--danger); font-size: 1.2rem; margin-bottom: 0.5rem; }
   .admin-pass-box p { color: var(--muted); font-size: 0.8rem; margin-bottom: 1.5rem; }
 
   @media (max-width: 800px) {
     .app { grid-template-columns: 1fr; }
-    .sidebar {
-      position: fixed; bottom: 0; left: 0; right: 0; top: auto;
-      height: auto; flex-direction: row; padding: 0.4rem;
-      border-right: none; border-top: 1px solid var(--border);
-      z-index: 100; overflow-x: auto; gap: 0;
-    }
+    .sidebar { position: fixed; bottom: 0; left: 0; right: 0; top: auto; height: auto; flex-direction: row; padding: 0.4rem; border-right: none; border-top: 1px solid var(--border); z-index: 100; overflow-x: auto; gap: 0; }
     .logo, .user-box, .streak-box, .sidebar-footer, .logout-btn { display: none; }
     .nav-btn { flex-direction: column; font-size: 0.58rem; padding: 0.4rem 0.55rem; gap: 0.15rem; white-space: nowrap; }
     .nav-btn .icon { font-size: 1.05rem; }
@@ -575,24 +430,22 @@
   }
 </style>
 </head>
-<body>
+
+
+  <body>
 <canvas id="bg-canvas"></canvas>
 
-<!-- AUTH MODAL -->
 <div class="auth-modal" id="authModal">
   <div class="auth-box">
     <div class="brand">
       <h2>JEE WAR ROOM</h2>
       <p>Boss man, apna account bana</p>
     </div>
-
     <div class="auth-tabs">
       <button class="auth-tab active" data-tab="login">Login</button>
       <button class="auth-tab" data-tab="signup">Sign Up</button>
     </div>
-
     <div class="auth-error" id="authError"></div>
-
     <div id="loginForm">
       <div class="auth-field">
         <label>Username</label>
@@ -605,7 +458,6 @@
       <button class="auth-submit" id="loginBtn">Login</button>
       <p class="auth-hint">Naya user? Upar "Sign Up" pe click kar</p>
     </div>
-
     <div id="signupForm" style="display:none;">
       <div class="auth-field">
         <label>Username</label>
@@ -625,7 +477,6 @@
   </div>
 </div>
 
-<!-- CLASS MODAL -->
 <div class="class-modal" id="classModal">
   <div class="class-box">
     <div class="welcome">Welcome to</div>
@@ -662,7 +513,6 @@
 <div class="app" id="app" style="display:none;">
   <aside class="sidebar">
     <div class="logo">JEE<span>WAR ROOM <span class="class-badge" id="classBadge" style="display:none;"></span></span></div>
-
     <div class="user-box">
       <div class="user-avatar" id="userAvatar">?</div>
       <div class="user-info">
@@ -670,12 +520,10 @@
         <div class="user-sub" id="userSubDisplay">—</div>
       </div>
     </div>
-
     <div class="streak-box">
       <div class="num" id="streakNum">0</div>
       <div class="lbl">day streak</div>
     </div>
-
     <button class="nav-btn active" data-page="dashboard"><span class="icon">◈</span> Dashboard</button>
     <button class="nav-btn" data-page="routine"><span class="icon">◷</span> Routine</button>
     <button class="nav-btn" data-page="timer"><span class="icon">◉</span> Timer</button>
@@ -699,7 +547,6 @@
     <button class="nav-btn" data-page="admin"><span class="icon">🔒</span> Admin</button>
     <button class="nav-btn" data-page="backup"><span class="icon">⬇</span> Backup</button>
     <button class="logout-btn" id="logoutBtn">Logout</button>
-    <div class="sidebar-footer">localStorage + Firebase</div>
   </aside>
 
   <main class="main">
@@ -973,13 +820,11 @@
     <section class="page" id="friends">
       <h1>Friends <span class="accent">//</span></h1>
       <p class="subtitle">Dost banao, saath padho.</p>
-
       <div class="friend-tabs">
         <button class="friend-tab active" data-ftab="add">Add Friend</button>
         <button class="friend-tab" data-ftab="requests">Requests <span id="reqCount" style="color:var(--danger);">0</span></button>
         <button class="friend-tab" data-ftab="list">My Friends <span id="friendCount">0</span></button>
       </div>
-
       <div class="friend-tab-content active" id="ftab-add">
         <div class="input-row">
           <input type="text" id="friendUsernameInput" placeholder="Friend ka username daal...">
@@ -987,14 +832,12 @@
         </div>
         <div id="searchResult"></div>
       </div>
-
       <div class="friend-tab-content" id="ftab-requests">
         <h2>Incoming Requests</h2>
         <div id="incomingReqs"></div>
         <h2>Sent Requests</h2>
         <div id="outgoingReqs"></div>
       </div>
-
       <div class="friend-tab-content" id="ftab-list">
         <div id="friendsList"></div>
       </div>
@@ -1002,7 +845,7 @@
 
     <section class="page" id="friendchat">
       <h1>Friend Chat <span class="accent">//</span></h1>
-      <p class="subtitle">Friends ke saath real-time chat. Kisi bhi device se.</p>
+      <p class="subtitle">Real-time chat. Emoji, tag, reactions, read receipts sab hai.</p>
       <div class="chat-container">
         <div class="chat-list" id="chatFriendList"></div>
         <div class="chat-main">
@@ -1010,12 +853,15 @@
             <div class="friend-avatar" id="chatHeaderAvatar">?</div>
             <div>
               <div class="friend-name" id="chatHeaderName">Select a friend</div>
-              <div class="friend-sub" id="chatHeaderSub">Koi friend choose kar left se</div>
+              <div class="friend-sub" id="chatHeaderSub">Koi friend choose kar</div>
             </div>
           </div>
           <div class="chat-messages" id="chatMessages"></div>
+          <div class="typing-indicator" id="typingIndicator"></div>
+          <div class="emoji-tray" id="emojiTray"></div>
           <div class="chat-input-row">
-            <input type="text" id="friendChatInput" placeholder="Message likho..." disabled>
+            <button class="btn" id="emojiBtn" style="padding:0.6rem 0.85rem; font-size:1.1rem;">😀</button>
+            <input type="text" id="friendChatInput" placeholder="Message likho... (@ se tag kar)" disabled>
             <button class="btn primary" id="sendFriendMsgBtn" disabled>Send</button>
           </div>
         </div>
@@ -1136,7 +982,7 @@
   </main>
 </div>
 
-<script type="module">
+    <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, push, onValue, set, remove, onDisconnect, query, limitToLast, get, update }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -1162,7 +1008,6 @@ try {
 
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
-
 const ADMIN_PASSWORD = 'ankush11';
 
 const SYLLABUS = {
@@ -1171,285 +1016,171 @@ const SYLLABUS = {
   math: ['Sets Relations Functions','Complex Numbers','Quadratic Equations','Matrices','Determinants','Permutations Combinations','Binomial Theorem','Sequences & Series','Limits','Continuity & Differentiability','Differentiation','Application of Derivatives','Integrals','Application of Integrals','Differential Equations','Straight Lines','Circles','Conic Sections','3D Geometry','Vectors','Statistics','Probability','Trigonometry','Inverse Trigonometry','Mathematical Reasoning']
 };
 
-// ========== CURRENT USER ==========
-let currentUser = null; // { username, class }
-
+let currentUser = null;
 const store = {
-  tasks: JSON.parse(localStorage.getItem('jee_tasks') || '[]'),
-  notes: JSON.parse(localStorage.getItem('jee_notes') || '[]'),
-  pdfs:  JSON.parse(localStorage.getItem('jee_pdfs')  || '[]'),
-  formulas: JSON.parse(localStorage.getItem('jee_formulas') || '[]'),
-  pyq: JSON.parse(localStorage.getItem('jee_pyq') || '[]'),
-  mocks: JSON.parse(localStorage.getItem('jee_mocks') || '[]'),
-  mistakes: JSON.parse(localStorage.getItem('jee_mistakes') || '[]'),
-  marks: JSON.parse(localStorage.getItem('jee_marks') || '[]'),
-  timetable: JSON.parse(localStorage.getItem('jee_timetable') || '[]'),
-  pwLinks: JSON.parse(localStorage.getItem('jee_pwLinks') || '[]'),
-  subjects: JSON.parse(localStorage.getItem('jee_subjects') || '{"phy":0,"chem":0,"math":0}'),
-  syllabus: JSON.parse(localStorage.getItem('jee_syllabus') || '{}'),
-  totalMinutes: parseInt(localStorage.getItem('jee_totalMin') || '0'),
-  todayMinutes: parseInt(localStorage.getItem('jee_todayMin') || '0'),
-  todayDate: localStorage.getItem('jee_todayDate') || new Date().toDateString(),
-  streak: parseInt(localStorage.getItem('jee_streak') || '0'),
-  lastActive: localStorage.getItem('jee_lastActive') || '',
+  tasks: [], notes: [], pdfs: [], formulas: [], pyq: [], mocks: [], mistakes: [], marks: [],
+  timetable: [], pwLinks: [],
+  subjects: {phy:0,chem:0,math:0}, syllabus: {},
+  totalMinutes: 0, todayMinutes: 0, todayDate: '', streak: 0, lastActive: ''
 };
 
-const today = new Date().toDateString();
-if (store.todayDate !== today) {
-  const yesterday = new Date(Date.now() - 86400000).toDateString();
-  if (store.lastActive === yesterday) store.streak += 1;
-  else if (store.lastActive !== today) store.streak = 1;
-  store.lastActive = today;
-  store.todayDate = today;
-  store.todayMinutes = 0;
-}
-if (!store.streak) store.streak = 1;
-if (!store.lastActive) store.lastActive = today;
-
-// ========== USER-SPECIFIC STORAGE ==========
-function userKey(key) {
-  return currentUser ? `jee_${currentUser.username}_${key}` : `jee_${key}`;
-}
+function userPrefix() { return `jee_${currentUser.username.toLowerCase()}_`; }
 
 function loadUserData() {
   if (!currentUser) return;
-  const prefix = `jee_${currentUser.username}_`;
-  // If user-specific data doesn't exist, migrate from default
-  if (!localStorage.getItem(prefix + 'tasks')) {
-    // copy current (generic) data to user-specific
-    const keys = ['tasks','notes','pdfs','formulas','pyq','mocks','mistakes','marks','timetable','pwLinks','subjects','syllabus','totalMin','todayMin','todayDate','streak','lastActive'];
-    keys.forEach(k => {
-      const v = localStorage.getItem('jee_' + k);
-      if (v !== null) localStorage.setItem(prefix + k, v);
-    });
+  const p = userPrefix();
+  store.tasks = JSON.parse(localStorage.getItem(p+'tasks') || '[]');
+  store.notes = JSON.parse(localStorage.getItem(p+'notes') || '[]');
+  store.pdfs = JSON.parse(localStorage.getItem(p+'pdfs') || '[]');
+  store.formulas = JSON.parse(localStorage.getItem(p+'formulas') || '[]');
+  store.pyq = JSON.parse(localStorage.getItem(p+'pyq') || '[]');
+  store.mocks = JSON.parse(localStorage.getItem(p+'mocks') || '[]');
+  store.mistakes = JSON.parse(localStorage.getItem(p+'mistakes') || '[]');
+  store.marks = JSON.parse(localStorage.getItem(p+'marks') || '[]');
+  store.timetable = JSON.parse(localStorage.getItem(p+'timetable') || '[]');
+  store.pwLinks = JSON.parse(localStorage.getItem(p+'pwLinks') || '[]');
+  store.subjects = JSON.parse(localStorage.getItem(p+'subjects') || '{"phy":0,"chem":0,"math":0}');
+  store.syllabus = JSON.parse(localStorage.getItem(p+'syllabus') || '{}');
+  store.totalMinutes = parseInt(localStorage.getItem(p+'totalMin') || '0');
+  store.todayMinutes = parseInt(localStorage.getItem(p+'todayMin') || '0');
+  store.todayDate = localStorage.getItem(p+'todayDate') || new Date().toDateString();
+  store.streak = parseInt(localStorage.getItem(p+'streak') || '0');
+  store.lastActive = localStorage.getItem(p+'lastActive') || '';
+  const today = new Date().toDateString();
+  if (store.todayDate !== today) {
+    const yest = new Date(Date.now() - 86400000).toDateString();
+    if (store.lastActive === yest) store.streak += 1;
+    else if (store.lastActive !== today) store.streak = 1;
+    store.lastActive = today; store.todayDate = today; store.todayMinutes = 0;
   }
-  // load from user-specific
-  store.tasks = JSON.parse(localStorage.getItem(prefix + 'tasks') || '[]');
-  store.notes = JSON.parse(localStorage.getItem(prefix + 'notes') || '[]');
-  store.pdfs = JSON.parse(localStorage.getItem(prefix + 'pdfs') || '[]');
-  store.formulas = JSON.parse(localStorage.getItem(prefix + 'formulas') || '[]');
-  store.pyq = JSON.parse(localStorage.getItem(prefix + 'pyq') || '[]');
-  store.mocks = JSON.parse(localStorage.getItem(prefix + 'mocks') || '[]');
-  store.mistakes = JSON.parse(localStorage.getItem(prefix + 'mistakes') || '[]');
-  store.marks = JSON.parse(localStorage.getItem(prefix + 'marks') || '[]');
-  store.timetable = JSON.parse(localStorage.getItem(prefix + 'timetable') || '[]');
-  store.pwLinks = JSON.parse(localStorage.getItem(prefix + 'pwLinks') || '[]');
-  store.subjects = JSON.parse(localStorage.getItem(prefix + 'subjects') || '{"phy":0,"chem":0,"math":0}');
-  store.syllabus = JSON.parse(localStorage.getItem(prefix + 'syllabus') || '{}');
-  store.totalMinutes = parseInt(localStorage.getItem(prefix + 'totalMin') || '0');
-  store.todayMinutes = parseInt(localStorage.getItem(prefix + 'todayMin') || '0');
-  store.todayDate = localStorage.getItem(prefix + 'todayDate') || new Date().toDateString();
-  store.streak = parseInt(localStorage.getItem(prefix + 'streak') || '0');
-  store.lastActive = localStorage.getItem(prefix + 'lastActive') || '';
   if (!store.streak) store.streak = 1;
 }
 
-// ========== SAVE ==========
 function saveAll() {
   if (!currentUser) return;
-  const p = `jee_${currentUser.username}_`;
-  localStorage.setItem(p + 'tasks', JSON.stringify(store.tasks));
-  localStorage.setItem(p + 'notes', JSON.stringify(store.notes));
-  localStorage.setItem(p + 'pdfs', JSON.stringify(store.pdfs));
-  localStorage.setItem(p + 'formulas', JSON.stringify(store.formulas));
-  localStorage.setItem(p + 'pyq', JSON.stringify(store.pyq));
-  localStorage.setItem(p + 'mocks', JSON.stringify(store.mocks));
-  localStorage.setItem(p + 'mistakes', JSON.stringify(store.mistakes));
-  localStorage.setItem(p + 'marks', JSON.stringify(store.marks));
-  localStorage.setItem(p + 'timetable', JSON.stringify(store.timetable));
-  localStorage.setItem(p + 'pwLinks', JSON.stringify(store.pwLinks));
-  localStorage.setItem(p + 'subjects', JSON.stringify(store.subjects));
-  localStorage.setItem(p + 'syllabus', JSON.stringify(store.syllabus));
-  localStorage.setItem(p + 'totalMin', store.totalMinutes);
-  localStorage.setItem(p + 'todayMin', store.todayMinutes);
-  localStorage.setItem(p + 'todayDate', store.todayDate);
-  localStorage.setItem(p + 'streak', store.streak);
-  localStorage.setItem(p + 'lastActive', store.lastActive);
-
-  // Push progress to Firebase for friend viewing
+  const p = userPrefix();
+  ['tasks','notes','pdfs','formulas','pyq','mocks','mistakes','marks','timetable','pwLinks'].forEach(k => {
+    localStorage.setItem(p+k, JSON.stringify(store[k]));
+  });
+  localStorage.setItem(p+'subjects', JSON.stringify(store.subjects));
+  localStorage.setItem(p+'syllabus', JSON.stringify(store.syllabus));
+  localStorage.setItem(p+'totalMin', store.totalMinutes);
+  localStorage.setItem(p+'todayMin', store.todayMinutes);
+  localStorage.setItem(p+'todayDate', store.todayDate);
+  localStorage.setItem(p+'streak', store.streak);
+  localStorage.setItem(p+'lastActive', store.lastActive);
   if (db) {
-    const progressRef = ref(db, 'users/' + currentUser.username + '/progress');
-    set(progressRef, {
-      totalMinutes: store.totalMinutes,
-      todayMinutes: store.todayMinutes,
-      streak: store.streak,
+    set(ref(db, 'users/' + currentUser.username.toLowerCase() + '/progress'), {
+      totalMinutes: store.totalMinutes, todayMinutes: store.todayMinutes, streak: store.streak,
       syllabusDone: Object.keys(store.syllabus).filter(k => store.syllabus[k]).length,
-      mocksCount: store.mocks.length,
-      mistakesCount: store.mistakes.length,
-      tasksDone: store.tasks.filter(t => t.done).length,
-      tasksTotal: store.tasks.length,
-      subjects: store.subjects,
-      updatedAt: Date.now()
+      mocksCount: store.mocks.length, mistakesCount: store.mistakes.length,
+      tasksDone: store.tasks.filter(t => t.done).length, tasksTotal: store.tasks.length,
+      subjects: store.subjects, updatedAt: Date.now()
     });
   }
-
-  renderDashboard();
-  renderStreak();
+  renderDashboard(); renderStreak();
 }
 
 function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
-function escAttr(s) { return esc(s); }
 
-// ========== AUTH ==========
-function showAuthError(msg) {
-  const e = $('#authError');
-  e.textContent = msg;
-  e.classList.add('show');
-}
-function hideAuthError() { $('#authError').classList.remove('show'); }
-
-function usernameToEmail(u) {
-  return u.toLowerCase() + '@jeewar.local';
-}
+// ============ AUTH ============
+function showAuthError(m){ const e=$('#authError'); e.textContent=m; e.classList.add('show'); }
+function hideAuthError(){ $('#authError').classList.remove('show'); }
 
 $$('.auth-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     $$('.auth-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    hideAuthError();
-    if (tab.dataset.tab === 'login') {
-      $('#loginForm').style.display = 'block';
-      $('#signupForm').style.display = 'none';
-    } else {
-      $('#loginForm').style.display = 'none';
-      $('#signupForm').style.display = 'block';
-    }
+    tab.classList.add('active'); hideAuthError();
+    if (tab.dataset.tab === 'login') { $('#loginForm').style.display='block'; $('#signupForm').style.display='none'; }
+    else { $('#loginForm').style.display='none'; $('#signupForm').style.display='block'; }
   });
 });
 
 $('#signupBtn').addEventListener('click', async () => {
-  const username = $('#signupUsername').value.trim();
-  const pass = $('#signupPassword').value;
-  const pass2 = $('#signupPassword2').value;
-
+  const u = $('#signupUsername').value.trim();
+  const p = $('#signupPassword').value;
+  const p2 = $('#signupPassword2').value;
   hideAuthError();
-  if (!username || username.length < 3) return showAuthError('Username kam se kam 3 characters ka hona chahiye.');
-  if (!/^[a-zA-Z0-9_]+$/.test(username)) return showAuthError('Username mein sirf letters, numbers, underscore allowed hai.');
-  if (!pass || pass.length < 4) return showAuthError('Password kam se kam 4 characters ka hona chahiye.');
-  if (pass !== pass2) return showAuthError('Passwords match nahi kar rahe.');
-
-  $('#signupBtn').disabled = true;
-  $('#signupBtn').textContent = 'Creating...';
-
+  if (!u || u.length < 3) return showAuthError('Username min 3 char.');
+  if (!/^[a-zA-Z0-9_]+$/.test(u)) return showAuthError('Sirf letters, numbers, underscore.');
+  if (!p || p.length < 4) return showAuthError('Password min 4 char.');
+  if (p !== p2) return showAuthError('Passwords match nahi.');
+  $('#signupBtn').disabled = true; $('#signupBtn').textContent = 'Creating...';
   try {
-    // Check if username taken
-    const userSnap = await get(ref(db, 'users/' + username.toLowerCase()));
-    if (userSnap.exists()) {
-      showAuthError('Ye username already taken hai. Dusra try kar.');
-      $('#signupBtn').disabled = false;
-      $('#signupBtn').textContent = 'Create Account';
-      return;
-    }
-
-    // Store user in DB (password stored plain — this is a personal app, not production)
-    await set(ref(db, 'users/' + username.toLowerCase()), {
-      username: username,
-      usernameLower: username.toLowerCase(),
-      password: pass,
-      class: null,
-      createdAt: Date.now(),
-      progress: {
-        totalMinutes: 0, todayMinutes: 0, streak: 0,
-        syllabusDone: 0, mocksCount: 0, mistakesCount: 0,
-        tasksDone: 0, tasksTotal: 0,
-        subjects: { phy: 0, chem: 0, math: 0 },
-        updatedAt: Date.now()
-      }
+    const snap = await get(ref(db, 'users/' + u.toLowerCase()));
+    if (snap.exists()) { showAuthError('Username taken.'); $('#signupBtn').disabled=false; $('#signupBtn').textContent='Create Account'; return; }
+    await set(ref(db, 'users/' + u.toLowerCase()), {
+      username: u, usernameLower: u.toLowerCase(), password: p, class: null, createdAt: Date.now(),
+      presence: { online: true, lastSeen: Date.now() },
+      progress: { totalMinutes:0, todayMinutes:0, streak:0, syllabusDone:0, mocksCount:0, mistakesCount:0, tasksDone:0, tasksTotal:0, subjects:{phy:0,chem:0,math:0}, updatedAt: Date.now() }
     });
-
-    // Login
-    currentUser = { username: username, class: null };
+    currentUser = { username: u, class: null };
     localStorage.setItem('jee_session', JSON.stringify(currentUser));
-
-    $('#authModal').classList.add('hide');
-    $('#app').style.display = 'grid';
-    loadUserData();
-    initAll();
+    $('#authModal').classList.add('hide'); $('#app').style.display = 'grid';
+    loadUserData(); initAll(); startPresence();
     setTimeout(() => $('#classModal').classList.add('show'), 200);
-
-  } catch (err) {
-    console.error(err);
-    showAuthError('Error: ' + err.message);
-    $('#signupBtn').disabled = false;
-    $('#signupBtn').textContent = 'Create Account';
-  }
+  } catch (err) { showAuthError('Error: ' + err.message); $('#signupBtn').disabled=false; $('#signupBtn').textContent='Create Account'; }
 });
 
 $('#loginBtn').addEventListener('click', async () => {
-  const username = $('#loginUsername').value.trim();
-  const pass = $('#loginPassword').value;
-
+  const u = $('#loginUsername').value.trim();
+  const p = $('#loginPassword').value;
   hideAuthError();
-  if (!username) return showAuthError('Username daal.');
-  if (!pass) return showAuthError('Password daal.');
-
-  $('#loginBtn').disabled = true;
-  $('#loginBtn').textContent = 'Logging in...';
-
+  if (!u) return showAuthError('Username daal.');
+  if (!p) return showAuthError('Password daal.');
+  $('#loginBtn').disabled=true; $('#loginBtn').textContent='Logging in...';
   try {
-    const snap = await get(ref(db, 'users/' + username.toLowerCase()));
-    if (!snap.exists()) {
-      showAuthError('User nahi mila. Pehle signup kar.');
-      $('#loginBtn').disabled = false;
-      $('#loginBtn').textContent = 'Login';
-      return;
-    }
-    const userData = snap.val();
-    if (userData.password !== pass) {
-      showAuthError('Password galat hai.');
-      $('#loginBtn').disabled = false;
-      $('#loginBtn').textContent = 'Login';
-      return;
-    }
-
-    currentUser = { username: userData.username, class: userData.class || null };
+    const snap = await get(ref(db, 'users/' + u.toLowerCase()));
+    if (!snap.exists()) { showAuthError('User nahi mila.'); $('#loginBtn').disabled=false; $('#loginBtn').textContent='Login'; return; }
+    const ud = snap.val();
+    if (ud.password !== p) { showAuthError('Password galat.'); $('#loginBtn').disabled=false; $('#loginBtn').textContent='Login'; return; }
+    currentUser = { username: ud.username, class: ud.class || null };
     localStorage.setItem('jee_session', JSON.stringify(currentUser));
-
-    $('#authModal').classList.add('hide');
-    $('#app').style.display = 'grid';
-    loadUserData();
-    initAll();
-    if (!currentUser.class) {
-      setTimeout(() => $('#classModal').classList.add('show'), 200);
-    } else {
-      applyClass(currentUser.class);
-    }
-
-  } catch (err) {
-    console.error(err);
-    showAuthError('Error: ' + err.message);
-    $('#loginBtn').disabled = false;
-    $('#loginBtn').textContent = 'Login';
-  }
+    $('#authModal').classList.add('hide'); $('#app').style.display = 'grid';
+    loadUserData(); initAll(); startPresence();
+    if (!currentUser.class) setTimeout(() => $('#classModal').classList.add('show'), 200);
+    else applyClass(currentUser.class);
+  } catch (err) { showAuthError('Error: ' + err.message); $('#loginBtn').disabled=false; $('#loginBtn').textContent='Login'; }
 });
 
-$('#logoutBtn').addEventListener('click', () => {
-  if (!confirm('Logout karna hai?')) return;
-  localStorage.removeItem('jee_session');
-  location.reload();
+$('#logoutBtn').addEventListener('click', async () => {
+  if (!confirm('Logout?')) return;
+  if (db && currentUser) { try { await set(ref(db, 'users/' + currentUser.username.toLowerCase() + '/presence'), { online: false, lastSeen: Date.now() }); } catch(e){} }
+  localStorage.removeItem('jee_session'); location.reload();
 });
 
-// Check session on load
 function checkSession() {
-  const sess = localStorage.getItem('jee_session');
-  if (sess) {
+  const s = localStorage.getItem('jee_session');
+  if (s) {
     try {
-      currentUser = JSON.parse(sess);
-      $('#authModal').classList.add('hide');
-      $('#app').style.display = 'grid';
-      loadUserData();
-      initAll();
+      currentUser = JSON.parse(s);
+      $('#authModal').classList.add('hide'); $('#app').style.display = 'grid';
+      loadUserData(); initAll(); startPresence();
       if (currentUser.class) applyClass(currentUser.class);
       else setTimeout(() => $('#classModal').classList.add('show'), 200);
       return true;
-    } catch (e) { return false; }
+    } catch(e) { return false; }
   }
   return false;
 }
 
-// ========== CLASS SELECTOR ==========
+// ============ PRESENCE ============
+function startPresence() {
+  if (!db || !currentUser) return;
+  const pref = ref(db, 'users/' + currentUser.username.toLowerCase() + '/presence');
+  set(pref, { online: true, lastSeen: Date.now() });
+  onDisconnect(pref).set({ online: false, lastSeen: Date.now() });
+  setInterval(() => { set(pref, { online: true, lastSeen: Date.now() }); }, 25000);
+}
+
+function isOnline(userData) {
+  const p = userData.presence || {};
+  return p.online && (Date.now() - (p.lastSeen || 0) < 90000);
+}
+
+// ============ CLASS ============
 const CLASS_CONFIG = {
   '11': { label: '11th', badge: 'cls-11', examDate: '2028-01-24T09:00:00', examLabel: 'JEE Main 2028' },
   '12': { label: '12th', badge: 'cls-12', examDate: '2027-01-24T09:00:00', examLabel: 'JEE Main 2027' },
@@ -1459,76 +1190,45 @@ const CLASS_CONFIG = {
 async function setClass(cls) {
   currentUser.class = cls;
   localStorage.setItem('jee_session', JSON.stringify(currentUser));
-  if (db) {
-    await update(ref(db, 'users/' + currentUser.username.toLowerCase()), { class: cls });
-  }
-  applyClass(cls);
-  $('#classModal').classList.remove('show');
-  updateUserBox();
+  if (db) await update(ref(db, 'users/' + currentUser.username.toLowerCase()), { class: cls });
+  applyClass(cls); $('#classModal').classList.remove('show'); updateUserBox();
 }
-
 function applyClass(cls) {
-  const config = CLASS_CONFIG[cls];
-  if (!config) return;
-  const badge = document.getElementById('classBadge');
-  if (badge) {
-    badge.textContent = config.label;
-    badge.className = 'class-badge ' + config.badge;
-    badge.style.display = 'inline-block';
-  }
-  window.__examDate = config.examDate;
-  window.__examLabel = config.examLabel;
+  const c = CLASS_CONFIG[cls]; if (!c) return;
+  const b = document.getElementById('classBadge');
+  if (b) { b.textContent = c.label; b.className = 'class-badge ' + c.badge; b.style.display = 'inline-block'; }
+  window.__examDate = c.examDate; window.__examLabel = c.examLabel;
   initCountdown();
 }
+document.querySelectorAll('.class-opt').forEach(b => b.addEventListener('click', () => setClass(b.dataset.class)));
+$('#classBadge').addEventListener('click', (e) => { e.stopPropagation(); $('#classModal').classList.add('show'); });
 
-document.querySelectorAll('.class-opt').forEach(btn => {
-  btn.addEventListener('click', () => setClass(btn.dataset.class));
-});
-
-$('#classBadge').addEventListener('click', (e) => {
-  e.stopPropagation();
-  document.getElementById('classModal').classList.add('show');
-});
-
-// ========== COUNTDOWN ==========
 function initCountdown() {
-  const examDateStr = window.__examDate || '2026-01-24T09:00:00';
-  const examLabel = window.__examLabel || 'JEE Main 2026';
-  const jeeDate = new Date(examDateStr);
-  const diff = jeeDate - new Date();
+  const es = window.__examDate || '2026-01-24T09:00:00';
+  const el = window.__examLabel || 'JEE Main 2026';
+  const d = new Date(es) - new Date();
   const labelEl = document.querySelector('.countdown .label');
-  if (labelEl) labelEl.textContent = examLabel + ' Countdown';
-  if (diff <= 0) {
-    $('#jeeCountdown').textContent = 'EXAM TIME';
-    $('#daysLeft').textContent = '0';
-    $('#jeeDateSub').textContent = 'Go crush it.';
-    return;
-  }
-  const days = Math.floor(diff / 86400000);
-  const hrs = Math.floor((diff % 86400000) / 3600000);
-  const mins = Math.floor((diff % 3600000) / 60000);
+  if (labelEl) labelEl.textContent = el + ' Countdown';
+  if (d <= 0) { $('#jeeCountdown').textContent='EXAM TIME'; $('#daysLeft').textContent='0'; $('#jeeDateSub').textContent='Go crush it.'; return; }
+  const days=Math.floor(d/86400000), hrs=Math.floor((d%86400000)/3600000), mins=Math.floor((d%3600000)/60000);
   $('#jeeCountdown').textContent = `${days}d ${hrs}h ${mins}m`;
   $('#daysLeft').textContent = days;
-  const d = new Date(examDateStr);
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  $('#jeeDateSub').textContent = `Expected: ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  const dd = new Date(es); const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  $('#jeeDateSub').textContent = `Expected: ${mo[dd.getMonth()]} ${dd.getDate()}, ${dd.getFullYear()}`;
 }
 setInterval(initCountdown, 60000);
 
-// ========== NAV ==========
 $$('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     $$('.nav-btn').forEach(b => b.classList.remove('active'));
     $$('.page').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    $('#' + btn.dataset.page).classList.add('active');
+    btn.classList.add('active'); $('#' + btn.dataset.page).classList.add('active');
     if (btn.dataset.page === 'friendchat') renderChatFriendList();
     if (btn.dataset.page === 'friendprogress') renderFriendProgress();
     if (btn.dataset.page === 'friends') renderFriendsPage();
   });
 });
 
-// ========== USER BOX ==========
 function updateUserBox() {
   if (!currentUser) return;
   $('#userAvatar').textContent = currentUser.username[0].toUpperCase();
@@ -1536,254 +1236,143 @@ function updateUserBox() {
   $('#userSubDisplay').textContent = currentUser.class ? CLASS_CONFIG[currentUser.class].label : 'Class not set';
 }
 
-// ========== QUOTES ==========
+// ============ QUOTES ============
 const QUOTES = [
-  { q: "Arre bhai, aaj ka grind kal ka rank banayega.", a: "Axiom" },
-  { q: "Toppers koi alag species nahi hai. Bas consistent hote hai.", a: "War Room" },
-  { q: "Ek din ka gap bhi rank girada hai. Roz baitho.", a: "Reality Check" },
-  { q: "Formula bhool gaya? 10 min revision. Abhi.", a: "Axiom" },
-  { q: "PYQ is the cheat code. Ignore kiya toh pachtayega.", a: "War Room" },
-  { q: "Mock mein low score aya? Good. Galti yahi pakdi.", a: "Axiom" },
-  { q: "Neend puri kar. Burnout topper ko bhi todta hai.", a: "Coach" },
-  { q: "8 ghante focus > 14 ghante distracted.", a: "Rule" },
-  { q: "Revise, revise, revise. Naya padhne se pehle purana pakka.", a: "Axiom" },
-  { q: "Tera competition bhi thak gaya hai. Tu mat thak.", a: "War Room" }
+  { q:"Aaj ka grind kal ka rank banayega.", a:"Axiom" },
+  { q:"Toppers koi alag species nahi hai. Bas consistent hote hai.", a:"War Room" },
+  { q:"Ek din ka gap bhi rank girada hai. Roz baitho.", a:"Reality Check" },
+  { q:"Formula bhool gaya? 10 min revision. Abhi.", a:"Axiom" },
+  { q:"PYQ is the cheat code.", a:"War Room" },
+  { q:"Mock mein low score aya? Good. Galti yahi pakdi.", a:"Axiom" },
+  { q:"Neend puri kar. Burnout topper ko bhi todta hai.", a:"Coach" },
+  { q:"8 ghante focus > 14 ghante distracted.", a:"Rule" },
+  { q:"Revise, revise, revise.", a:"Axiom" },
+  { q:"Tera competition bhi thak gaya hai. Tu mat thak.", a:"War Room" }
 ];
 function rotateQuote() {
-  const x = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  const x = QUOTES[Math.floor(Math.random()*QUOTES.length)];
   $('#motivationQuote').textContent = `"${x.q}"`;
   $('#motivationAuthor').textContent = `— ${x.a}`;
 }
 
-// ========== RENDER ==========
-function renderStreak() { $('#streakNum').textContent = store.streak; }
+// ============ RENDER ============
+function renderStreak(){ $('#streakNum').textContent = store.streak; }
+function formatMin(m){ return m < 60 ? m + 'm' : (m/60).toFixed(1) + 'h'; }
+function cap(s){ return s[0].toUpperCase() + s.slice(1); }
+function sylKey(sub, idx){ return `${sub}_${idx}`; }
 
 function renderDashboard() {
-  const pending = store.tasks.filter(t => !t.done).length;
-  $('#statTasks').textContent = pending;
-  $('#statTasksSub').textContent = pending === 0 ? 'sab clear hai' : 'pending';
+  const p = store.tasks.filter(t => !t.done).length;
+  $('#statTasks').textContent = p;
+  $('#statTasksSub').textContent = p === 0 ? 'sab clear' : 'pending';
   $('#statTime').textContent = formatMin(store.todayMinutes);
-  $('#statTotal').textContent = (store.totalMinutes / 60).toFixed(1) + 'h';
+  $('#statTotal').textContent = (store.totalMinutes/60).toFixed(1) + 'h';
   $('#statMocks').textContent = store.mocks.length;
   if (store.mocks.length) {
-    const avg = store.mocks.reduce((a, m) => a + (m.score / m.total) * 100, 0) / store.mocks.length;
+    const avg = store.mocks.reduce((a,m) => a + (m.score/m.total)*100, 0) / store.mocks.length;
     $('#statAvg').textContent = `avg ${avg.toFixed(1)}%`;
   } else $('#statAvg').textContent = 'avg --';
-  const goalMin = 8 * 60;
-  const pct = Math.min(100, (store.todayMinutes / goalMin) * 100);
+  const pct = Math.min(100, (store.todayMinutes/(8*60))*100);
   $('#dailyProgress').style.width = pct + '%';
   $('#dailyProgressText').textContent = `${(store.todayMinutes/60).toFixed(1)} / 8 hours`;
   $('#timerToday').textContent = store.todayMinutes;
 }
-function formatMin(m) { return m < 60 ? m + 'm' : (m/60).toFixed(1) + 'h'; }
-function cap(s) { return s[0].toUpperCase() + s.slice(1); }
-function sylKey(sub, idx) { return `${sub}_${idx}`; }
 
 function renderTasks() {
-  const list = $('#taskList');
-  if (!store.tasks.length) { list.innerHTML = '<div class="empty">Koi task nahi. Upar se add karo.</div>'; return; }
-  list.innerHTML = store.tasks.map((t, i) => `
-    <div class="task ${t.done ? 'done' : ''}">
-      <input type="checkbox" data-idx="${i}" ${t.done ? 'checked' : ''}>
+  const l = $('#taskList');
+  if (!store.tasks.length) { l.innerHTML = '<div class="empty">Koi task nahi.</div>'; return; }
+  l.innerHTML = store.tasks.map((t,i) => `
+    <div class="task ${t.done?'done':''}">
+      <input type="checkbox" data-idx="${i}" ${t.done?'checked':''}>
       <span class="task-text">${esc(t.text)}</span>
       <span class="task-subject ${t.subject}">${t.subject}</span>
       <button class="task-del" data-idx="${i}">×</button>
-    </div>
-  `).join('');
-  list.querySelectorAll('input[type=checkbox]').forEach(cb => {
-    cb.addEventListener('change', e => {
-      store.tasks[e.target.dataset.idx].done = e.target.checked;
-      saveAll(); renderTasks();
-    });
-  });
-  list.querySelectorAll('.task-del').forEach(b => {
-    b.addEventListener('click', e => {
-      store.tasks.splice(e.target.dataset.idx, 1);
-      saveAll(); renderTasks();
-    });
-  });
+    </div>`).join('');
+  l.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', e => { store.tasks[e.target.dataset.idx].done = e.target.checked; saveAll(); renderTasks(); }));
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.tasks.splice(e.target.dataset.idx,1); saveAll(); renderTasks(); }));
 }
 
 function renderNotes() {
   const g = $('#noteGrid');
   if (!store.notes.length) { g.innerHTML = '<div class="empty">Koi note nahi.</div>'; return; }
-  g.innerHTML = store.notes.map((n, i) => `
-    <div class="note">
-      <button class="note-del" data-idx="${i}">×</button>
-      <div class="note-title">${esc(n.title)}</div>
-      <div class="note-body">${esc(n.body)}</div>
-    </div>
-  `).join('');
-  g.querySelectorAll('.note-del').forEach(b => {
-    b.addEventListener('click', e => {
-      store.notes.splice(e.target.dataset.idx, 1);
-      saveAll(); renderNotes();
-    });
-  });
+  g.innerHTML = store.notes.map((n,i) => `<div class="note"><button class="note-del" data-idx="${i}">×</button><div class="note-title">${esc(n.title)}</div><div class="note-body">${esc(n.body)}</div></div>`).join('');
+  g.querySelectorAll('.note-del').forEach(b => b.addEventListener('click', e => { store.notes.splice(e.target.dataset.idx,1); saveAll(); renderNotes(); }));
 }
 
 function renderFormulas() {
-  const list = $('#formulaList');
-  if (!store.formulas.length) { list.innerHTML = '<div class="empty">Koi formula nahi.</div>'; return; }
-  list.innerHTML = store.formulas.map((f, i) => `
-    <div class="formula-card">
-      <button class="formula-del" data-idx="${i}">×</button>
-      <div class="f-title">${esc(f.title)}</div>
-      <div class="f-body">${esc(f.body)}</div>
-    </div>
-  `).join('');
-  list.querySelectorAll('.formula-del').forEach(b => {
-    b.addEventListener('click', e => {
-      store.formulas.splice(e.target.dataset.idx, 1);
-      saveAll(); renderFormulas();
-    });
-  });
+  const l = $('#formulaList');
+  if (!store.formulas.length) { l.innerHTML = '<div class="empty">Koi formula nahi.</div>'; return; }
+  l.innerHTML = store.formulas.map((f,i) => `<div class="formula-card"><button class="formula-del" data-idx="${i}">×</button><div class="f-title">${esc(f.title)}</div><div class="f-body">${esc(f.body)}</div></div>`).join('');
+  l.querySelectorAll('.formula-del').forEach(b => b.addEventListener('click', e => { store.formulas.splice(e.target.dataset.idx,1); saveAll(); renderFormulas(); }));
 }
 
 function renderPyq() {
-  const list = $('#pyqList');
-  if (!store.pyq.length) { list.innerHTML = '<div class="empty">Koi PYQ log nahi.</div>'; return; }
-  list.innerHTML = store.pyq.map((p, i) => {
-    const pct = p.total ? (p.solved / p.total) * 100 : 0;
-    const cls = pct >= 80 ? '' : pct >= 50 ? 'mid' : 'bad';
-    return `<div class="log-item">
-      <div class="score ${cls}">${p.solved}/${p.total}</div>
-      <div class="info"><div class="t">${esc(p.topic)}</div><div class="d">${pct.toFixed(0)}% solved</div></div>
-      <button class="task-del" data-idx="${i}">×</button>
-    </div>`;
+  const l = $('#pyqList');
+  if (!store.pyq.length) { l.innerHTML = '<div class="empty">Koi PYQ nahi.</div>'; return; }
+  l.innerHTML = store.pyq.map((p,i) => {
+    const pc = p.total ? (p.solved/p.total)*100 : 0;
+    const c = pc >= 80 ? '' : pc >= 50 ? 'mid' : 'bad';
+    return `<div class="log-item"><div class="score ${c}">${p.solved}/${p.total}</div><div class="info"><div class="t">${esc(p.topic)}</div><div class="d">${pc.toFixed(0)}% solved</div></div><button class="task-del" data-idx="${i}">×</button></div>`;
   }).join('');
-  list.querySelectorAll('.task-del').forEach(b => {
-    b.addEventListener('click', e => {
-      store.pyq.splice(e.target.dataset.idx, 1);
-      saveAll(); renderPyq();
-    });
-  });
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.pyq.splice(e.target.dataset.idx,1); saveAll(); renderPyq(); }));
 }
 
 function renderMocks() {
-  const list = $('#mockList');
-  if (!store.mocks.length) { list.innerHTML = '<div class="empty">Koi mock log nahi.</div>'; return; }
-  list.innerHTML = store.mocks.map((m, i) => {
-    const pct = (m.score / m.total) * 100;
-    const cls = pct >= 70 ? '' : pct >= 45 ? 'mid' : 'bad';
-    return `<div class="log-item">
-      <div class="score ${cls}">${pct.toFixed(0)}%</div>
-      <div class="info"><div class="t">${esc(m.name)}</div><div class="d">${m.score} / ${m.total}</div></div>
-      <button class="task-del" data-idx="${i}">×</button>
-    </div>`;
+  const l = $('#mockList');
+  if (!store.mocks.length) { l.innerHTML = '<div class="empty">Koi mock nahi.</div>'; return; }
+  l.innerHTML = store.mocks.map((m,i) => {
+    const pc = (m.score/m.total)*100;
+    const c = pc >= 70 ? '' : pc >= 45 ? 'mid' : 'bad';
+    return `<div class="log-item"><div class="score ${c}">${pc.toFixed(0)}%</div><div class="info"><div class="t">${esc(m.name)}</div><div class="d">${m.score} / ${m.total}</div></div><button class="task-del" data-idx="${i}">×</button></div>`;
   }).join('');
-  list.querySelectorAll('.task-del').forEach(b => {
-    b.addEventListener('click', e => {
-      store.mocks.splice(e.target.dataset.idx, 1);
-      saveAll(); renderMocks();
-    });
-  });
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.mocks.splice(e.target.dataset.idx,1); saveAll(); renderMocks(); }));
 }
 
 function renderMistakes() {
-  const list = $('#misList');
-  if (!store.mistakes.length) { list.innerHTML = '<div class="empty">Koi mistake log nahi.</div>'; return; }
-  list.innerHTML = store.mistakes.map((m, i) => `
-    <div class="log-item">
-      <div class="score" style="font-size:0.75rem; width:80px;">${esc(m.subject)}</div>
-      <div class="info"><div class="t">${esc(m.desc)}</div></div>
-      <button class="task-del" data-idx="${i}">×</button>
-    </div>
-  `).join('');
-  list.querySelectorAll('.task-del').forEach(b => {
-    b.addEventListener('click', e => {
-      store.mistakes.splice(e.target.dataset.idx, 1);
-      saveAll(); renderMistakes();
-    });
-  });
+  const l = $('#misList');
+  if (!store.mistakes.length) { l.innerHTML = '<div class="empty">Koi mistake nahi.</div>'; return; }
+  l.innerHTML = store.mistakes.map((m,i) => `<div class="log-item"><div class="score" style="font-size:0.75rem; width:80px;">${esc(m.subject)}</div><div class="info"><div class="t">${esc(m.desc)}</div></div><button class="task-del" data-idx="${i}">×</button></div>`).join('');
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.mistakes.splice(e.target.dataset.idx,1); saveAll(); renderMistakes(); }));
 }
 
 function renderMarks() {
-  const list = $('#mkList');
-  if (!store.marks.length) { list.innerHTML = '<div class="empty">Koi marks log nahi.</div>'; return; }
-  list.innerHTML = store.marks.map((m, i) => {
-    const pct = (m.score / m.total) * 100;
-    const cls = pct >= 70 ? '' : pct >= 45 ? 'mid' : 'bad';
-    return `<div class="log-item">
-      <div class="score ${cls}">${pct.toFixed(0)}%</div>
-      <div class="info"><div class="t">${esc(m.chapter)}</div><div class="d">${m.score} / ${m.total}</div></div>
-      <button class="task-del" data-idx="${i}">×</button>
-    </div>`;
+  const l = $('#mkList');
+  if (!store.marks.length) { l.innerHTML = '<div class="empty">Koi marks nahi.</div>'; return; }
+  l.innerHTML = store.marks.map((m,i) => {
+    const pc = (m.score/m.total)*100;
+    const c = pc >= 70 ? '' : pc >= 45 ? 'mid' : 'bad';
+    return `<div class="log-item"><div class="score ${c}">${pc.toFixed(0)}%</div><div class="info"><div class="t">${esc(m.chapter)}</div><div class="d">${m.score} / ${m.total}</div></div><button class="task-del" data-idx="${i}">×</button></div>`;
   }).join('');
-  list.querySelectorAll('.task-del').forEach(b => {
-    b.addEventListener('click', e => {
-      store.marks.splice(e.target.dataset.idx, 1);
-      saveAll(); renderMarks();
-    });
-  });
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.marks.splice(e.target.dataset.idx,1); saveAll(); renderMarks(); }));
 }
 
 function renderTimetable() {
-  const list = $('#ttList');
-  if (!store.timetable.length) { list.innerHTML = '<div class="empty">Koi schedule nahi.</div>'; return; }
-  const order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-  const sorted = [...store.timetable].sort((a,b) => order.indexOf(a.day) - order.indexOf(b.day));
-  list.innerHTML = sorted.map(t => `
-    <div class="log-item">
-      <div class="score" style="font-size:0.85rem; width:90px;">${esc(t.day)}</div>
-      <div class="info"><div class="t">${esc(t.task)}</div><div class="d">${esc(t.time)}</div></div>
-      <button class="task-del" data-idx="${store.timetable.indexOf(t)}">×</button>
-    </div>
-  `).join('');
-  list.querySelectorAll('.task-del').forEach(b => {
-    b.addEventListener('click', e => {
-      store.timetable.splice(e.target.dataset.idx, 1);
-      saveAll(); renderTimetable();
-    });
-  });
+  const l = $('#ttList');
+  if (!store.timetable.length) { l.innerHTML = '<div class="empty">Koi schedule nahi.</div>'; return; }
+  const o = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const s = [...store.timetable].sort((a,b) => o.indexOf(a.day) - o.indexOf(b.day));
+  l.innerHTML = s.map(t => `<div class="log-item"><div class="score" style="font-size:0.85rem; width:90px;">${esc(t.day)}</div><div class="info"><div class="t">${esc(t.task)}</div><div class="d">${esc(t.time)}</div></div><button class="task-del" data-idx="${store.timetable.indexOf(t)}">×</button></div>`).join('');
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.timetable.splice(e.target.dataset.idx,1); saveAll(); renderTimetable(); }));
 }
 
 function renderPdfs() {
-  const list = $('#pdfList');
-  if (!store.pdfs.length) { list.innerHTML = '<div class="empty">Koi PDF nahi.</div>'; return; }
-  list.innerHTML = store.pdfs.map((p, i) => `
-    <div class="pdf-item">
-      <div class="pdf-icon">▤</div>
-      <div class="pdf-info"><div class="pdf-title">${esc(p.title)}</div><div class="pdf-meta">${esc(p.url)}</div></div>
-      <div class="pdf-actions">
-        <a href="${escAttr(p.url)}" target="_blank" rel="noopener">Open</a>
-        <button data-idx="${i}">Del</button>
-      </div>
-    </div>
-  `).join('');
-  list.querySelectorAll('.pdf-actions button').forEach(b => {
-    b.addEventListener('click', e => {
-      store.pdfs.splice(e.target.dataset.idx, 1);
-      saveAll(); renderPdfs();
-    });
-  });
+  const l = $('#pdfList');
+  if (!store.pdfs.length) { l.innerHTML = '<div class="empty">Koi PDF nahi.</div>'; return; }
+  l.innerHTML = store.pdfs.map((p,i) => `<div class="pdf-item"><div class="pdf-icon">▤</div><div class="pdf-info"><div class="pdf-title">${esc(p.title)}</div><div class="pdf-meta">${esc(p.url)}</div></div><div class="pdf-actions"><a href="${esc(p.url)}" target="_blank" rel="noopener">Open</a><button data-idx="${i}">Del</button></div></div>`).join('');
+  l.querySelectorAll('.pdf-actions button').forEach(b => b.addEventListener('click', e => { store.pdfs.splice(e.target.dataset.idx,1); saveAll(); renderPdfs(); }));
 }
 
 function renderPw() {
-  const list = $('#pwList');
-  if (!store.pwLinks.length) { list.innerHTML = '<div class="empty">Koi custom link nahi.</div>'; return; }
-  list.innerHTML = store.pwLinks.map((p, i) => `
-    <div class="pdf-item">
-      <div class="pdf-icon">▶</div>
-      <div class="pdf-info"><div class="pdf-title">${esc(p.name)}</div><div class="pdf-meta">${esc(p.url)}</div></div>
-      <div class="pdf-actions">
-        <a href="${escAttr(p.url)}" target="_blank" rel="noopener">Open</a>
-        <button data-idx="${i}">Del</button>
-      </div>
-    </div>
-  `).join('');
-  list.querySelectorAll('.pdf-actions button').forEach(b => {
-    b.addEventListener('click', e => {
-      store.pwLinks.splice(e.target.dataset.idx, 1);
-      saveAll(); renderPw();
-    });
-  });
+  const l = $('#pwList');
+  if (!store.pwLinks.length) { l.innerHTML = '<div class="empty">Koi custom link nahi.</div>'; return; }
+  l.innerHTML = store.pwLinks.map((p,i) => `<div class="pdf-item"><div class="pdf-icon">▶</div><div class="pdf-info"><div class="pdf-title">${esc(p.name)}</div><div class="pdf-meta">${esc(p.url)}</div></div><div class="pdf-actions"><a href="${esc(p.url)}" target="_blank" rel="noopener">Open</a><button data-idx="${i}">Del</button></div></div>`).join('');
+  l.querySelectorAll('.pdf-actions button').forEach(b => b.addEventListener('click', e => { store.pwLinks.splice(e.target.dataset.idx,1); saveAll(); renderPw(); }));
 }
 
 function renderSubjects() {
-  const max = Math.max(1, store.subjects.phy, store.subjects.chem, store.subjects.math);
+  const mx = Math.max(1, store.subjects.phy, store.subjects.chem, store.subjects.math);
   ['phy','chem','math'].forEach(s => {
-    const pct = (store.subjects[s] / max) * 100;
+    const pct = (store.subjects[s]/mx)*100;
     $(`#bar${cap(s)}`).style.width = pct + '%';
     $(`#hrs${cap(s)}`).textContent = store.subjects[s] + 'h';
   });
@@ -1791,314 +1380,181 @@ function renderSubjects() {
 
 function renderSyllabus() {
   ['phy','chem','math'].forEach(sub => {
-    const el = $(`#syl${cap(sub)}`);
-    if (!el) return;
-    el.innerHTML = SYLLABUS[sub].map((ch, i) => {
-      const done = !!store.syllabus[sylKey(sub, i)];
-      return `
-        <div class="chapter ${done ? 'done' : ''}">
-          <input type="checkbox" data-sub="${sub}" data-idx="${i}" ${done ? 'checked' : ''}>
-          <span>${ch}</span>
-        </div>
-      `;
+    const el = $(`#syl${cap(sub)}`); if (!el) return;
+    el.innerHTML = SYLLABUS[sub].map((ch,i) => {
+      const d = !!store.syllabus[sylKey(sub,i)];
+      return `<div class="chapter ${d?'done':''}"><input type="checkbox" data-sub="${sub}" data-idx="${i}" ${d?'checked':''}><span>${ch}</span></div>`;
     }).join('');
-    el.querySelectorAll('input[type=checkbox]').forEach(cb => {
-      cb.addEventListener('change', e => {
-        const k = sylKey(e.target.dataset.sub, e.target.dataset.idx);
-        if (e.target.checked) store.syllabus[k] = true;
-        else delete store.syllabus[k];
-        saveAll(); renderSyllabus();
-      });
-    });
+    el.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', e => {
+      const k = sylKey(e.target.dataset.sub, e.target.dataset.idx);
+      if (e.target.checked) store.syllabus[k] = true; else delete store.syllabus[k];
+      saveAll(); renderSyllabus();
+    }));
   });
   ['phy','chem','math'].forEach(sub => {
     const total = SYLLABUS[sub].length;
     let done = 0;
-    for (let i = 0; i < total; i++) if (store.syllabus[sylKey(sub, i)]) done++;
-    $(`#syl${cap(sub)}Pct`).textContent = total ? Math.round(done/total*100) + '%' : '0%';
+    for (let i = 0; i < total; i++) if (store.syllabus[sylKey(sub,i)]) done++;
+    $(`#syl${cap(sub)}Pct`).textContent = total ? Math.round(done/total*100)+'%' : '0%';
   });
-  const tAll = SYLLABUS.phy.length + SYLLABUS.chem.length + SYLLABUS.math.length;
-  let dAll = 0;
-  for (const k in store.syllabus) if (store.syllabus[k]) dAll++;
-  $('#sylTotalPct').textContent = tAll ? Math.round(dAll/tAll*100) + '%' : '0%';
+  const tA = SYLLABUS.phy.length + SYLLABUS.chem.length + SYLLABUS.math.length;
+  let dA = 0;
+  for (const k in store.syllabus) if (store.syllabus[k]) dA++;
+  $('#sylTotalPct').textContent = tA ? Math.round(dA/tA*100)+'%' : '0%';
 }
 
-// ========== EVENTS ==========
+// ============ EVENTS ============
 $('#addTask').addEventListener('click', () => {
-  const text = $('#taskInput').value.trim();
-  if (!text) return;
-  store.tasks.push({ text, subject: $('#taskSubject').value, done: false });
-  $('#taskInput').value = '';
-  saveAll(); renderTasks();
+  const t = $('#taskInput').value.trim(); if (!t) return;
+  store.tasks.push({ text: t, subject: $('#taskSubject').value, done: false });
+  $('#taskInput').value = ''; saveAll(); renderTasks();
 });
 $('#taskInput').addEventListener('keydown', e => e.key === 'Enter' && $('#addTask').click());
-
 $('#addNote').addEventListener('click', () => {
-  const title = $('#noteTitle').value.trim();
-  const body = $('#noteBody').value.trim();
-  if (!title && !body) return;
-  store.notes.push({ title: title || 'Untitled', body });
-  $('#noteTitle').value = ''; $('#noteBody').value = '';
-  saveAll(); renderNotes();
+  const t = $('#noteTitle').value.trim(), b = $('#noteBody').value.trim();
+  if (!t && !b) return;
+  store.notes.push({ title: t || 'Untitled', body: b });
+  $('#noteTitle').value = ''; $('#noteBody').value = ''; saveAll(); renderNotes();
 });
-
 $('#addFormula').addEventListener('click', () => {
-  const title = $('#fTitle').value.trim();
-  const body = $('#fBody').value.trim();
-  if (!title || !body) return;
-  store.formulas.push({ title, body });
-  $('#fTitle').value = ''; $('#fBody').value = '';
-  saveAll(); renderFormulas();
+  const t = $('#fTitle').value.trim(), b = $('#fBody').value.trim();
+  if (!t || !b) return;
+  store.formulas.push({ title: t, body: b });
+  $('#fTitle').value = ''; $('#fBody').value = ''; saveAll(); renderFormulas();
 });
-
 $('#addPyq').addEventListener('click', () => {
-  const topic = $('#pyqTopic').value.trim();
-  const solved = parseInt($('#pyqSolved').value);
-  const total = parseInt($('#pyqTotal').value);
-  if (!topic || isNaN(solved) || isNaN(total)) return;
-  store.pyq.push({ topic, solved, total });
-  $('#pyqTopic').value = ''; $('#pyqSolved').value = ''; $('#pyqTotal').value = '';
-  saveAll(); renderPyq();
+  const t = $('#pyqTopic').value.trim(), s = parseInt($('#pyqSolved').value), tot = parseInt($('#pyqTotal').value);
+  if (!t || isNaN(s) || isNaN(tot)) return;
+  store.pyq.push({ topic: t, solved: s, total: tot });
+  $('#pyqTopic').value = ''; $('#pyqSolved').value = ''; $('#pyqTotal').value = ''; saveAll(); renderPyq();
 });
-
 $('#addMock').addEventListener('click', () => {
-  const name = $('#mockName').value.trim();
-  const score = parseFloat($('#mockScore').value);
-  const total = parseFloat($('#mockTotal').value);
-  if (!name || isNaN(score) || isNaN(total) || total <= 0) return;
-  store.mocks.push({ name, score, total });
-  $('#mockName').value = ''; $('#mockScore').value = ''; $('#mockTotal').value = '';
-  saveAll(); renderMocks();
+  const n = $('#mockName').value.trim(), s = parseFloat($('#mockScore').value), tot = parseFloat($('#mockTotal').value);
+  if (!n || isNaN(s) || isNaN(tot) || tot <= 0) return;
+  store.mocks.push({ name: n, score: s, total: tot });
+  $('#mockName').value = ''; $('#mockScore').value = ''; $('#mockTotal').value = ''; saveAll(); renderMocks();
 });
-
 $('#addMis').addEventListener('click', () => {
-  const subject = $('#misSubject').value.trim();
-  const desc = $('#misDesc').value.trim();
-  if (!subject || !desc) return;
-  store.mistakes.push({ subject, desc });
-  $('#misSubject').value = ''; $('#misDesc').value = '';
-  saveAll(); renderMistakes();
+  const s = $('#misSubject').value.trim(), d = $('#misDesc').value.trim();
+  if (!s || !d) return;
+  store.mistakes.push({ subject: s, desc: d });
+  $('#misSubject').value = ''; $('#misDesc').value = ''; saveAll(); renderMistakes();
 });
-
 $('#addMk').addEventListener('click', () => {
-  const chapter = $('#mkChapter').value.trim();
-  const score = parseFloat($('#mkScore').value);
-  const total = parseFloat($('#mkTotal').value);
-  if (!chapter || isNaN(score) || isNaN(total) || total <= 0) return;
-  store.marks.push({ chapter, score, total });
-  $('#mkChapter').value = ''; $('#mkScore').value = ''; $('#mkTotal').value = '';
-  saveAll(); renderMarks();
+  const c = $('#mkChapter').value.trim(), s = parseFloat($('#mkScore').value), tot = parseFloat($('#mkTotal').value);
+  if (!c || isNaN(s) || isNaN(tot) || tot <= 0) return;
+  store.marks.push({ chapter: c, score: s, total: tot });
+  $('#mkChapter').value = ''; $('#mkScore').value = ''; $('#mkTotal').value = ''; saveAll(); renderMarks();
 });
-
 $('#addTt').addEventListener('click', () => {
-  const day = $('#ttDay').value;
-  const time = $('#ttTime').value.trim();
-  const task = $('#ttTask').value.trim();
-  if (!time || !task) return;
-  store.timetable.push({ day, time, task });
-  $('#ttTime').value = ''; $('#ttTask').value = '';
-  saveAll(); renderTimetable();
+  const d = $('#ttDay').value, t = $('#ttTime').value.trim(), tk = $('#ttTask').value.trim();
+  if (!t || !tk) return;
+  store.timetable.push({ day: d, time: t, task: tk });
+  $('#ttTime').value = ''; $('#ttTask').value = ''; saveAll(); renderTimetable();
 });
-
 $('#addPdf').addEventListener('click', () => {
-  const title = $('#pdfTitle').value.trim();
-  const url = $('#pdfUrl').value.trim();
-  if (!title || !url) return;
-  store.pdfs.push({ title, url });
-  $('#pdfTitle').value = ''; $('#pdfUrl').value = '';
-  saveAll(); renderPdfs();
+  const t = $('#pdfTitle').value.trim(), u = $('#pdfUrl').value.trim();
+  if (!t || !u) return;
+  store.pdfs.push({ title: t, url: u });
+  $('#pdfTitle').value = ''; $('#pdfUrl').value = ''; saveAll(); renderPdfs();
 });
-
 $('#addPw').addEventListener('click', () => {
-  const name = $('#pwName').value.trim();
-  const url = $('#pwUrl').value.trim();
-  if (!name || !url) return;
-  store.pwLinks.push({ name, url });
-  $('#pwName').value = ''; $('#pwUrl').value = '';
-  saveAll(); renderPw();
+  const n = $('#pwName').value.trim(), u = $('#pwUrl').value.trim();
+  if (!n || !u) return;
+  store.pwLinks.push({ name: n, url: u });
+  $('#pwName').value = ''; $('#pwUrl').value = ''; saveAll(); renderPw();
 });
+$$('.subject-add').forEach(b => b.addEventListener('click', () => { store.subjects[b.dataset.subject] += 1; saveAll(); renderSubjects(); }));
 
-$$('.subject-add').forEach(b => {
-  b.addEventListener('click', () => {
-    store.subjects[b.dataset.subject] += 1;
-    saveAll(); renderSubjects();
-  });
-});
-
-// ========== TIMER ==========
-let timerTotal = 25 * 60, timerLeft = timerTotal, timerId = null, timerRunning = false, sessionStart = null;
-function fmt(s) {
-  const m = Math.floor(s / 60), sec = s % 60;
-  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-}
-function renderTimer() { $('#timerDisplay').textContent = fmt(timerLeft); }
+// ============ TIMER ============
+let timerTotal = 25*60, timerLeft = timerTotal, timerId = null, timerRunning = false, sessionStart = null;
+function fmt(s){ const m = Math.floor(s/60), sec = s%60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
+function renderTimer(){ $('#timerDisplay').textContent = fmt(timerLeft); }
 $('#timerStart').addEventListener('click', () => {
-  if (timerRunning) return;
-  timerRunning = true;
-  sessionStart = Date.now();
+  if (timerRunning) return; timerRunning = true; sessionStart = Date.now();
   timerId = setInterval(() => {
     timerLeft--; renderTimer();
     if (timerLeft <= 0) {
       clearInterval(timerId); timerRunning = false; logSession();
-      try {
-        const ac = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ac.createOscillator(), g = ac.createGain();
-        osc.connect(g); g.connect(ac.destination);
-        osc.frequency.value = 880;
-        g.gain.setValueAtTime(0.2, ac.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.6);
-        osc.start(); osc.stop(ac.currentTime + 0.6);
-      } catch(e) {}
-      alert('Time up, boss man.');
-      timerLeft = timerTotal; renderTimer();
+      try { const ac = new (window.AudioContext||window.webkitAudioContext)(); const osc = ac.createOscillator(), g = ac.createGain(); osc.connect(g); g.connect(ac.destination); osc.frequency.value = 880; g.gain.setValueAtTime(0.2, ac.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+0.6); osc.start(); osc.stop(ac.currentTime+0.6); } catch(e){}
+      alert('Time up, boss man.'); timerLeft = timerTotal; renderTimer();
     }
   }, 1000);
 });
-$('#timerPause').addEventListener('click', () => {
-  if (!timerRunning) return;
+$('#timerPause').addEventListener('click', () => { if (!timerRunning) return; clearInterval(timerId); timerRunning = false; logSession(); });
+$('#timerReset').addEventListener('click', () => { clearInterval(timerId); timerRunning = false; logSession(); timerLeft = timerTotal; renderTimer(); });
+$$('[data-preset]').forEach(b => b.addEventListener('click', () => {
   clearInterval(timerId); timerRunning = false; logSession();
-});
-$('#timerReset').addEventListener('click', () => {
-  clearInterval(timerId); timerRunning = false; logSession();
-  timerLeft = timerTotal; renderTimer();
-});
-$$('[data-preset]').forEach(b => {
-  b.addEventListener('click', () => {
-    clearInterval(timerId); timerRunning = false; logSession();
-    timerTotal = parseInt(b.dataset.preset) * 60;
-    timerLeft = timerTotal;
-    $('#timerMode').textContent = b.dataset.mode || 'Focus';
-    renderTimer();
-  });
-});
-function logSession() {
-  if (!sessionStart) return;
-  const mins = Math.floor((Date.now() - sessionStart) / 60000);
-  if (mins > 0) { store.todayMinutes += mins; store.totalMinutes += mins; saveAll(); }
-  sessionStart = null;
-}
+  timerTotal = parseInt(b.dataset.preset) * 60; timerLeft = timerTotal;
+  $('#timerMode').textContent = b.dataset.mode || 'Focus'; renderTimer();
+}));
+function logSession() { if (!sessionStart) return; const mins = Math.floor((Date.now()-sessionStart)/60000); if (mins > 0) { store.todayMinutes += mins; store.totalMinutes += mins; saveAll(); } sessionStart = null; }
 
-// ========== EXAM ==========
-let examTotal = 180 * 60, examLeft = examTotal, examId = null, examRunning = false;
-function fmtExam(s) {
-  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
-  return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-}
-function renderExam() { $('#examDisplay').textContent = fmtExam(examLeft); }
+// ============ EXAM ============
+let examTotal = 180*60, examLeft = examTotal, examId = null, examRunning = false;
+function fmtExam(s){ const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60; return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
+function renderExam(){ $('#examDisplay').textContent = fmtExam(examLeft); }
 $('#examStart').addEventListener('click', () => {
-  if (examRunning) return;
-  examRunning = true;
+  if (examRunning) return; examRunning = true;
   examId = setInterval(() => {
     examLeft--; renderExam();
-    if (examLeft <= 0) {
-      clearInterval(examId); examRunning = false;
-      alert('Exam over!');
-      examLeft = examTotal; renderExam();
-    }
+    if (examLeft <= 0) { clearInterval(examId); examRunning = false; alert('Exam over!'); examLeft = examTotal; renderExam(); }
   }, 1000);
 });
 $('#examPause').addEventListener('click', () => { clearInterval(examId); examRunning = false; });
 $('#examReset').addEventListener('click', () => { clearInterval(examId); examRunning = false; examLeft = examTotal; renderExam(); });
-$$('[data-exam]').forEach(b => {
-  b.addEventListener('click', () => {
-    clearInterval(examId); examRunning = false;
-    examTotal = parseInt(b.dataset.exam) * 60;
-    examLeft = examTotal; renderExam();
-  });
-});
+$$('[data-exam]').forEach(b => b.addEventListener('click', () => { clearInterval(examId); examRunning = false; examTotal = parseInt(b.dataset.exam)*60; examLeft = examTotal; renderExam(); }));
 
-// ========== AI COACH ==========
+// ============ AI COACH ============
 function getSyllabusProgress() {
-  const out = { phy: {done:0,total:0}, chem: {done:0,total:0}, math: {done:0,total:0} };
+  const out = { phy:{done:0,total:0}, chem:{done:0,total:0}, math:{done:0,total:0} };
   ['phy','chem','math'].forEach(sub => {
     out[sub].total = SYLLABUS[sub].length;
-    for (let i = 0; i < SYLLABUS[sub].length; i++) {
-      if (store.syllabus[`${sub}_${i}`]) out[sub].done++;
-    }
+    for (let i = 0; i < SYLLABUS[sub].length; i++) if (store.syllabus[`${sub}_${i}`]) out[sub].done++;
   });
   return out;
 }
 function generateInsights() {
   const insights = [];
   const syl = getSyllabusProgress();
-  const todayPct = Math.min(100, (store.todayMinutes / (8*60)) * 100);
-
+  const todayPct = Math.min(100, (store.todayMinutes/(8*60))*100);
   if (todayPct === 0) insights.push({ icon:'◉', color:'warn', title:'Aaj 0 minute', body:'Timer start kar.' });
   else if (todayPct < 50) insights.push({ icon:'◉', color:'warn', title:`${store.todayMinutes} min aaj`, body:`Goal ka ${todayPct.toFixed(0)}% bhara.` });
   else insights.push({ icon:'✓', color:'accent', title:`${store.todayMinutes} min aaj`, body:`Goal ka ${todayPct.toFixed(0)}% bhara.` });
-
-  const subPct = {
-    phy: (syl.phy.done/syl.phy.total)*100,
-    chem: (syl.chem.done/syl.chem.total)*100,
-    math: (syl.math.done/syl.math.total)*100
-  };
+  const subPct = { phy:(syl.phy.done/syl.phy.total)*100, chem:(syl.chem.done/syl.chem.total)*100, math:(syl.math.done/syl.math.total)*100 };
   const weakest = Object.entries(subPct).sort((a,b) => a[1]-b[1])[0];
-  const weakLabel = { phy: 'Physics', chem: 'Chemistry', math: 'Math' }[weakest[0]];
+  const weakLabel = { phy:'Physics', chem:'Chemistry', math:'Math' }[weakest[0]];
   if (weakest[1] < 60) insights.push({ icon:'⚠', color:'warn', title:`${weakLabel} peeche (${weakest[1].toFixed(0)}%)`, body:`${syl[weakest[0]].done}/${syl[weakest[0]].total} chapters done.` });
-
   if (store.streak >= 7) insights.push({ icon:'◆', color:'accent', title:`${store.streak} din streak`, body:'Consistency hi topper ka raaz hai.' });
-
   const pending = store.tasks.filter(t => !t.done);
   if (pending.length) insights.push({ icon:'◷', color:'purple', title:`Pending: ${pending[0].text}`, body:`${pending[0].subject} ka task.` });
-
   return insights.slice(0, 6);
 }
 function renderInsights() {
-  const grid = $('#aiInsights');
-  if (!grid) return;
-  const insights = generateInsights();
-  grid.innerHTML = insights.map(i => {
+  const grid = $('#aiInsights'); if (!grid) return;
+  grid.innerHTML = generateInsights().map(i => {
     const cls = i.color === 'accent' ? '' : i.color === 'warn' ? 'warn' : 'purple';
-    return `
-      <div class="card">
-        <div class="stat-label">${i.icon} Insight</div>
-        <div style="font-size:0.9rem; font-weight:700; margin:0.3rem 0;" class="stat-value ${cls}">${esc(i.title)}</div>
-        <div class="stat-sub">${esc(i.body)}</div>
-      </div>
-    `;
+    return `<div class="card"><div class="stat-label">${i.icon} Insight</div><div style="font-size:0.9rem; font-weight:700; margin:0.3rem 0;" class="stat-value ${cls}">${esc(i.title)}</div><div class="stat-sub">${esc(i.body)}</div></div>`;
   }).join('');
 }
 function aiAnswer(q) {
-  const query = q.toLowerCase();
-  const syl = getSyllabusProgress();
-  if (/aaj|today|kya karu|plan/.test(query)) {
-    return `Aaj: ${store.todayMinutes} min ho gaye. Goal 480 min. Weak subject pe 2h de.`;
-  }
-  if (/weak|peeche/.test(query)) {
-    const weak = Object.entries({
-      Physics: (syl.phy.done/syl.phy.total)*100,
-      Chemistry: (syl.chem.done/syl.chem.total)*100,
-      Math: (syl.math.done/syl.math.total)*100
-    }).sort((a,b) => a[1]-b[1])[0];
-    return `${weak[0]} weak hai (${weak[1].toFixed(0)}% done).`;
-  }
-  if (/progress|kitna/.test(query)) {
-    const total = syl.phy.total + syl.chem.total + syl.math.total;
-    const done = syl.phy.done + syl.chem.done + syl.math.done;
-    return `Syllabus: ${done}/${total} (${((done/total)*100).toFixed(0)}%). Today: ${store.todayMinutes} min.`;
-  }
+  const query = q.toLowerCase(); const syl = getSyllabusProgress();
+  if (/aaj|today|kya karu|plan/.test(query)) return `Aaj: ${store.todayMinutes} min ho gaye. Goal 480 min.`;
+  if (/weak|peeche/.test(query)) { const weak = Object.entries({ Physics:(syl.phy.done/syl.phy.total)*100, Chemistry:(syl.chem.done/syl.chem.total)*100, Math:(syl.math.done/syl.math.total)*100 }).sort((a,b) => a[1]-b[1])[0]; return `${weak[0]} weak hai (${weak[1].toFixed(0)}% done).`; }
+  if (/progress|kitna/.test(query)) { const total = syl.phy.total + syl.chem.total + syl.math.total; const done = syl.phy.done + syl.chem.done + syl.math.done; return `Syllabus: ${done}/${total} (${((done/total)*100).toFixed(0)}%).`; }
   if (/streak/.test(query)) return `Streak: ${store.streak} din.`;
   if (/time|hours|ghante/.test(query)) return `Total: ${(store.totalMinutes/60).toFixed(1)}h. Today: ${store.todayMinutes}m.`;
   return `Try: "aaj kya karu", "weak", "progress", "streak"`;
 }
 $('#aiSend').addEventListener('click', () => {
-  const q = $('#aiInput').value.trim();
-  if (!q) return;
+  const q = $('#aiInput').value.trim(); if (!q) return;
   const reply = aiAnswer(q);
-  const chat = $('#aiChat');
-  chat.insertAdjacentHTML('afterbegin', `
-    <div class="card" style="border-left:3px solid var(--accent-2);">
-      <div class="stat-label">Tune poocha</div>
-      <div style="font-size:0.85rem; margin:0.3rem 0 0.7rem;">${esc(q)}</div>
-      <div class="stat-label">Axiom Coach</div>
-      <div style="font-size:0.85rem; white-space:pre-wrap; color:var(--accent);">${esc(reply)}</div>
-    </div>
-  `);
+  $('#aiChat').insertAdjacentHTML('afterbegin', `<div class="card" style="border-left:3px solid var(--accent-2);"><div class="stat-label">Tune poocha</div><div style="font-size:0.85rem; margin:0.3rem 0 0.7rem;">${esc(q)}</div><div class="stat-label">Axiom Coach</div><div style="font-size:0.85rem; white-space:pre-wrap; color:var(--accent);">${esc(reply)}</div></div>`);
   $('#aiInput').value = '';
 });
 $('#aiInput').addEventListener('keydown', e => e.key === 'Enter' && $('#aiSend').click());
 
-// ========== FRIENDS ==========
+// ============ FRIENDS ============
 let allUsers = {};
 let myFriends = [];
 let incomingReqs = [];
@@ -2108,9 +1564,7 @@ function listenUsers() {
   if (!db) return;
   onValue(ref(db, 'users'), snap => {
     allUsers = snap.exists() ? snap.val() : {};
-    renderFriendsPage();
-    renderChatFriendList();
-    renderFriendProgress();
+    renderFriendsPage(); renderChatFriendList(); renderFriendProgress();
     if ($('#adminContent').style.display !== 'none') renderAdminUsers();
   });
 }
@@ -2118,14 +1572,9 @@ function listenUsers() {
 function listenFriendRequests() {
   if (!db || !currentUser) return;
   const myU = currentUser.username.toLowerCase();
-
   onValue(ref(db, 'friendRequests'), snap => {
     const all = snap.exists() ? snap.val() : {};
-    incomingReqs = [];
-    outgoingReqs = [];
-    myFriends = [];
-
-    // parse requests
+    incomingReqs = []; outgoingReqs = []; myFriends = [];
     Object.entries(all).forEach(([key, r]) => {
       if (r.to === myU && r.status === 'pending') incomingReqs.push({ key, ...r });
       if (r.from === myU && r.status === 'pending') outgoingReqs.push({ key, ...r });
@@ -2134,203 +1583,124 @@ function listenFriendRequests() {
         myFriends.push(friendU);
       }
     });
-
-    // dedupe friends
     myFriends = [...new Set(myFriends)];
-
-    // badge
     const badge = $('#friendBadge');
-    if (incomingReqs.length) {
-      badge.textContent = incomingReqs.length;
-      badge.style.display = 'inline-block';
-    } else badge.style.display = 'none';
-
-    renderFriendsPage();
-    renderChatFriendList();
-    renderFriendProgress();
+    if (incomingReqs.length) { badge.textContent = incomingReqs.length; badge.style.display = 'inline-block'; }
+    else badge.style.display = 'none';
+    renderFriendsPage(); renderChatFriendList(); renderFriendProgress();
   });
 }
 
 function renderFriendsPage() {
-  // req counts
   $('#reqCount').textContent = incomingReqs.length;
   $('#friendCount').textContent = myFriends.length;
 
-  // incoming
   const inEl = $('#incomingReqs');
   if (!incomingReqs.length) inEl.innerHTML = '<div class="empty">Koi incoming request nahi.</div>';
-  else inEl.innerHTML = incomingReqs.map(r => `
-    <div class="friend-item">
-      <div class="friend-avatar">${esc(r.from[0].toUpperCase())}</div>
-      <div class="friend-info">
-        <div class="friend-name">${esc(r.from)}</div>
-        <div class="friend-sub">Friend request bheja</div>
-      </div>
-      <div class="friend-actions">
-        <button data-accept="${r.key}">Accept</button>
-        <button class="danger" data-reject="${r.key}">Reject</button>
-      </div>
-    </div>
-  `).join('');
+  else inEl.innerHTML = incomingReqs.map(r => {
+    const ud = allUsers[r.from] || {};
+    const on = isOnline(ud);
+    return `<div class="friend-item">
+      <div class="friend-avatar">${esc(r.from[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+      <div class="friend-info"><div class="friend-name">${esc(r.from)}</div><div class="friend-sub">${on?'● Online':'● Offline'}</div></div>
+      <div class="friend-actions"><button data-accept="${r.key}">Accept</button><button class="danger" data-reject="${r.key}">Reject</button></div>
+    </div>`;
+  }).join('');
+  inEl.querySelectorAll('[data-accept]').forEach(b => b.addEventListener('click', async () => {
+    await update(ref(db, 'friendRequests/' + b.dataset.accept), { status: 'accepted', acceptedAt: Date.now() });
+  }));
+  inEl.querySelectorAll('[data-reject]').forEach(b => b.addEventListener('click', async () => {
+    await remove(ref(db, 'friendRequests/' + b.dataset.reject));
+  }));
 
-  inEl.querySelectorAll('[data-accept]').forEach(b => {
-    b.addEventListener('click', async () => {
-      const key = b.dataset.accept;
-      await update(ref(db, 'friendRequests/' + key), { status: 'accepted', acceptedAt: Date.now() });
-    });
-  });
-  inEl.querySelectorAll('[data-reject]').forEach(b => {
-    b.addEventListener('click', async () => {
-      const key = b.dataset.reject;
-      await remove(ref(db, 'friendRequests/' + key));
-    });
-  });
-
-  // outgoing
   const outEl = $('#outgoingReqs');
   if (!outgoingReqs.length) outEl.innerHTML = '<div class="empty">Koi sent request nahi.</div>';
   else outEl.innerHTML = outgoingReqs.map(r => `
     <div class="friend-item">
       <div class="friend-avatar">${esc(r.to[0].toUpperCase())}</div>
-      <div class="friend-info">
-        <div class="friend-name">${esc(r.to)}</div>
-        <div class="friend-sub">Pending...</div>
-      </div>
-      <div class="friend-actions">
-        <button class="danger" data-cancel="${r.key}">Cancel</button>
-      </div>
-    </div>
-  `).join('');
+      <div class="friend-info"><div class="friend-name">${esc(r.to)}</div><div class="friend-sub">Pending...</div></div>
+      <div class="friend-actions"><button class="danger" data-cancel="${r.key}">Cancel</button></div>
+    </div>`).join('');
+  outEl.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', async () => {
+    await remove(ref(db, 'friendRequests/' + b.dataset.cancel));
+  }));
 
-  outEl.querySelectorAll('[data-cancel]').forEach(b => {
-    b.addEventListener('click', async () => {
-      await remove(ref(db, 'friendRequests/' + b.dataset.cancel));
-    });
-  });
-
-  // friends list
   const fl = $('#friendsList');
-  if (!myFriends.length) fl.innerHTML = '<div class="empty">Abhi koi friend nahi. Add Friend tab se bhej.</div>';
+  if (!myFriends.length) fl.innerHTML = '<div class="empty">Abhi koi friend nahi.</div>';
   else fl.innerHTML = myFriends.map(u => {
-    const userData = allUsers[u] || {};
-    const cls = userData.class ? CLASS_CONFIG[userData.class].label : 'Class ?';
-    return `
-      <div class="friend-item">
-        <div class="friend-avatar">${esc(u[0].toUpperCase())}</div>
-        <div class="friend-info">
-          <div class="friend-name">${esc(userData.username || u)}</div>
-          <div class="friend-sub">${cls}</div>
-        </div>
-        <div class="friend-actions">
-          <button data-remove-friend="${u}" class="danger">Remove</button>
-        </div>
-      </div>
-    `;
+    const ud = allUsers[u] || {};
+    const cls = ud.class ? CLASS_CONFIG[ud.class].label : 'Class ?';
+    const on = isOnline(ud);
+    return `<div class="friend-item">
+      <div class="friend-avatar">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+      <div class="friend-info"><div class="friend-name">${esc(ud.username || u)}</div><div class="friend-sub">${cls} · ${on?'<span style="color:#00e5a0;">● Online</span>':'● Offline'}</div></div>
+      <div class="friend-actions"><button data-remove-friend="${u}" class="danger">Remove</button></div>
+    </div>`;
   }).join('');
-
-  fl.querySelectorAll('[data-remove-friend]').forEach(b => {
-    b.addEventListener('click', async () => {
-      if (!confirm('Friend remove karna hai?')) return;
-      const friendU = b.dataset.removeFriend;
-      // find the accepted request key
-      const snap = await get(ref(db, 'friendRequests'));
-      if (snap.exists()) {
-        const all = snap.val();
-        for (const [key, r] of Object.entries(all)) {
-          if (r.status === 'accepted' && (
-            (r.from === currentUser.username.toLowerCase() && r.to === friendU) ||
-            (r.to === currentUser.username.toLowerCase() && r.from === friendU)
-          )) {
-            await remove(ref(db, 'friendRequests/' + key));
-          }
+  fl.querySelectorAll('[data-remove-friend]').forEach(b => b.addEventListener('click', async () => {
+    if (!confirm('Friend remove karna hai?')) return;
+    const friendU = b.dataset.removeFriend;
+    const snap = await get(ref(db, 'friendRequests'));
+    if (snap.exists()) {
+      const all = snap.val();
+      for (const [key, r] of Object.entries(all)) {
+        if (r.status === 'accepted' && ((r.from === currentUser.username.toLowerCase() && r.to === friendU) || (r.to === currentUser.username.toLowerCase() && r.from === friendU))) {
+          await remove(ref(db, 'friendRequests/' + key));
         }
       }
-    });
-  });
+    }
+  }));
 }
 
 $('#sendFriendReqBtn').addEventListener('click', async () => {
   const target = $('#friendUsernameInput').value.trim().toLowerCase();
-  if (!target) return;
-  if (!currentUser) return;
-  if (target === currentUser.username.toLowerCase()) {
-    alert('Khud ko friend nahi bana sakta, boss man.');
-    return;
-  }
-  if (!allUsers[target]) {
-    alert('Ye username exist nahi karta.');
-    return;
-  }
-  if (myFriends.includes(target)) {
-    alert('Ye already tera friend hai.');
-    return;
-  }
-  // Check if request already exists
+  if (!target || !currentUser) return;
+  if (target === currentUser.username.toLowerCase()) return alert('Khud ko friend nahi bana sakta.');
+  if (!allUsers[target]) return alert('Username exist nahi karta.');
+  if (myFriends.includes(target)) return alert('Already friend hai.');
   const snap = await get(ref(db, 'friendRequests'));
   if (snap.exists()) {
     const all = snap.val();
     for (const r of Object.values(all)) {
-      if (r.status === 'pending' &&
-          ((r.from === currentUser.username.toLowerCase() && r.to === target) ||
-           (r.to === currentUser.username.toLowerCase() && r.from === target))) {
-        alert('Request already pending hai.');
-        return;
-      }
+      if (r.status === 'pending' && ((r.from === currentUser.username.toLowerCase() && r.to === target) || (r.to === currentUser.username.toLowerCase() && r.from === target))) return alert('Request already pending.');
     }
   }
-  await push(ref(db, 'friendRequests'), {
-    from: currentUser.username.toLowerCase(),
-    to: target,
-    status: 'pending',
-    createdAt: Date.now()
-  });
+  await push(ref(db, 'friendRequests'), { from: currentUser.username.toLowerCase(), to: target, status: 'pending', createdAt: Date.now() });
   $('#friendUsernameInput').value = '';
   $('#searchResult').innerHTML = `<div class="card" style="border-left:3px solid var(--accent);">Request bhej diya <b>${esc(target)}</b> ko.</div>`;
   setTimeout(() => $('#searchResult').innerHTML = '', 3000);
 });
 
-$$('.friend-tab').forEach(t => {
-  t.addEventListener('click', () => {
-    $$('.friend-tab').forEach(x => x.classList.remove('active'));
-    $$('.friend-tab-content').forEach(x => x.classList.remove('active'));
-    t.classList.add('active');
-    $('#ftab-' + t.dataset.ftab).classList.add('active');
-  });
-});
+$$('.friend-tab').forEach(t => t.addEventListener('click', () => {
+  $$('.friend-tab').forEach(x => x.classList.remove('active'));
+  $$('.friend-tab-content').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  $('#ftab-' + t.dataset.ftab).classList.add('active');
+}));
 
-// ========== FRIEND CHAT ==========
+// ============ FRIEND CHAT with READ RECEIPTS + REACTIONS ============
 let activeChatFriend = null;
 let chatUnsub = null;
 
 function renderChatFriendList() {
-  const list = $('#chatFriendList');
-  if (!list) return;
-  if (!myFriends.length) {
-    list.innerHTML = '<div class="empty" style="padding:1rem;">Koi friend nahi.</div>';
-    return;
-  }
+  const list = $('#chatFriendList'); if (!list) return;
+  if (!myFriends.length) { list.innerHTML = '<div class="empty" style="padding:1rem;">Koi friend nahi.</div>'; return; }
   list.innerHTML = myFriends.map(u => {
     const ud = allUsers[u] || {};
     const active = u === activeChatFriend ? 'active' : '';
-    return `
-      <div class="chat-list-item ${active}" data-friend="${u}">
-        <div class="friend-avatar">${esc(u[0].toUpperCase())}</div>
-        <div style="flex:1; min-width:0;">
-          <div class="friend-name" style="font-size:0.82rem;">${esc(ud.username || u)}</div>
-          <div class="friend-sub">Click to chat</div>
-        </div>
+    const on = isOnline(ud);
+    return `<div class="chat-list-item ${active}" data-friend="${u}">
+      <div class="friend-avatar">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+      <div style="flex:1; min-width:0;">
+        <div class="friend-name" style="font-size:0.82rem;">${esc(ud.username || u)}</div>
+        <div class="friend-sub">${on?'<span style="color:#00e5a0;">● Online</span>':'● Offline'}</div>
       </div>
-    `;
+    </div>`;
   }).join('');
-
-  list.querySelectorAll('.chat-list-item').forEach(item => {
-    item.addEventListener('click', () => openChat(item.dataset.friend));
-  });
+  list.querySelectorAll('.chat-list-item').forEach(item => item.addEventListener('click', () => openChat(item.dataset.friend)));
 }
 
-function chatRoomId(u1, u2) {
-  return [u1, u2].sort().join('__');
-}
+function chatRoomId(u1, u2) { return [u1, u2].sort().join('__'); }
 
 function openChat(friendU) {
   if (!db || !currentUser) return;
@@ -2338,12 +1708,12 @@ function openChat(friendU) {
   const ud = allUsers[friendU] || {};
   $('#chatHeaderAvatar').textContent = friendU[0].toUpperCase();
   $('#chatHeaderName').textContent = ud.username || friendU;
-  $('#chatHeaderSub').textContent = ud.class ? CLASS_CONFIG[ud.class].label : 'Friend';
+  const on = isOnline(ud);
+  $('#chatHeaderSub').textContent = (ud.class ? CLASS_CONFIG[ud.class].label : 'Friend') + ' · ' + (on?'● Online':'● Offline');
   $('#friendChatInput').disabled = false;
   $('#sendFriendMsgBtn').disabled = false;
 
   if (chatUnsub) chatUnsub();
-
   const roomId = chatRoomId(currentUser.username.toLowerCase(), friendU);
   const msgsRef = query(ref(db, 'friendChats/' + roomId), limitToLast(200));
   chatUnsub = onValue(msgsRef, snap => {
@@ -2351,13 +1721,73 @@ function openChat(friendU) {
     box.innerHTML = '';
     if (!snap.exists()) return;
     const msgs = snap.val();
-    Object.values(msgs).forEach(m => {
-      const isMine = m.from === currentUser.username.toLowerCase();
+    const myU = currentUser.username.toLowerCase();
+
+    Object.entries(msgs).forEach(([msgKey, m]) => {
+      const isMine = m.from === myU;
       const div = document.createElement('div');
       div.className = 'chat-msg ' + (isMine ? 'mine' : 'theirs');
-      div.innerHTML = `<div>${esc(m.text)}</div><div class="msg-time">${esc(m.time)}</div>`;
+
+      // Tick
+      const isRead = m.readBy && m.readBy[friendU];
+      let tick = '';
+      if (isMine) tick = isRead ? '<span class="tick-read">✓✓</span>' : '<span class="tick-sent">✓</span>';
+
+      // Tag highlight
+      let text = esc(m.text);
+      text = text.replace(/@(\w+)/g, '<span class="tag">@$1</span>');
+
+      // Reactions
+      const reactions = m.reactions || {};
+      const reactionCounts = {};
+      Object.values(reactions).forEach(emoji => { reactionCounts[emoji] = (reactionCounts[emoji] || 0) + 1; });
+      const reactionsHtml = Object.entries(reactionCounts).map(([emoji, count]) =>
+        `<span class="reaction-chip" data-msg-key="${msgKey}" data-emoji="${emoji}">${emoji} ${count}</span>`
+      ).join('');
+
+      div.innerHTML = `
+        <div>${text}</div>
+        <div class="msg-time">${esc(m.time)} ${tick}</div>
+        <div style="display:flex;gap:0.3rem;margin-top:0.3rem;flex-wrap:wrap;align-items:center;">
+          ${reactionsHtml}
+          <button class="react-btn" data-msg-key="${msgKey}" title="React">＋</button>
+        </div>
+        <div class="emoji-picker" data-msg-key="${msgKey}" style="display:none;">
+          <span data-emoji="👍">👍</span><span data-emoji="❤️">❤️</span><span data-emoji="😂">😂</span><span data-emoji="🔥">🔥</span><span data-emoji="😮">😮</span><span data-emoji="😢">😢</span><span data-emoji="💯">💯</span>
+        </div>
+      `;
       box.appendChild(div);
+
+      // Auto-mark incoming messages as read
+      if (!isMine && (!m.readBy || !m.readBy[myU])) {
+        set(ref(db, `friendChats/${roomId}/${msgKey}/readBy/${myU}`), true);
+      }
     });
+
+    // Wire reaction buttons
+    box.querySelectorAll('.react-btn').forEach(btn => btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.dataset.msgKey;
+      box.querySelectorAll('.emoji-picker').forEach(p => { if (p.dataset.msgKey !== key) p.style.display = 'none'; });
+      const picker = box.querySelector(`.emoji-picker[data-msg-key="${key}"]`);
+      picker.style.display = picker.style.display === 'none' ? 'flex' : 'none';
+    }));
+    box.querySelectorAll('.emoji-picker span').forEach(sp => sp.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const picker = sp.parentElement;
+      const key = picker.dataset.msgKey;
+      const emoji = sp.dataset.emoji;
+      await set(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`), emoji);
+      picker.style.display = 'none';
+    }));
+    box.querySelectorAll('.reaction-chip').forEach(chip => chip.addEventListener('click', async () => {
+      const key = chip.dataset.msgKey;
+      const emoji = chip.dataset.emoji;
+      const snap2 = await get(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`));
+      if (snap2.exists() && snap2.val() === emoji) await remove(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`));
+      else await set(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`), emoji);
+    }));
+
     box.scrollTop = box.scrollHeight;
   });
 
@@ -2372,68 +1802,68 @@ function sendFriendMsg() {
   push(ref(db, 'friendChats/' + roomId), {
     from: currentUser.username.toLowerCase(),
     text: text,
-    time: new Date().toLocaleTimeString()
+    time: new Date().toLocaleTimeString(),
+    readBy: {}
   });
   input.value = '';
 }
-
 $('#sendFriendMsgBtn').addEventListener('click', sendFriendMsg);
 $('#friendChatInput').addEventListener('keydown', e => e.key === 'Enter' && sendFriendMsg());
 
-// ========== FRIEND PROGRESS ==========
-function renderFriendProgress() {
-  const list = $('#friendProgressList');
-  if (!list) return;
-  if (!myFriends.length) {
-    list.innerHTML = '<div class="empty">Koi friend nahi hai. Pehle friend banao.</div>';
-    return;
+// Emoji tray
+const EMOJIS = ['😀','😂','😍','🔥','👍','❤️','💯','🎯','📚','✏️','😎','🤔','😅','🎉','💪','🚀','⭐','✨','🙏','👏','😭','😴','🤯','🥳','😤','👀','🎓','📝','🧠','💡'];
+$('#emojiBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const tray = $('#emojiTray');
+  if (!tray.dataset.built) {
+    tray.innerHTML = EMOJIS.map(e => `<span>${e}</span>`).join('');
+    tray.dataset.built = '1';
+    tray.querySelectorAll('span').forEach(sp => sp.addEventListener('click', () => {
+      $('#friendChatInput').value += sp.textContent;
+      $('#friendChatInput').focus();
+    }));
   }
+  tray.classList.toggle('show');
+});
+document.addEventListener('click', (e) => {
+  const tray = $('#emojiTray');
+  if (tray && !tray.contains(e.target) && e.target.id !== 'emojiBtn') tray.classList.remove('show');
+});
+
+// ============ FRIEND PROGRESS ============
+function renderFriendProgress() {
+  const list = $('#friendProgressList'); if (!list) return;
+  if (!myFriends.length) { list.innerHTML = '<div class="empty">Koi friend nahi. Pehle friend banao.</div>'; return; }
   list.innerHTML = myFriends.map(u => {
     const ud = allUsers[u] || {};
     const p = ud.progress || {};
+    const on = isOnline(ud);
     const totalMin = p.totalMinutes || 0;
     const todayMin = p.todayMinutes || 0;
     const streak = p.streak || 0;
     const sylDone = p.syllabusDone || 0;
     const mocksCount = p.mocksCount || 0;
     const mistakes = p.mistakesCount || 0;
-    return `
-      <div class="card" style="margin-bottom:1rem;">
-        <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
-          <div class="friend-avatar" style="width:48px; height:48px; font-size:1.2rem;">${esc(u[0].toUpperCase())}</div>
-          <div>
-            <div style="font-weight:800; font-size:1rem; color:var(--accent);">${esc(ud.username || u)}</div>
-            <div style="font-size:0.72rem; color:var(--muted);">${ud.class ? CLASS_CONFIG[ud.class].label : 'Class ?'} · Streak ${streak} din</div>
-          </div>
-        </div>
-        <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:0.6rem; margin:0;">
-          <div class="card" style="padding:0.7rem;">
-            <div class="stat-label">Total Time</div>
-            <div class="stat-value" style="font-size:1.2rem;">${(totalMin/60).toFixed(1)}h</div>
-          </div>
-          <div class="card" style="padding:0.7rem;">
-            <div class="stat-label">Today</div>
-            <div class="stat-value blue" style="font-size:1.2rem;">${todayMin}m</div>
-          </div>
-          <div class="card" style="padding:0.7rem;">
-            <div class="stat-label">Chapters Done</div>
-            <div class="stat-value purple" style="font-size:1.2rem;">${sylDone}</div>
-          </div>
-          <div class="card" style="padding:0.7rem;">
-            <div class="stat-label">Mocks</div>
-            <div class="stat-value warn" style="font-size:1.2rem;">${mocksCount}</div>
-          </div>
-          <div class="card" style="padding:0.7rem;">
-            <div class="stat-label">Mistakes</div>
-            <div class="stat-value" style="font-size:1.2rem; color:var(--danger);">${mistakes}</div>
-          </div>
+    return `<div class="card" style="margin-bottom:1rem;">
+      <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
+        <div class="friend-avatar" style="width:48px; height:48px; font-size:1.2rem;">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+        <div>
+          <div style="font-weight:800; font-size:1rem; color:var(--accent);">${esc(ud.username || u)}</div>
+          <div style="font-size:0.72rem; color:var(--muted);">${ud.class ? CLASS_CONFIG[ud.class].label : 'Class ?'} · ${on?'<span style="color:#00e5a0;">● Online</span>':'● Offline'} · Streak ${streak} din</div>
         </div>
       </div>
-    `;
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:0.6rem; margin:0;">
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Total Time</div><div class="stat-value" style="font-size:1.2rem;">${(totalMin/60).toFixed(1)}h</div></div>
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Today</div><div class="stat-value blue" style="font-size:1.2rem;">${todayMin}m</div></div>
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Chapters Done</div><div class="stat-value purple" style="font-size:1.2rem;">${sylDone}</div></div>
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Mocks</div><div class="stat-value warn" style="font-size:1.2rem;">${mocksCount}</div></div>
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Mistakes</div><div class="stat-value" style="font-size:1.2rem; color:var(--danger);">${mistakes}</div></div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// ========== STUDY ROOMS (BroadcastChannel) ==========
+// ============ STUDY ROOMS ============
 let roomChannel = null;
 let currentRoom = null;
 let roomMemberCount = 1;
@@ -2446,42 +1876,22 @@ function genRoomCode() {
   return code;
 }
 
-function enterRoom(code, name, userName, admin) {
+function enterRoom(code, name, userName) {
   if (roomChannel) roomChannel.close();
-  currentRoom = code;
-  roomMemberCount = 1;
-  knownMembers = new Set([userName]);
-
+  currentRoom = code; roomMemberCount = 1; knownMembers = new Set([userName]);
   roomChannel = new BroadcastChannel('jee_room_' + code);
-
   roomChannel.onmessage = (e) => {
     const msg = e.data;
-    if (msg.type === 'chat') {
-      appendRoomMsg(msg.user, msg.text, msg.time, msg.user === userName);
-    } else if (msg.type === 'hello') {
-      if (!knownMembers.has(msg.user)) {
-        knownMembers.add(msg.user);
-        roomMemberCount = knownMembers.size;
-        $('#roomMembers').textContent = roomMemberCount;
-        appendRoomSys(`${msg.user} room mein aa gaya`);
-      }
+    if (msg.type === 'chat') appendRoomMsg(msg.user, msg.text, msg.time, msg.user === userName);
+    else if (msg.type === 'hello') {
+      if (!knownMembers.has(msg.user)) { knownMembers.add(msg.user); roomMemberCount = knownMembers.size; $('#roomMembers').textContent = roomMemberCount; appendRoomSys(`${msg.user} room mein aa gaya`); }
       roomChannel.postMessage({ type: 'iamhere', user: userName });
     } else if (msg.type === 'iamhere') {
-      if (!knownMembers.has(msg.user)) {
-        knownMembers.add(msg.user);
-        roomMemberCount = knownMembers.size;
-        $('#roomMembers').textContent = roomMemberCount;
-      }
+      if (!knownMembers.has(msg.user)) { knownMembers.add(msg.user); roomMemberCount = knownMembers.size; $('#roomMembers').textContent = roomMemberCount; }
     } else if (msg.type === 'bye') {
-      if (knownMembers.has(msg.user)) {
-        knownMembers.delete(msg.user);
-        roomMemberCount = knownMembers.size;
-        $('#roomMembers').textContent = roomMemberCount;
-        appendRoomSys(`${msg.user} chala gaya`);
-      }
+      if (knownMembers.has(msg.user)) { knownMembers.delete(msg.user); roomMemberCount = knownMembers.size; $('#roomMembers').textContent = roomMemberCount; appendRoomSys(`${msg.user} chala gaya`); }
     }
   };
-
   roomChannel.postMessage({ type: 'hello', user: userName });
   $('#roomActive').style.display = 'block';
   $('#roomTitle').textContent = name;
@@ -2492,21 +1902,13 @@ function enterRoom(code, name, userName, admin) {
 }
 
 function leaveRoom() {
-  if (roomChannel) {
-    roomChannel.postMessage({ type: 'bye', user: currentUser.username });
-    roomChannel.close();
-    roomChannel = null;
-  }
-  currentRoom = null;
-  roomMemberCount = 1;
-  knownMembers = new Set();
-  $('#roomActive').style.display = 'none';
-  $('#chatBox').innerHTML = '';
+  if (roomChannel) { roomChannel.postMessage({ type: 'bye', user: currentUser.username }); roomChannel.close(); roomChannel = null; }
+  currentRoom = null; roomMemberCount = 1; knownMembers = new Set();
+  $('#roomActive').style.display = 'none'; $('#chatBox').innerHTML = '';
 }
 
 function sendRoomMsg() {
-  const input = $('#chatInput');
-  const text = input.value.trim();
+  const input = $('#chatInput'); const text = input.value.trim();
   if (!text || !roomChannel) return;
   const time = new Date().toLocaleTimeString();
   roomChannel.postMessage({ type: 'chat', user: currentUser.username, text, time });
@@ -2515,247 +1917,120 @@ function sendRoomMsg() {
 }
 
 function appendRoomMsg(user, text, time, isMine) {
-  const box = $('#chatBox');
-  const div = document.createElement('div');
-  div.style.cssText = `
-    align-self: ${isMine ? 'flex-end' : 'flex-start'};
-    max-width: 75%;
-    background: ${isMine ? 'linear-gradient(135deg, rgba(0,229,160,0.2), rgba(102,170,255,0.15))' : 'var(--surface-2)'};
-    border: 1px solid ${isMine ? 'rgba(0,229,160,0.3)' : 'var(--border)'};
-    border-radius: 12px;
-    padding: 0.55rem 0.85rem;
-    font-size: 0.85rem;
-    word-wrap: break-word;
-  `;
-  div.innerHTML = `
-    <div style="font-size:0.65rem; color:${isMine ? 'var(--accent)' : 'var(--accent-2)'}; margin-bottom:0.2rem; font-weight:700; text-transform:uppercase;">${esc(user)} · ${esc(time)}</div>
-    <div>${esc(text)}</div>
-  `;
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
+  const box = $('#chatBox'); const div = document.createElement('div');
+  div.style.cssText = `align-self: ${isMine?'flex-end':'flex-start'}; max-width:75%; background:${isMine?'linear-gradient(135deg, rgba(0,229,160,0.2), rgba(102,170,255,0.15))':'var(--surface-2)'}; border:1px solid ${isMine?'rgba(0,229,160,0.3)':'var(--border)'}; border-radius:12px; padding:0.55rem 0.85rem; font-size:0.85rem; word-wrap:break-word;`;
+  div.innerHTML = `<div style="font-size:0.65rem; color:${isMine?'var(--accent)':'var(--accent-2)'}; margin-bottom:0.2rem; font-weight:700; text-transform:uppercase;">${esc(user)} · ${esc(time)}</div><div>${esc(text)}</div>`;
+  box.appendChild(div); box.scrollTop = box.scrollHeight;
 }
 
 function appendRoomSys(text) {
-  const box = $('#chatBox');
-  const div = document.createElement('div');
-  div.style.cssText = `
-    align-self: center; font-size: 0.7rem; color: var(--muted);
-    padding: 0.3rem 0.7rem; background: var(--surface-2);
-    border-radius: 99px; border: 1px solid var(--border);
-  `;
-  div.textContent = text;
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
+  const box = $('#chatBox'); const div = document.createElement('div');
+  div.style.cssText = `align-self:center; font-size:0.7rem; color:var(--muted); padding:0.3rem 0.7rem; background:var(--surface-2); border-radius:99px; border:1px solid var(--border);`;
+  div.textContent = text; box.appendChild(div); box.scrollTop = box.scrollHeight;
 }
 
-$('#createRoomBtn').addEventListener('click', () => {
-  const name = $('#roomNameInput').value.trim() || 'Study Room';
-  const code = genRoomCode();
-  enterRoom(code, name, currentUser.username, true);
-});
-
-$('#joinRoomBtn').addEventListener('click', () => {
-  const code = $('#roomCodeInput').value.trim().toUpperCase();
-  if (!code) return alert('Room code daal.');
-  enterRoom(code, 'Room ' + code, currentUser.username, false);
-});
-
+$('#createRoomBtn').addEventListener('click', () => { const name = $('#roomNameInput').value.trim() || 'Study Room'; enterRoom(genRoomCode(), name, currentUser.username); });
+$('#joinRoomBtn').addEventListener('click', () => { const code = $('#roomCodeInput').value.trim().toUpperCase(); if (!code) return alert('Room code daal.'); enterRoom(code, 'Room ' + code, currentUser.username); });
 $('#leaveRoomBtn').addEventListener('click', leaveRoom);
 $('#sendMsgBtn').addEventListener('click', sendRoomMsg);
 $('#chatInput').addEventListener('keydown', e => e.key === 'Enter' && sendRoomMsg());
-$('#copyCodeBtn').addEventListener('click', () => {
-  if (!currentRoom) return;
-  navigator.clipboard.writeText(currentRoom).then(() => {
-    const b = $('#copyCodeBtn');
-    b.textContent = 'Copied!';
-    setTimeout(() => b.textContent = 'Copy Code', 1500);
-  });
-});
+$('#copyCodeBtn').addEventListener('click', () => { if (!currentRoom) return; navigator.clipboard.writeText(currentRoom).then(() => { const b = $('#copyCodeBtn'); b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy Code', 1500); }); });
 
-// ========== ADMIN ==========
+// ============ ADMIN ============
 $('#adminEnterBtn').addEventListener('click', () => {
   const p = $('#adminPassword').value;
-  if (p === ADMIN_PASSWORD) {
-    $('#adminGate').style.display = 'none';
-    $('#adminContent').style.display = 'block';
-    renderAdminUsers();
-  } else {
-    const e = $('#adminError');
-    e.textContent = 'Galat password.';
-    e.classList.add('show');
-  }
+  if (p === ADMIN_PASSWORD) { $('#adminGate').style.display = 'none'; $('#adminContent').style.display = 'block'; renderAdminUsers(); }
+  else { const e = $('#adminError'); e.textContent = 'Galat password.'; e.classList.add('show'); }
 });
-$('#adminExitBtn').addEventListener('click', () => {
-  $('#adminGate').style.display = 'block';
-  $('#adminContent').style.display = 'none';
-  $('#adminPassword').value = '';
-  $('#adminError').classList.remove('show');
-});
+$('#adminExitBtn').addEventListener('click', () => { $('#adminGate').style.display = 'block'; $('#adminContent').style.display = 'none'; $('#adminPassword').value = ''; $('#adminError').classList.remove('show'); });
 
 function renderAdminUsers() {
-  const list = $('#adminUserList');
-  if (!list) return;
+  const list = $('#adminUserList'); if (!list) return;
   const users = Object.entries(allUsers);
-
   $('#adminTotalUsers').textContent = users.length;
-
-  let friendCount = 0;
-  let pendingCount = 0;
-  // These come from friendRequests
   get(ref(db, 'friendRequests')).then(snap => {
     if (snap.exists()) {
-      const all = snap.val();
-      Object.values(all).forEach(r => {
-        if (r.status === 'accepted') friendCount++;
-        if (r.status === 'pending') pendingCount++;
-      });
-      $('#adminTotalFriends').textContent = friendCount;
-      $('#adminPendingReqs').textContent = pendingCount;
+      const all = snap.val(); let fc = 0, pc = 0;
+      Object.values(all).forEach(r => { if (r.status === 'accepted') fc++; if (r.status === 'pending') pc++; });
+      $('#adminTotalFriends').textContent = fc; $('#adminPendingReqs').textContent = pc;
     }
   });
-
   list.innerHTML = users.map(([u, data]) => {
     const p = data.progress || {};
-    return `
-      <div class="friend-item">
-        <div class="friend-avatar">${esc(u[0].toUpperCase())}</div>
-        <div class="friend-info">
-          <div class="friend-name">${esc(data.username || u)}</div>
-          <div class="friend-sub">${data.class ? CLASS_CONFIG[data.class].label : 'Class ?'} · ${(p.totalMinutes||0)/60}h total · streak ${p.streak||0}</div>
-        </div>
-        <div class="friend-actions">
-          <button class="danger" data-del-user="${u}">Delete</button>
-        </div>
-      </div>
-    `;
+    const on = isOnline(data);
+    return `<div class="friend-item">
+      <div class="friend-avatar">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+      <div class="friend-info"><div class="friend-name">${esc(data.username || u)}</div><div class="friend-sub">${data.class ? CLASS_CONFIG[data.class].label : 'Class ?'} · ${((p.totalMinutes||0)/60).toFixed(1)}h · streak ${p.streak||0} · ${on?'● Online':'● Offline'}</div></div>
+      <div class="friend-actions"><button class="danger" data-del-user="${u}">Delete</button></div>
+    </div>`;
   }).join('');
-
-  list.querySelectorAll('[data-del-user]').forEach(b => {
-    b.addEventListener('click', async () => {
-      const u = b.dataset.delUser;
-      if (!confirm(`Delete user "${u}"?`)) return;
-      await remove(ref(db, 'users/' + u));
-    });
-  });
+  list.querySelectorAll('[data-del-user]').forEach(b => b.addEventListener('click', async () => {
+    const u = b.dataset.delUser;
+    if (!confirm(`Delete user "${u}"?`)) return;
+    await remove(ref(db, 'users/' + u));
+  }));
 }
 
-// ========== BACKUP ==========
+// ============ BACKUP ============
 $('#exportBtn').addEventListener('click', () => {
   const data = {};
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (k.startsWith('jee_')) data[k] = localStorage.getItem(k);
-  }
+  for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('jee_')) data[k] = localStorage.getItem(k); }
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = `jee-backup-${currentUser.username}-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
+  a.href = url; a.download = `jee-backup-${currentUser.username}-${new Date().toISOString().slice(0,10)}.json`; a.click();
   URL.revokeObjectURL(url);
 });
 $('#importBtn').addEventListener('click', () => $('#importFile').click());
 $('#importFile').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => {
-    try {
-      const data = JSON.parse(ev.target.result);
-      for (const k in data) localStorage.setItem(k, data[k]);
-      alert('Restore ho gaya.');
-      location.reload();
-    } catch (err) { alert('File corrupt.'); }
+    try { const data = JSON.parse(ev.target.result); for (const k in data) localStorage.setItem(k, data[k]); alert('Restore ho gaya.'); location.reload(); }
+    catch (err) { alert('File corrupt.'); }
   };
   reader.readAsText(file);
 });
 $('#wipeBtn').addEventListener('click', () => {
   if (!confirm('Pakka? Sab data delete.')) return;
   if (!confirm('Last warning.')) return;
-  const keys = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (k.startsWith('jee_')) keys.push(k);
-  }
-  keys.forEach(k => localStorage.removeItem(k));
-  localStorage.removeItem('jee_session');
-  location.reload();
+  const keys = []; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('jee_')) keys.push(k); }
+  keys.forEach(k => localStorage.removeItem(k)); localStorage.removeItem('jee_session'); location.reload();
 });
 
-// ========== BG ==========
+// ============ BG ============
 (function bg() {
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-  const COUNT = 70;
+  const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d');
+  let W, H, particles = []; const COUNT = 70;
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-  for (let i = 0; i < COUNT; i++) {
-    particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*1.6+0.4, hue: Math.random() > 0.5 ? 160 : 215 });
-  }
+  resize(); window.addEventListener('resize', resize);
+  for (let i = 0; i < COUNT; i++) particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*1.6+0.4, hue: Math.random() > 0.5 ? 160 : 215 });
   function draw() {
     ctx.clearRect(0, 0, W, H);
     for (let i = 0; i < COUNT; i++) {
       const a = particles[i];
       for (let j = i + 1; j < COUNT; j++) {
-        const b = particles[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const d2 = dx*dx + dy*dy;
-        if (d2 < 16000) {
-          const alpha = (1 - d2/16000) * 0.22;
-          ctx.strokeStyle = `hsla(${a.hue}, 80%, 60%, ${alpha})`;
-          ctx.lineWidth = 0.6;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-        }
+        const b = particles[j]; const dx = a.x - b.x, dy = a.y - b.y; const d2 = dx*dx + dy*dy;
+        if (d2 < 16000) { const alpha = (1 - d2/16000) * 0.22; ctx.strokeStyle = `hsla(${a.hue}, 80%, 60%, ${alpha})`; ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
       }
     }
-    for (const p of particles) {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > W) p.vx *= -1;
-      if (p.y < 0 || p.y > H) p.vy *= -1;
-      ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.8)`;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
-    }
+    for (const p of particles) { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > W) p.vx *= -1; if (p.y < 0 || p.y > H) p.vy *= -1; ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.8)`; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }
     requestAnimationFrame(draw);
   }
   draw();
 })();
 
-// ========== INIT ==========
+// ============ INIT ============
 function initAll() {
-  updateUserBox();
-  renderStreak();
-  renderDashboard();
-  renderTasks();
-  renderNotes();
-  renderFormulas();
-  renderPyq();
-  renderMocks();
-  renderMistakes();
-  renderMarks();
-  renderTimetable();
-  renderPdfs();
-  renderPw();
-  renderSubjects();
-  renderSyllabus();
-  renderTimer();
-  renderExam();
-  renderInsights();
-  rotateQuote();
-  listenUsers();
-  listenFriendRequests();
+  updateUserBox(); renderStreak(); renderDashboard(); renderTasks(); renderNotes(); renderFormulas();
+  renderPyq(); renderMocks(); renderMistakes(); renderMarks(); renderTimetable(); renderPdfs();
+  renderPw(); renderSubjects(); renderSyllabus(); renderTimer(); renderExam(); renderInsights(); rotateQuote();
+  listenUsers(); listenFriendRequests();
   setInterval(rotateQuote, 30000);
-  setInterval(() => {
-    if (document.getElementById('assistant').classList.contains('active')) renderInsights();
-  }, 30000);
+  setInterval(() => { if (document.getElementById('assistant').classList.contains('active')) renderInsights(); }, 30000);
 }
 
-// Boot
-if (!checkSession()) {
-  // show auth modal
-  console.log('No session, showing auth');
-}
+if (!checkSession()) { console.log('No session, showing auth'); }
 </script>
 </body>
 </html>
