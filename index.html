@@ -281,7 +281,6 @@
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
   ::-webkit-scrollbar-thumb:hover { background: #2a2a3e; }
 
-  /* CLASS SELECTOR MODAL */
   .class-modal {
     position: fixed; inset: 0; z-index: 9999;
     background: rgba(6,6,10,0.95);
@@ -366,14 +365,6 @@
   .class-badge.cls-11 { background: rgba(102,170,255,0.15); color: #66aaff; }
   .class-badge.cls-12 { background: rgba(255,107,107,0.15); color: #ff6b6b; }
   .class-badge.cls-drop { background: rgba(179,102,255,0.15); color: #b366ff; }
-
-  .conn-status {
-    display: inline-block; font-size: 0.65rem; padding: 0.15rem 0.6rem;
-    border-radius: 99px; margin-left: 0.5rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.08em;
-  }
-  .conn-status.online { background: rgba(0,229,160,0.15); color: var(--accent); }
-  .conn-status.offline { background: rgba(255,85,102,0.15); color: var(--danger); }
 
   @media (max-width: 800px) {
     .app { grid-template-columns: 1fr; }
@@ -729,8 +720,8 @@
     </section>
 
     <section class="page" id="rooms">
-      <h1>Study Rooms <span class="conn-status offline" id="connStatus">● Offline</span></h1>
-      <p class="subtitle">Admin room banaye, code share kare. Koi bhi kisi bhi device se join kar sakta hai.</p>
+      <h1>Study Rooms</h1>
+      <p class="subtitle">Admin room banata hai, code share karta hai, koi bhi same browser ke tab se join karta hai.</p>
 
       <div class="grid">
         <div class="card">
@@ -746,7 +737,7 @@
         </div>
         <div class="card">
           <div class="stat-label">Join Room</div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">Code daalo, andar aa jao. Kisi bhi device se.</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Code daalo, andar aa jao.</div>
           <div class="input-row" style="margin-bottom:0.6rem;">
             <input type="text" id="roomCodeInput" placeholder="Room code (e.g. A1B2C3)">
           </div>
@@ -767,7 +758,6 @@
             </div>
             <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
               <button class="btn sm" id="copyCodeBtn">Copy Code</button>
-              <button class="btn sm" id="copyLinkBtn">Copy Link</button>
               <button class="btn sm danger" id="leaveRoomBtn">Leave</button>
             </div>
           </div>
@@ -792,7 +782,7 @@
         </div>
 
         <div class="stat-sub" style="margin-top:0.5rem;">
-          Link kisi bhi phone pe bhej — woh code ke saath khul jayega, seedha join ho jayega.
+          Naya tab kholo, same URL pe jao, "Study Rooms" mein same code daal ke join karo.
         </div>
       </div>
     </section>
@@ -835,54 +825,6 @@
 </div>
 
 <script>
-// ============================================================
-//  FIREBASE SETUP — Config yahan hai
-// ============================================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push, onValue, set, remove, onDisconnect, query, limitToLast }
-  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCbRyG9x_dc2RxJ902KWF55IFigX_PcHX4",
-  authDomain: "jeewar-90553.firebaseapp.com",
-  databaseURL: "https://jeewar-90553-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "jeewar-90553",
-  storageBucket: "jeewar-90553.firebasestorage.app",
-  messagingSenderId: "369414033029",
-  appId: "1:369414033029:web:9179275034ed05910be3ec"
-};
-
-const fbApp = initializeApp(firebaseConfig);
-const db = getDatabase(fbApp);
-
-// Make available globally for the IIFE below
-window.__firebase = { db, ref, push, onValue, set, remove, onDisconnect, query, limitToLast };
-
-// Update conn status
-const connRef = ref(db, '.info/connected');
-onValue(connRef, (snap) => {
-  const status = document.getElementById('connStatus');
-  if (!status) return;
-  if (snap.val() === true) {
-    status.classList.remove('offline');
-    status.classList.add('online');
-    status.textContent = '● Online';
-  } else {
-    status.classList.remove('online');
-    status.classList.add('offline');
-    status.textContent = '● Offline';
-  }
-});
-
-// Signal that firebase is ready
-window.dispatchEvent(new Event('firebaseReady'));
-</script>
-
-<script>
-// Wait for firebase to be ready
-window.addEventListener('firebaseReady', () => {
-  const { db, ref, push, onValue, set, remove, onDisconnect, query, limitToLast } = window.__firebase;
-
 (() => {
   const $ = s => document.querySelector(s);
   const $$ = s => document.querySelectorAll(s);
@@ -1609,12 +1551,13 @@ window.addEventListener('firebaseReady', () => {
   });
   $('#aiInput').addEventListener('keydown', e => e.key === 'Enter' && $('#aiSend').click());
 
-  // ================= STUDY ROOMS (Firebase) =================
+  // ================= STUDY ROOMS (BroadcastChannel) =================
+  let roomChannel = null;
   let currentRoom = null;
   let currentUser = null;
   let isAdmin = false;
-  let roomUnsub = null;
-  let membersUnsub = null;
+  let roomMemberCount = 1;
+  let knownMembers = new Set();
 
   function genRoomCode() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -1623,98 +1566,111 @@ window.addEventListener('firebaseReady', () => {
     return code;
   }
 
-  async function createRoom() {
-    const name = $('#roomNameInput').value.trim() || 'Study Room';
-    const adminName = $('#adminNameInput').value.trim() || 'Admin';
-    const code = genRoomCode();
-    try {
-      await set(ref(db, 'rooms/' + code + '/meta'), {
-        name, admin: adminName, createdAt: Date.now()
-      });
+  function initRoomUI() {
+    $('#createRoomBtn').addEventListener('click', () => {
+      const name = $('#roomNameInput').value.trim() || 'Study Room';
+      const adminName = $('#adminNameInput').value.trim() || 'Admin';
+      const code = genRoomCode();
       enterRoom(code, name, adminName, true);
-    } catch (err) {
-      alert('Room nahi bana, boss man. Firebase check kar: ' + err.message);
-    }
-  }
+    });
 
-  async function joinRoom() {
-    const code = $('#roomCodeInput').value.trim().toUpperCase();
-    const guestName = $('#guestNameInput').value.trim() || 'Guest';
-    if (!code) return alert('Room code daalo, boss man.');
-    try {
-      const metaRef = ref(db, 'rooms/' + code + '/meta');
-      const snapshot = await new Promise(resolve => onValue(metaRef, resolve, { onlyOnce: true }));
-      if (!snapshot.exists()) {
-        alert('Room nahi mila. Code check kar.');
-        return;
-      }
-      const meta = snapshot.val();
-      enterRoom(code, meta.name, guestName, false);
-    } catch (err) {
-      alert('Join nahi hua: ' + err.message);
-    }
+    $('#joinRoomBtn').addEventListener('click', () => {
+      const code = $('#roomCodeInput').value.trim().toUpperCase();
+      const guestName = $('#guestNameInput').value.trim() || 'Guest';
+      if (!code) return alert('Room code daalo, boss man.');
+      enterRoom(code, 'Room ' + code, guestName, false);
+    });
+
+    $('#leaveRoomBtn').addEventListener('click', leaveRoom);
+    $('#copyCodeBtn').addEventListener('click', () => {
+      if (!currentRoom) return;
+      navigator.clipboard.writeText(currentRoom).then(() => {
+        const b = $('#copyCodeBtn');
+        b.textContent = 'Copied!';
+        setTimeout(() => b.textContent = 'Copy Code', 1500);
+      }).catch(() => alert('Code: ' + currentRoom));
+    });
+    $('#sendMsgBtn').addEventListener('click', sendChatMessage);
+    $('#chatInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') sendChatMessage();
+    });
+
+    const params = new URLSearchParams(location.search);
+    const r = params.get('room');
+    if (r && $('#roomCodeInput')) $('#roomCodeInput').value = r.toUpperCase();
   }
 
   function enterRoom(code, name, userName, admin) {
-    if (roomUnsub) roomUnsub();
-    if (membersUnsub) membersUnsub();
-
+    if (roomChannel) roomChannel.close();
     currentRoom = code;
     currentUser = userName;
     isAdmin = admin;
+    roomMemberCount = 1;
+    knownMembers = new Set([userName]);
+
+    roomChannel = new BroadcastChannel('jee_room_' + code);
+
+    roomChannel.onmessage = (e) => {
+      const msg = e.data;
+      if (msg.type === 'chat') {
+        appendChatMessage(msg.user, msg.text, msg.time, msg.user === currentUser);
+      } else if (msg.type === 'hello') {
+        if (!knownMembers.has(msg.user)) {
+          knownMembers.add(msg.user);
+          roomMemberCount = knownMembers.size;
+          updateMemberCount();
+          appendSystemMessage(`${msg.user} room mein aa gaya`);
+        }
+        roomChannel.postMessage({ type: 'iamhere', user: currentUser });
+      } else if (msg.type === 'iamhere') {
+        if (!knownMembers.has(msg.user)) {
+          knownMembers.add(msg.user);
+          roomMemberCount = knownMembers.size;
+          updateMemberCount();
+        }
+      } else if (msg.type === 'bye') {
+        if (knownMembers.has(msg.user)) {
+          knownMembers.delete(msg.user);
+          roomMemberCount = knownMembers.size;
+          updateMemberCount();
+          appendSystemMessage(`${msg.user} room chhod diya`);
+        }
+      }
+    };
+
+    roomChannel.postMessage({ type: 'hello', user: currentUser });
 
     $('#roomActive').style.display = 'block';
     $('#roomTitle').textContent = name;
     $('#roomCodeDisplay').textContent = code;
     $('#adminBadge').style.display = admin ? 'inline' : 'none';
     $('#chatBox').innerHTML = '';
-    appendSystemMessage(`Room "${name}" mein join ho gaya as ${userName}`);
-
-    // presence
-    const myPresenceRef = ref(db, 'rooms/' + code + '/members/' + userName);
-    set(myPresenceRef, { online: true, joinedAt: Date.now() });
-    onDisconnect(myPresenceRef).remove();
-
-    membersUnsub = onValue(ref(db, 'rooms/' + code + '/members'), snap => {
-      const count = snap.exists() ? Object.keys(snap.val()).length : 0;
-      $('#roomMembers').textContent = count;
-    });
-
-    const msgsRef = query(ref(db, 'rooms/' + code + '/messages'), limitToLast(100));
-    let firstLoad = true;
-    roomUnsub = onValue(msgsRef, snap => {
-      const box = $('#chatBox');
-      if (firstLoad) { box.innerHTML = ''; firstLoad = false; }
-      if (!snap.exists()) return;
-      box.innerHTML = '';
-      const msgs = snap.val();
-      Object.values(msgs).forEach(m => {
-        appendChatMessage(m.user, m.text, m.time, m.user === currentUser);
-      });
-    });
+    appendSystemMessage(`Room "${name}" joined as ${userName}${admin ? ' (Admin)' : ''}`);
+    updateMemberCount();
   }
 
   function leaveRoom() {
-    if (currentRoom && currentUser) {
-      try { remove(ref(db, 'rooms/' + currentRoom + '/members/' + currentUser)); } catch(e){}
+    if (roomChannel) {
+      roomChannel.postMessage({ type: 'bye', user: currentUser });
+      roomChannel.close();
+      roomChannel = null;
     }
-    if (roomUnsub) { roomUnsub(); roomUnsub = null; }
-    if (membersUnsub) { membersUnsub(); membersUnsub = null; }
-    currentRoom = null; currentUser = null; isAdmin = false;
+    currentRoom = null;
+    currentUser = null;
+    isAdmin = false;
+    roomMemberCount = 1;
+    knownMembers = new Set();
     $('#roomActive').style.display = 'none';
     $('#chatBox').innerHTML = '';
   }
 
   function sendChatMessage() {
-    const input = $('#chatInput');
-    const text = input.value.trim();
-    if (!text || !currentRoom) return;
-    push(ref(db, 'rooms/' + currentRoom + '/messages'), {
-      user: currentUser,
-      text: text,
-      time: new Date().toLocaleTimeString()
-    });
-    input.value = '';
+    const text = $('#chatInput').value.trim();
+    if (!text || !roomChannel) return;
+    const time = new Date().toLocaleTimeString();
+    roomChannel.postMessage({ type: 'chat', user: currentUser, text, time });
+    appendChatMessage(currentUser, text, time, true);
+    $('#chatInput').value = '';
   }
 
   function appendChatMessage(user, text, time, isMine) {
@@ -1752,33 +1708,8 @@ window.addEventListener('firebaseReady', () => {
     box.scrollTop = box.scrollHeight;
   }
 
-  function initRoomUI() {
-    $('#createRoomBtn').addEventListener('click', createRoom);
-    $('#joinRoomBtn').addEventListener('click', joinRoom);
-    $('#leaveRoomBtn').addEventListener('click', leaveRoom);
-    $('#sendMsgBtn').addEventListener('click', sendChatMessage);
-    $('#chatInput').addEventListener('keydown', e => e.key === 'Enter' && sendChatMessage());
-    $('#copyCodeBtn').addEventListener('click', () => {
-      if (!currentRoom) return;
-      navigator.clipboard.writeText(currentRoom).then(() => {
-        const b = $('#copyCodeBtn');
-        b.textContent = 'Copied!';
-        setTimeout(() => b.textContent = 'Copy Code', 1500);
-      });
-    });
-    $('#copyLinkBtn').addEventListener('click', () => {
-      if (!currentRoom) return;
-      const link = location.origin + location.pathname + '?room=' + currentRoom;
-      navigator.clipboard.writeText(link).then(() => {
-        const b = $('#copyLinkBtn');
-        b.textContent = 'Link Copied!';
-        setTimeout(() => b.textContent = 'Copy Link', 1500);
-      });
-    });
-
-    const params = new URLSearchParams(location.search);
-    const r = params.get('room');
-    if (r && $('#roomCodeInput')) $('#roomCodeInput').value = r.toUpperCase();
+  function updateMemberCount() {
+    $('#roomMembers').textContent = roomMemberCount;
   }
 
   // ================= BACKUP =================
@@ -1890,7 +1821,6 @@ window.addEventListener('firebaseReady', () => {
     if (document.getElementById('assistant').classList.contains('active')) renderInsights();
   }, 30000);
 })();
-});
 </script>
 </body>
 </html>
