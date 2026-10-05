@@ -280,21 +280,6 @@
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
   ::-webkit-scrollbar-thumb:hover { background: #2a2a3e; }
-  @media (max-width: 800px) {
-    .app { grid-template-columns: 1fr; }
-    .sidebar {
-      position: fixed; bottom: 0; left: 0; right: 0; top: auto;
-      height: auto; flex-direction: row; padding: 0.4rem;
-      border-right: none; border-top: 1px solid var(--border);
-      z-index: 100; overflow-x: auto; gap: 0;
-    }
-    .logo, .streak-box, .sidebar-footer { display: none; }
-    .nav-btn { flex-direction: column; font-size: 0.6rem; padding: 0.4rem 0.55rem; gap: 0.15rem; white-space: nowrap; }
-    .nav-btn .icon { font-size: 1.1rem; }
-    .main { padding: 1.2rem; padding-bottom: 5.5rem; }
-    .timer-display { font-size: 3rem; }
-    .countdown .big { font-size: 1.6rem; }
-    h1 { font-size: 1.3rem; }
 
   /* CLASS SELECTOR MODAL */
   .class-modal {
@@ -381,17 +366,67 @@
   .class-badge.cls-11 { background: rgba(102,170,255,0.15); color: #66aaff; }
   .class-badge.cls-12 { background: rgba(255,107,107,0.15); color: #ff6b6b; }
   .class-badge.cls-drop { background: rgba(179,102,255,0.15); color: #b366ff; }
-    
+
+  @media (max-width: 800px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed; bottom: 0; left: 0; right: 0; top: auto;
+      height: auto; flex-direction: row; padding: 0.4rem;
+      border-right: none; border-top: 1px solid var(--border);
+      z-index: 100; overflow-x: auto; gap: 0;
+    }
+    .logo, .streak-box, .sidebar-footer { display: none; }
+    .nav-btn { flex-direction: column; font-size: 0.6rem; padding: 0.4rem 0.55rem; gap: 0.15rem; white-space: nowrap; }
+    .nav-btn .icon { font-size: 1.1rem; }
+    .main { padding: 1.2rem; padding-bottom: 5.5rem; }
+    .timer-display { font-size: 3rem; }
+    .countdown .big { font-size: 1.6rem; }
+    h1 { font-size: 1.3rem; }
   }
 </style>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
+
+<div class="class-modal" id="classModal">
+  <div class="class-box">
+    <div class="welcome">Welcome to</div>
+    <h2>JEE WAR ROOM</h2>
+    <div class="sub">Apni class select kar, boss man.<br>Iske hisaab se countdown adjust hoga.</div>
+
+    <div class="class-options">
+      <button class="class-opt" data-class="11">
+        <div class="emoji">📘</div>
+        <div class="info">
+          <div class="title">Class 11th</div>
+          <div class="desc">JEE 2028 target · 2 saal ka time</div>
+        </div>
+      </button>
+      <button class="class-opt" data-class="12">
+        <div class="emoji">📕</div>
+        <div class="info">
+          <div class="title">Class 12th</div>
+          <div class="desc">JEE 2027 target · 1 saal ka time</div>
+        </div>
+      </button>
+      <button class="class-opt" data-class="drop">
+        <div class="emoji">🎯</div>
+        <div class="info">
+          <div class="title">Dropper</div>
+          <div class="desc">JEE 2026 target · full focus mode</div>
+        </div>
+      </button>
+    </div>
+
+    <button class="skip-btn" id="skipClassBtn">Skip — main baad mein choose karunga</button>
+  </div>
+</div>
+
 <div class="bg-glow"></div>
 
 <div class="app">
   <aside class="sidebar">
-    <div class="logo">JEE<span>WAR ROOM</span></div>
+    <div class="logo">JEE<span>WAR ROOM <span class="class-badge" id="classBadge" style="display:none;"></span></span></div>
     <div class="streak-box">
       <div class="num" id="streakNum">0</div>
       <div class="lbl">day streak</div>
@@ -418,13 +453,12 @@
   </aside>
 
   <main class="main">
-    <!-- DASHBOARD -->
     <section class="page active" id="dashboard">
       <h1>Dashboard <span class="accent">//</span></h1>
       <p class="subtitle">Aaj ka scene, boss man.</p>
       <div class="countdown">
         <div>
-          <div class="label">JEE Main 2026 Countdown</div>
+          <div class="label">JEE Main Countdown</div>
           <div class="big" id="jeeCountdown">--</div>
           <div class="sub" id="jeeDateSub">Loading...</div>
         </div>
@@ -450,7 +484,6 @@
       </div>
     </section>
 
-    <!-- ROUTINE -->
     <section class="page" id="routine">
       <h1>Daily Routine</h1>
       <p class="subtitle">Aaj ka plan. Ek ek karke tick karo.</p>
@@ -467,7 +500,6 @@
       <div id="taskList"></div>
     </section>
 
-    <!-- TIMER -->
     <section class="page" id="timer">
       <h1>Study Timer</h1>
       <p class="subtitle">Pomodoro. Focus karo, break lo.</p>
@@ -494,7 +526,6 @@
       </div>
     </section>
 
-    <!-- SUBJECTS -->
     <section class="page" id="subjects">
       <h1>Subjects</h1>
       <p class="subtitle">Har subject pe kitna time diya.</p>
@@ -518,7 +549,6 @@
       </div>
     </section>
 
-    <!-- SYLLABUS -->
     <section class="page" id="syllabus">
       <h1>JEE Syllabus Tracker</h1>
       <p class="subtitle">Chapter complete hue toh tick karo. Progress apne aap banega.</p>
@@ -536,7 +566,6 @@
       <div class="chapter-list" id="sylMath"></div>
     </section>
 
-    <!-- TIMETABLE -->
     <section class="page" id="timetable">
       <h1>Weekly Timetable</h1>
       <p class="subtitle">Fixed schedule. Roz yahi follow karo.</p>
@@ -552,7 +581,6 @@
       <div id="ttList"></div>
     </section>
 
-    <!-- NOTES -->
     <section class="page" id="notes">
       <h1>Notes</h1>
       <p class="subtitle">Quick notes. Formula, concept, mistake — kuch bhi.</p>
@@ -564,7 +592,6 @@
       <div class="note-grid" id="noteGrid"></div>
     </section>
 
-    <!-- FORMULAS -->
     <section class="page" id="formulas">
       <h1>Formula Sheet</h1>
       <p class="subtitle">Important formulas ek jagah. Revision fast.</p>
@@ -576,7 +603,6 @@
       <div id="formulaList"></div>
     </section>
 
-    <!-- PYQ -->
     <section class="page" id="pyq">
       <h1>PYQ Log</h1>
       <p class="subtitle">Previous Year Questions practice. Track karo.</p>
@@ -589,7 +615,6 @@
       <div id="pyqList"></div>
     </section>
 
-    <!-- MOCKS -->
     <section class="page" id="mocks">
       <h1>Mock Test Log</h1>
       <p class="subtitle">Har mock ka score. Progress dikhega.</p>
@@ -602,7 +627,6 @@
       <div id="mockList"></div>
     </section>
 
-    <!-- MISTAKES -->
     <section class="page" id="mistakes">
       <h1>Mistake Log</h1>
       <p class="subtitle">Har galti yahan likho. Revision ke waqt yahi goldmine hai.</p>
@@ -614,7 +638,6 @@
       <div id="misList"></div>
     </section>
 
-    <!-- MARKS -->
     <section class="page" id="marks">
       <h1>Marks Tracker</h1>
       <p class="subtitle">Chapter-wise test marks. Weak areas dikhenge.</p>
@@ -627,7 +650,6 @@
       <div id="mkList"></div>
     </section>
 
-    <!-- EXAM MODE -->
     <section class="page" id="exammode">
       <h1>Exam Mode</h1>
       <p class="subtitle">3 ghante, no break. Real JEE simulation.</p>
@@ -647,7 +669,6 @@
       </div>
     </section>
 
-    <!-- PDFs -->
     <section class="page" id="pdfs">
       <h1>PDF Library</h1>
       <p class="subtitle">Books, notes, DPPs. Link paste karo, browser mein khulega.</p>
@@ -659,7 +680,6 @@
       <div id="pdfList"></div>
     </section>
 
-    <!-- PW -->
     <section class="page" id="pw">
       <h1>PW Course Access</h1>
       <p class="subtitle">Tera PW subscription, seedha naye tab mein khulega.</p>
@@ -700,7 +720,6 @@
       <div id="pwList"></div>
     </section>
 
-    <!-- ROOMS -->
     <section class="page" id="rooms">
       <h1>Study Rooms</h1>
       <p class="subtitle">Admin room banata hai, code share karta hai, koi bhi same browser ke tab se join karta hai.</p>
@@ -769,7 +788,6 @@
       </div>
     </section>
 
-    <!-- AI COACH -->
     <section class="page" id="assistant">
       <h1>AI Coach <span class="accent">//</span></h1>
       <p class="subtitle">Tera data padhta hai, seedha bolta hai kya karna hai.</p>
@@ -782,7 +800,6 @@
       <div id="aiChat" style="margin-top:1rem;"></div>
     </section>
 
-    <!-- BACKUP -->
     <section class="page" id="backup">
       <h1>Backup & Restore</h1>
       <p class="subtitle">Apna poora data export karo. Browser clear karne se pehle zaroor.</p>
@@ -883,10 +900,72 @@
     });
   });
 
+  // ================= CLASS SELECTOR =================
+  const CLASS_CONFIG = {
+    '11': { label: '11th', badge: 'cls-11', examDate: '2028-01-24T09:00:00', examLabel: 'JEE Main 2028' },
+    '12': { label: '12th', badge: 'cls-12', examDate: '2027-01-24T09:00:00', examLabel: 'JEE Main 2027' },
+    'drop': { label: 'Dropper', badge: 'cls-drop', examDate: '2026-01-24T09:00:00', examLabel: 'JEE Main 2026' }
+  };
+
+  function getStoredClass() {
+    return localStorage.getItem('jee_class') || null;
+  }
+  function showClassModal() {
+    document.getElementById('classModal').classList.add('show');
+  }
+  function hideClassModal() {
+    document.getElementById('classModal').classList.remove('show');
+  }
+  function setClass(cls) {
+    localStorage.setItem('jee_class', cls);
+    applyClass(cls);
+    hideClassModal();
+  }
+  function applyClass(cls) {
+    const config = CLASS_CONFIG[cls];
+    if (!config) return;
+    const badge = document.getElementById('classBadge');
+    if (badge) {
+      badge.textContent = config.label;
+      badge.className = 'class-badge ' + config.badge;
+      badge.style.display = 'inline-block';
+    }
+    window.__examDate = config.examDate;
+    window.__examLabel = config.examLabel;
+    initCountdown();
+  }
+  function initClassSelector() {
+    const stored = getStoredClass();
+    if (stored) {
+      applyClass(stored);
+    } else {
+      showClassModal();
+    }
+    document.querySelectorAll('.class-opt').forEach(btn => {
+      btn.addEventListener('click', () => setClass(btn.dataset.class));
+    });
+    document.getElementById('skipClassBtn').addEventListener('click', () => {
+      setClass('12');
+    });
+    const badge = document.getElementById('classBadge');
+    if (badge) {
+      badge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showClassModal();
+      });
+    }
+  }
+
   function initCountdown() {
-    const jeeDate = new Date('2026-01-24T09:00:00');
+    const examDateStr = window.__examDate || '2026-01-24T09:00:00';
+    const examLabel = window.__examLabel || 'JEE Main 2026';
+    const jeeDate = new Date(examDateStr);
     const now = new Date();
     const diff = jeeDate - now;
+
+    const labelEl = document.querySelector('.countdown .label');
+    if (labelEl) labelEl.textContent = examLabel + ' Countdown';
+
     if (diff <= 0) {
       $('#jeeCountdown').textContent = 'EXAM TIME';
       $('#daysLeft').textContent = '0';
@@ -898,9 +977,10 @@
     const mins = Math.floor((diff % 3600000) / 60000);
     $('#jeeCountdown').textContent = `${days}d ${hrs}h ${mins}m`;
     $('#daysLeft').textContent = days;
-    $('#jeeDateSub').textContent = 'Expected: Jan 24, 2026';
+    const d = new Date(examDateStr);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    $('#jeeDateSub').textContent = `Expected: ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   }
-  initCountdown();
   setInterval(initCountdown, 60000);
 
   const QUOTES = [
@@ -1755,6 +1835,7 @@
   renderExam();
   renderInsights();
   initRoomUI();
+  initClassSelector();
   setInterval(() => {
     if (document.getElementById('assistant').classList.contains('active')) renderInsights();
   }, 30000);
