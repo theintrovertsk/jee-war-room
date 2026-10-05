@@ -366,6 +366,15 @@
   .class-badge.cls-12 { background: rgba(255,107,107,0.15); color: #ff6b6b; }
   .class-badge.cls-drop { background: rgba(179,102,255,0.15); color: #b366ff; }
 
+  .conn-status {
+    display: inline-block; font-size: 0.65rem; padding: 0.15rem 0.6rem;
+    border-radius: 99px; margin-left: 0.5rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    background: rgba(120,120,140,0.15); color: var(--muted);
+  }
+  .conn-status.online { background: rgba(0,229,160,0.15); color: var(--accent); }
+  .conn-status.offline { background: rgba(255,85,102,0.15); color: var(--danger); }
+
   @media (max-width: 800px) {
     .app { grid-template-columns: 1fr; }
     .sidebar {
@@ -720,8 +729,8 @@
     </section>
 
     <section class="page" id="rooms">
-      <h1>Study Rooms</h1>
-      <p class="subtitle">Admin room banata hai, code share karta hai, koi bhi same browser ke tab se join karta hai.</p>
+      <h1>Study Rooms <span class="conn-status" id="connStatus">● Connecting...</span></h1>
+      <p class="subtitle">Admin room banaye, code share kare. Koi bhi kisi bhi device se join kar sakta hai.</p>
 
       <div class="grid">
         <div class="card">
@@ -737,7 +746,7 @@
         </div>
         <div class="card">
           <div class="stat-label">Join Room</div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">Code daalo, andar aa jao.</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Code daalo, andar aa jao. Kisi bhi device se.</div>
           <div class="input-row" style="margin-bottom:0.6rem;">
             <input type="text" id="roomCodeInput" placeholder="Room code (e.g. A1B2C3)">
           </div>
@@ -758,6 +767,7 @@
             </div>
             <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
               <button class="btn sm" id="copyCodeBtn">Copy Code</button>
+              <button class="btn sm" id="copyLinkBtn">Copy Link</button>
               <button class="btn sm danger" id="leaveRoomBtn">Leave</button>
             </div>
           </div>
@@ -782,7 +792,7 @@
         </div>
 
         <div class="stat-sub" style="margin-top:0.5rem;">
-          Naya tab kholo, same URL pe jao, "Study Rooms" mein same code daal ke join karo.
+          Link kisi bhi phone pe bhej — woh code ke saath khul jayega.
         </div>
       </div>
     </section>
@@ -824,1003 +834,1094 @@
   </main>
 </div>
 
-<script>
-(() => {
-  const $ = s => document.querySelector(s);
-  const $$ = s => document.querySelectorAll(s);
+<script type="module">
+// Firebase imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push, onValue, set, remove, onDisconnect, query, limitToLast }
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  const SYLLABUS = {
-    phy: ['Units & Measurements','Kinematics','Laws of Motion','Work Energy Power','Rotational Motion','Gravitation','Mechanical Properties of Solids','Mechanical Properties of Fluids','Thermal Properties','Thermodynamics','Kinetic Theory','Oscillations','Waves','Electrostatics','Current Electricity','Moving Charges & Magnetism','Magnetism & Matter','EMI','AC','EM Waves','Ray Optics','Wave Optics','Dual Nature','Atoms','Nuclei','Semiconductors'],
-    chem: ['Some Basic Concepts','Structure of Atom','Classification of Elements','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','s-Block','p-Block','Organic Basics','Hydrocarbons','Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','Metallurgy','p-Block (Gr 13-14)','d & f Block','Coordination Compounds','Haloalkanes','Alcohols Phenols Ethers','Aldehydes Ketones Acids','Amines','Biomolecules','Polymers','Chemistry in Everyday Life'],
-    math: ['Sets Relations Functions','Complex Numbers','Quadratic Equations','Matrices','Determinants','Permutations Combinations','Binomial Theorem','Sequences & Series','Limits','Continuity & Differentiability','Differentiation','Application of Derivatives','Integrals','Application of Integrals','Differential Equations','Straight Lines','Circles','Conic Sections','3D Geometry','Vectors','Statistics','Probability','Trigonometry','Inverse Trigonometry','Mathematical Reasoning']
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyCbRyG9x_dc2RxJ902KWF55IFigX_PcHX4",
+  authDomain: "jeewar-90553.firebaseapp.com",
+  databaseURL: "https://jeewar-90553-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "jeewar-90553",
+  storageBucket: "jeewar-90553.firebasestorage.app",
+  messagingSenderId: "369414033029",
+  appId: "1:369414033029:web:9179275034ed05910be3ec"
+};
 
-  const store = {
-    tasks: JSON.parse(localStorage.getItem('jee_tasks') || '[]'),
-    notes: JSON.parse(localStorage.getItem('jee_notes') || '[]'),
-    pdfs:  JSON.parse(localStorage.getItem('jee_pdfs')  || '[]'),
-    formulas: JSON.parse(localStorage.getItem('jee_formulas') || '[]'),
-    pyq: JSON.parse(localStorage.getItem('jee_pyq') || '[]'),
-    mocks: JSON.parse(localStorage.getItem('jee_mocks') || '[]'),
-    mistakes: JSON.parse(localStorage.getItem('jee_mistakes') || '[]'),
-    marks: JSON.parse(localStorage.getItem('jee_marks') || '[]'),
-    timetable: JSON.parse(localStorage.getItem('jee_timetable') || '[]'),
-    pwLinks: JSON.parse(localStorage.getItem('jee_pwLinks') || '[]'),
-    subjects: JSON.parse(localStorage.getItem('jee_subjects') || '{"phy":0,"chem":0,"math":0}'),
-    syllabus: JSON.parse(localStorage.getItem('jee_syllabus') || '{}'),
-    totalMinutes: parseInt(localStorage.getItem('jee_totalMin') || '0'),
-    todayMinutes: parseInt(localStorage.getItem('jee_todayMin') || '0'),
-    todayDate: localStorage.getItem('jee_todayDate') || new Date().toDateString(),
-    streak: parseInt(localStorage.getItem('jee_streak') || '0'),
-    lastActive: localStorage.getItem('jee_lastActive') || '',
-  };
+let db = null;
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getDatabase(app);
+  console.log('Firebase initialized successfully');
+} catch (err) {
+  console.error('Firebase init failed:', err);
+}
 
-  const today = new Date().toDateString();
-  if (store.todayDate !== today) {
-    const yesterday = new Date(Date.now() - 86400000).toDateString();
-    if (store.lastActive === yesterday) store.streak += 1;
-    else if (store.lastActive !== today) store.streak = 1;
-    store.lastActive = today;
-    store.todayDate = today;
-    store.todayMinutes = 0;
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+// ================= CLASS SELECTOR =================
+const CLASS_CONFIG = {
+  '11': { label: '11th', badge: 'cls-11', examDate: '2028-01-24T09:00:00', examLabel: 'JEE Main 2028' },
+  '12': { label: '12th', badge: 'cls-12', examDate: '2027-01-24T09:00:00', examLabel: 'JEE Main 2027' },
+  'drop': { label: 'Dropper', badge: 'cls-drop', examDate: '2026-01-24T09:00:00', examLabel: 'JEE Main 2026' }
+};
+
+function getStoredClass() { return localStorage.getItem('jee_class') || null; }
+function showClassModal() { document.getElementById('classModal').classList.add('show'); }
+function hideClassModal() { document.getElementById('classModal').classList.remove('show'); }
+function setClass(cls) {
+  localStorage.setItem('jee_class', cls);
+  applyClass(cls);
+  hideClassModal();
+}
+function applyClass(cls) {
+  const config = CLASS_CONFIG[cls];
+  if (!config) return;
+  const badge = document.getElementById('classBadge');
+  if (badge) {
+    badge.textContent = config.label;
+    badge.className = 'class-badge ' + config.badge;
+    badge.style.display = 'inline-block';
   }
-  if (!store.streak) store.streak = 1;
-  if (!store.lastActive) store.lastActive = today;
-
-  function saveAll() {
-    localStorage.setItem('jee_tasks', JSON.stringify(store.tasks));
-    localStorage.setItem('jee_notes', JSON.stringify(store.notes));
-    localStorage.setItem('jee_pdfs', JSON.stringify(store.pdfs));
-    localStorage.setItem('jee_formulas', JSON.stringify(store.formulas));
-    localStorage.setItem('jee_pyq', JSON.stringify(store.pyq));
-    localStorage.setItem('jee_mocks', JSON.stringify(store.mocks));
-    localStorage.setItem('jee_mistakes', JSON.stringify(store.mistakes));
-    localStorage.setItem('jee_marks', JSON.stringify(store.marks));
-    localStorage.setItem('jee_timetable', JSON.stringify(store.timetable));
-    localStorage.setItem('jee_pwLinks', JSON.stringify(store.pwLinks));
-    localStorage.setItem('jee_subjects', JSON.stringify(store.subjects));
-    localStorage.setItem('jee_syllabus', JSON.stringify(store.syllabus));
-    localStorage.setItem('jee_totalMin', store.totalMinutes);
-    localStorage.setItem('jee_todayMin', store.todayMinutes);
-    localStorage.setItem('jee_todayDate', store.todayDate);
-    localStorage.setItem('jee_streak', store.streak);
-    localStorage.setItem('jee_lastActive', store.lastActive);
-    renderDashboard();
-    renderStreak();
+  window.__examDate = config.examDate;
+  window.__examLabel = config.examLabel;
+  initCountdown();
+}
+function initClassSelector() {
+  const stored = getStoredClass();
+  if (stored) applyClass(stored); else showClassModal();
+  document.querySelectorAll('.class-opt').forEach(btn => {
+    btn.addEventListener('click', () => setClass(btn.dataset.class));
+  });
+  document.getElementById('skipClassBtn').addEventListener('click', () => setClass('12'));
+  const badge = document.getElementById('classBadge');
+  if (badge) {
+    badge.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showClassModal();
+    });
   }
-  function renderStreak() { $('#streakNum').textContent = store.streak; }
+}
 
-  $$('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      $$('.nav-btn').forEach(b => b.classList.remove('active'));
-      $$('.page').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      $('#' + btn.dataset.page).classList.add('active');
+function initCountdown() {
+  const examDateStr = window.__examDate || '2026-01-24T09:00:00';
+  const examLabel = window.__examLabel || 'JEE Main 2026';
+  const jeeDate = new Date(examDateStr);
+  const now = new Date();
+  const diff = jeeDate - now;
+  const labelEl = document.querySelector('.countdown .label');
+  if (labelEl) labelEl.textContent = examLabel + ' Countdown';
+  if (diff <= 0) {
+    $('#jeeCountdown').textContent = 'EXAM TIME';
+    $('#daysLeft').textContent = '0';
+    $('#jeeDateSub').textContent = 'Go crush it.';
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hrs = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  $('#jeeCountdown').textContent = `${days}d ${hrs}h ${mins}m`;
+  $('#daysLeft').textContent = days;
+  const d = new Date(examDateStr);
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  $('#jeeDateSub').textContent = `Expected: ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+setInterval(initCountdown, 60000);
+
+// ================= DATA =================
+const SYLLABUS = {
+  phy: ['Units & Measurements','Kinematics','Laws of Motion','Work Energy Power','Rotational Motion','Gravitation','Mechanical Properties of Solids','Mechanical Properties of Fluids','Thermal Properties','Thermodynamics','Kinetic Theory','Oscillations','Waves','Electrostatics','Current Electricity','Moving Charges & Magnetism','Magnetism & Matter','EMI','AC','EM Waves','Ray Optics','Wave Optics','Dual Nature','Atoms','Nuclei','Semiconductors'],
+  chem: ['Some Basic Concepts','Structure of Atom','Classification of Elements','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','s-Block','p-Block','Organic Basics','Hydrocarbons','Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','Metallurgy','p-Block (Gr 13-14)','d & f Block','Coordination Compounds','Haloalkanes','Alcohols Phenols Ethers','Aldehydes Ketones Acids','Amines','Biomolecules','Polymers','Chemistry in Everyday Life'],
+  math: ['Sets Relations Functions','Complex Numbers','Quadratic Equations','Matrices','Determinants','Permutations Combinations','Binomial Theorem','Sequences & Series','Limits','Continuity & Differentiability','Differentiation','Application of Derivatives','Integrals','Application of Integrals','Differential Equations','Straight Lines','Circles','Conic Sections','3D Geometry','Vectors','Statistics','Probability','Trigonometry','Inverse Trigonometry','Mathematical Reasoning']
+};
+
+const store = {
+  tasks: JSON.parse(localStorage.getItem('jee_tasks') || '[]'),
+  notes: JSON.parse(localStorage.getItem('jee_notes') || '[]'),
+  pdfs:  JSON.parse(localStorage.getItem('jee_pdfs')  || '[]'),
+  formulas: JSON.parse(localStorage.getItem('jee_formulas') || '[]'),
+  pyq: JSON.parse(localStorage.getItem('jee_pyq') || '[]'),
+  mocks: JSON.parse(localStorage.getItem('jee_mocks') || '[]'),
+  mistakes: JSON.parse(localStorage.getItem('jee_mistakes') || '[]'),
+  marks: JSON.parse(localStorage.getItem('jee_marks') || '[]'),
+  timetable: JSON.parse(localStorage.getItem('jee_timetable') || '[]'),
+  pwLinks: JSON.parse(localStorage.getItem('jee_pwLinks') || '[]'),
+  subjects: JSON.parse(localStorage.getItem('jee_subjects') || '{"phy":0,"chem":0,"math":0}'),
+  syllabus: JSON.parse(localStorage.getItem('jee_syllabus') || '{}'),
+  totalMinutes: parseInt(localStorage.getItem('jee_totalMin') || '0'),
+  todayMinutes: parseInt(localStorage.getItem('jee_todayMin') || '0'),
+  todayDate: localStorage.getItem('jee_todayDate') || new Date().toDateString(),
+  streak: parseInt(localStorage.getItem('jee_streak') || '0'),
+  lastActive: localStorage.getItem('jee_lastActive') || '',
+};
+
+const today = new Date().toDateString();
+if (store.todayDate !== today) {
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (store.lastActive === yesterday) store.streak += 1;
+  else if (store.lastActive !== today) store.streak = 1;
+  store.lastActive = today;
+  store.todayDate = today;
+  store.todayMinutes = 0;
+}
+if (!store.streak) store.streak = 1;
+if (!store.lastActive) store.lastActive = today;
+
+function saveAll() {
+  localStorage.setItem('jee_tasks', JSON.stringify(store.tasks));
+  localStorage.setItem('jee_notes', JSON.stringify(store.notes));
+  localStorage.setItem('jee_pdfs', JSON.stringify(store.pdfs));
+  localStorage.setItem('jee_formulas', JSON.stringify(store.formulas));
+  localStorage.setItem('jee_pyq', JSON.stringify(store.pyq));
+  localStorage.setItem('jee_mocks', JSON.stringify(store.mocks));
+  localStorage.setItem('jee_mistakes', JSON.stringify(store.mistakes));
+  localStorage.setItem('jee_marks', JSON.stringify(store.marks));
+  localStorage.setItem('jee_timetable', JSON.stringify(store.timetable));
+  localStorage.setItem('jee_pwLinks', JSON.stringify(store.pwLinks));
+  localStorage.setItem('jee_subjects', JSON.stringify(store.subjects));
+  localStorage.setItem('jee_syllabus', JSON.stringify(store.syllabus));
+  localStorage.setItem('jee_totalMin', store.totalMinutes);
+  localStorage.setItem('jee_todayMin', store.todayMinutes);
+  localStorage.setItem('jee_todayDate', store.todayDate);
+  localStorage.setItem('jee_streak', store.streak);
+  localStorage.setItem('jee_lastActive', store.lastActive);
+  renderDashboard();
+  renderStreak();
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+function escAttr(s) { return esc(s); }
+
+// ================= NAV =================
+$$('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('.nav-btn').forEach(b => b.classList.remove('active'));
+    $$('.page').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    $('#' + btn.dataset.page).classList.add('active');
+  });
+});
+
+// ================= QUOTES =================
+const QUOTES = [
+  { q: "Arre bhai, aaj ka grind kal ka rank banayega.", a: "Axiom" },
+  { q: "Toppers koi alag species nahi hai. Bas consistent hote hai.", a: "War Room" },
+  { q: "Ek din ka gap bhi rank girada hai. Roz baitho.", a: "Reality Check" },
+  { q: "Formula bhool gaya? 10 min revision. Abhi.", a: "Axiom" },
+  { q: "PYQ is the cheat code. Ignore kiya toh pachtayega.", a: "War Room" },
+  { q: "Mock mein low score aya? Good. Galti yahi pakdi.", a: "Axiom" },
+  { q: "Neend puri kar. Burnout topper ko bhi todta hai.", a: "Coach" },
+  { q: "8 ghante focus > 14 ghante distracted.", a: "Rule" },
+  { q: "Revise, revise, revise. Naya padhne se pehle purana pakka.", a: "Axiom" },
+  { q: "Tera competition bhi thak gaya hai. Tu mat thak.", a: "War Room" }
+];
+function rotateQuote() {
+  const x = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  $('#motivationQuote').textContent = `"${x.q}"`;
+  $('#motivationAuthor').textContent = `— ${x.a}`;
+}
+
+// ================= RENDER FUNCTIONS =================
+function renderStreak() { $('#streakNum').textContent = store.streak; }
+
+function renderDashboard() {
+  const pending = store.tasks.filter(t => !t.done).length;
+  $('#statTasks').textContent = pending;
+  $('#statTasksSub').textContent = pending === 0 ? 'sab clear hai' : 'pending';
+  $('#statTime').textContent = formatMin(store.todayMinutes);
+  $('#statTotal').textContent = (store.totalMinutes / 60).toFixed(1) + 'h';
+  $('#statMocks').textContent = store.mocks.length;
+  if (store.mocks.length) {
+    const avg = store.mocks.reduce((a, m) => a + (m.score / m.total) * 100, 0) / store.mocks.length;
+    $('#statAvg').textContent = `avg ${avg.toFixed(1)}%`;
+  } else $('#statAvg').textContent = 'avg --';
+  const goalMin = 8 * 60;
+  const pct = Math.min(100, (store.todayMinutes / goalMin) * 100);
+  $('#dailyProgress').style.width = pct + '%';
+  $('#dailyProgressText').textContent = `${(store.todayMinutes/60).toFixed(1)} / 8 hours`;
+  $('#timerToday').textContent = store.todayMinutes;
+}
+function formatMin(m) { return m < 60 ? m + 'm' : (m/60).toFixed(1) + 'h'; }
+function cap(s) { return s[0].toUpperCase() + s.slice(1); }
+function sylKey(sub, idx) { return `${sub}_${idx}`; }
+
+function renderTasks() {
+  const list = $('#taskList');
+  if (!store.tasks.length) { list.innerHTML = '<div class="empty">Koi task nahi. Upar se add karo.</div>'; return; }
+  list.innerHTML = store.tasks.map((t, i) => `
+    <div class="task ${t.done ? 'done' : ''}">
+      <input type="checkbox" data-idx="${i}" ${t.done ? 'checked' : ''}>
+      <span class="task-text">${esc(t.text)}</span>
+      <span class="task-subject ${t.subject}">${t.subject}</span>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>
+  `).join('');
+  list.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', e => {
+      store.tasks[e.target.dataset.idx].done = e.target.checked;
+      saveAll(); renderTasks();
     });
   });
-
-  // ================= CLASS SELECTOR =================
-  const CLASS_CONFIG = {
-    '11': { label: '11th', badge: 'cls-11', examDate: '2028-01-24T09:00:00', examLabel: 'JEE Main 2028' },
-    '12': { label: '12th', badge: 'cls-12', examDate: '2027-01-24T09:00:00', examLabel: 'JEE Main 2027' },
-    'drop': { label: 'Dropper', badge: 'cls-drop', examDate: '2026-01-24T09:00:00', examLabel: 'JEE Main 2026' }
-  };
-  function getStoredClass() { return localStorage.getItem('jee_class') || null; }
-  function showClassModal() { document.getElementById('classModal').classList.add('show'); }
-  function hideClassModal() { document.getElementById('classModal').classList.remove('show'); }
-  function setClass(cls) {
-    localStorage.setItem('jee_class', cls);
-    applyClass(cls);
-    hideClassModal();
-  }
-  function applyClass(cls) {
-    const config = CLASS_CONFIG[cls];
-    if (!config) return;
-    const badge = document.getElementById('classBadge');
-    if (badge) {
-      badge.textContent = config.label;
-      badge.className = 'class-badge ' + config.badge;
-      badge.style.display = 'inline-block';
-    }
-    window.__examDate = config.examDate;
-    window.__examLabel = config.examLabel;
-    initCountdown();
-  }
-  function initClassSelector() {
-    const stored = getStoredClass();
-    if (stored) applyClass(stored); else showClassModal();
-    document.querySelectorAll('.class-opt').forEach(btn => {
-      btn.addEventListener('click', () => setClass(btn.dataset.class));
+  list.querySelectorAll('.task-del').forEach(b => {
+    b.addEventListener('click', e => {
+      store.tasks.splice(e.target.dataset.idx, 1);
+      saveAll(); renderTasks();
     });
-    document.getElementById('skipClassBtn').addEventListener('click', () => setClass('12'));
-    const badge = document.getElementById('classBadge');
-    if (badge) {
-      badge.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showClassModal();
-      });
-    }
-  }
+  });
+}
 
-  function initCountdown() {
-    const examDateStr = window.__examDate || '2026-01-24T09:00:00';
-    const examLabel = window.__examLabel || 'JEE Main 2026';
-    const jeeDate = new Date(examDateStr);
-    const now = new Date();
-    const diff = jeeDate - now;
-    const labelEl = document.querySelector('.countdown .label');
-    if (labelEl) labelEl.textContent = examLabel + ' Countdown';
-    if (diff <= 0) {
-      $('#jeeCountdown').textContent = 'EXAM TIME';
-      $('#daysLeft').textContent = '0';
-      $('#jeeDateSub').textContent = 'Go crush it.';
-      return;
-    }
-    const days = Math.floor(diff / 86400000);
-    const hrs = Math.floor((diff % 86400000) / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
-    $('#jeeCountdown').textContent = `${days}d ${hrs}h ${mins}m`;
-    $('#daysLeft').textContent = days;
-    const d = new Date(examDateStr);
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    $('#jeeDateSub').textContent = `Expected: ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-  }
-  setInterval(initCountdown, 60000);
+function renderNotes() {
+  const g = $('#noteGrid');
+  if (!store.notes.length) { g.innerHTML = '<div class="empty">Koi note nahi. Upar se save karo.</div>'; return; }
+  g.innerHTML = store.notes.map((n, i) => `
+    <div class="note">
+      <button class="note-del" data-idx="${i}">×</button>
+      <div class="note-title">${esc(n.title)}</div>
+      <div class="note-body">${esc(n.body)}</div>
+    </div>
+  `).join('');
+  g.querySelectorAll('.note-del').forEach(b => {
+    b.addEventListener('click', e => {
+      store.notes.splice(e.target.dataset.idx, 1);
+      saveAll(); renderNotes();
+    });
+  });
+}
 
-  const QUOTES = [
-    { q: "Arre bhai, aaj ka grind kal ka rank banayega.", a: "Axiom" },
-    { q: "Toppers koi alag species nahi hai. Bas consistent hote hai.", a: "War Room" },
-    { q: "Ek din ka gap bhi rank girada hai. Roz baitho.", a: "Reality Check" },
-    { q: "Formula bhool gaya? 10 min revision. Abhi.", a: "Axiom" },
-    { q: "PYQ is the cheat code. Ignore kiya toh pachtayega.", a: "War Room" },
-    { q: "Mock mein low score aya? Good. Galti yahi pakdi.", a: "Axiom" },
-    { q: "Neend puri kar. Burnout topper ko bhi todta hai.", a: "Coach" },
-    { q: "8 ghante focus > 14 ghante distracted.", a: "Rule" },
-    { q: "Revise, revise, revise. Naya padhne se pehle purana pakka.", a: "Axiom" },
-    { q: "Tera competition bhi thak gaya hai. Tu mat thak.", a: "War Room" }
-  ];
-  function rotateQuote() {
-    const x = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-    $('#motivationQuote').textContent = `"${x.q}"`;
-    $('#motivationAuthor').textContent = `— ${x.a}`;
-  }
-  rotateQuote();
-  setInterval(rotateQuote, 30000);
+function renderFormulas() {
+  const list = $('#formulaList');
+  if (!store.formulas.length) { list.innerHTML = '<div class="empty">Koi formula nahi. Upar se add karo.</div>'; return; }
+  list.innerHTML = store.formulas.map((f, i) => `
+    <div class="formula-card">
+      <button class="formula-del" data-idx="${i}">×</button>
+      <div class="f-title">${esc(f.title)}</div>
+      <div class="f-body">${esc(f.body)}</div>
+    </div>
+  `).join('');
+  list.querySelectorAll('.formula-del').forEach(b => {
+    b.addEventListener('click', e => {
+      store.formulas.splice(e.target.dataset.idx, 1);
+      saveAll(); renderFormulas();
+    });
+  });
+}
 
-  function renderDashboard() {
-    const pending = store.tasks.filter(t => !t.done).length;
-    $('#statTasks').textContent = pending;
-    $('#statTasksSub').textContent = pending === 0 ? 'sab clear hai' : 'pending';
-    $('#statTime').textContent = formatMin(store.todayMinutes);
-    $('#statTotal').textContent = (store.totalMinutes / 60).toFixed(1) + 'h';
-    $('#statMocks').textContent = store.mocks.length;
-    if (store.mocks.length) {
-      const avg = store.mocks.reduce((a, m) => a + (m.score / m.total) * 100, 0) / store.mocks.length;
-      $('#statAvg').textContent = `avg ${avg.toFixed(1)}%`;
-    } else $('#statAvg').textContent = 'avg --';
-    const goalMin = 8 * 60;
-    const pct = Math.min(100, (store.todayMinutes / goalMin) * 100);
-    $('#dailyProgress').style.width = pct + '%';
-    $('#dailyProgressText').textContent = `${(store.todayMinutes/60).toFixed(1)} / 8 hours`;
-    $('#timerToday').textContent = store.todayMinutes;
-  }
-  function formatMin(m) { return m < 60 ? m + 'm' : (m/60).toFixed(1) + 'h'; }
+function renderPyq() {
+  const list = $('#pyqList');
+  if (!store.pyq.length) { list.innerHTML = '<div class="empty">Koi PYQ log nahi. Upar se add karo.</div>'; return; }
+  list.innerHTML = store.pyq.map((p, i) => {
+    const pct = p.total ? (p.solved / p.total) * 100 : 0;
+    const cls = pct >= 80 ? '' : pct >= 50 ? 'mid' : 'bad';
+    return `<div class="log-item">
+      <div class="score ${cls}">${p.solved}/${p.total}</div>
+      <div class="info"><div class="t">${esc(p.topic)}</div><div class="d">${pct.toFixed(0)}% solved</div></div>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.task-del').forEach(b => {
+    b.addEventListener('click', e => {
+      store.pyq.splice(e.target.dataset.idx, 1);
+      saveAll(); renderPyq();
+    });
+  });
+}
 
-  function renderTasks() {
-    const list = $('#taskList');
-    if (!store.tasks.length) { list.innerHTML = '<div class="empty">Koi task nahi. Upar se add karo.</div>'; return; }
-    list.innerHTML = store.tasks.map((t, i) => `
-      <div class="task ${t.done ? 'done' : ''}">
-        <input type="checkbox" data-idx="${i}" ${t.done ? 'checked' : ''}>
-        <span class="task-text">${esc(t.text)}</span>
-        <span class="task-subject ${t.subject}">${t.subject}</span>
-        <button class="task-del" data-idx="${i}">×</button>
+function renderMocks() {
+  const list = $('#mockList');
+  if (!store.mocks.length) { list.innerHTML = '<div class="empty">Koi mock log nahi. Upar se add karo.</div>'; return; }
+  list.innerHTML = store.mocks.map((m, i) => {
+    const pct = (m.score / m.total) * 100;
+    const cls = pct >= 70 ? '' : pct >= 45 ? 'mid' : 'bad';
+    return `<div class="log-item">
+      <div class="score ${cls}">${pct.toFixed(0)}%</div>
+      <div class="info"><div class="t">${esc(m.name)}</div><div class="d">${m.score} / ${m.total}</div></div>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.task-del').forEach(b => {
+    b.addEventListener('click', e => {
+      store.mocks.splice(e.target.dataset.idx, 1);
+      saveAll(); renderMocks();
+    });
+  });
+}
+
+function renderMistakes() {
+  const list = $('#misList');
+  if (!store.mistakes.length) { list.innerHTML = '<div class="empty">Koi mistake log nahi. Upar se add karo.</div>'; return; }
+  list.innerHTML = store.mistakes.map((m, i) => `
+    <div class="log-item">
+      <div class="score" style="font-size:0.75rem; width:80px;">${esc(m.subject)}</div>
+      <div class="info"><div class="t">${esc(m.desc)}</div></div>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>
+  `).join('');
+  list.querySelectorAll('.task-del').forEach(b => {
+    b.addEventListener('click', e => {
+      store.mistakes.splice(e.target.dataset.idx, 1);
+      saveAll(); renderMistakes();
+    });
+  });
+}
+
+function renderMarks() {
+  const list = $('#mkList');
+  if (!store.marks.length) { list.innerHTML = '<div class="empty">Koi marks log nahi. Upar se add karo.</div>'; return; }
+  list.innerHTML = store.marks.map((m, i) => {
+    const pct = (m.score / m.total) * 100;
+    const cls = pct >= 70 ? '' : pct >= 45 ? 'mid' : 'bad';
+    return `<div class="log-item">
+      <div class="score ${cls}">${pct.toFixed(0)}%</div>
+      <div class="info"><div class="t">${esc(m.chapter)}</div><div class="d">${m.score} / ${m.total}</div></div>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.task-del').forEach(b => {
+    b.addEventListener('click', e => {
+      store.marks.splice(e.target.dataset.idx, 1);
+      saveAll(); renderMarks();
+    });
+  });
+}
+
+function renderTimetable() {
+  const list = $('#ttList');
+  if (!store.timetable.length) { list.innerHTML = '<div class="empty">Koi schedule nahi. Upar se add karo.</div>'; return; }
+  const order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const sorted = [...store.timetable].sort((a,b) => order.indexOf(a.day) - order.indexOf(b.day));
+  list.innerHTML = sorted.map(t => `
+    <div class="log-item">
+      <div class="score" style="font-size:0.85rem; width:90px;">${esc(t.day)}</div>
+      <div class="info"><div class="t">${esc(t.task)}</div><div class="d">${esc(t.time)}</div></div>
+      <button class="task-del" data-idx="${store.timetable.indexOf(t)}">×</button>
+    </div>
+  `).join('');
+  list.querySelectorAll('.task-del').forEach(b => {
+    b.addEventListener('click', e => {
+      store.timetable.splice(e.target.dataset.idx, 1);
+      saveAll(); renderTimetable();
+    });
+  });
+}
+
+function renderPdfs() {
+  const list = $('#pdfList');
+  if (!store.pdfs.length) { list.innerHTML = '<div class="empty">Koi PDF nahi. Upar link paste karo.</div>'; return; }
+  list.innerHTML = store.pdfs.map((p, i) => `
+    <div class="pdf-item">
+      <div class="pdf-icon">▤</div>
+      <div class="pdf-info"><div class="pdf-title">${esc(p.title)}</div><div class="pdf-meta">${esc(p.url)}</div></div>
+      <div class="pdf-actions">
+        <a href="${escAttr(p.url)}" target="_blank" rel="noopener">Open</a>
+        <button data-idx="${i}">Del</button>
       </div>
-    `).join('');
-    list.querySelectorAll('input[type=checkbox]').forEach(cb => {
-      cb.addEventListener('change', e => {
-        store.tasks[e.target.dataset.idx].done = e.target.checked;
-        saveAll(); renderTasks();
-      });
+    </div>
+  `).join('');
+  list.querySelectorAll('.pdf-actions button').forEach(b => {
+    b.addEventListener('click', e => {
+      store.pdfs.splice(e.target.dataset.idx, 1);
+      saveAll(); renderPdfs();
     });
-    list.querySelectorAll('.task-del').forEach(b => {
-      b.addEventListener('click', e => {
-        store.tasks.splice(e.target.dataset.idx, 1);
-        saveAll(); renderTasks();
-      });
-    });
-  }
-  $('#addTask').addEventListener('click', () => {
-    const text = $('#taskInput').value.trim();
-    if (!text) return;
-    store.tasks.push({ text, subject: $('#taskSubject').value, done: false });
-    $('#taskInput').value = '';
-    saveAll(); renderTasks();
   });
-  $('#taskInput').addEventListener('keydown', e => e.key === 'Enter' && $('#addTask').click());
+}
 
-  function renderNotes() {
-    const g = $('#noteGrid');
-    if (!store.notes.length) { g.innerHTML = '<div class="empty">Koi note nahi. Upar se save karo.</div>'; return; }
-    g.innerHTML = store.notes.map((n, i) => `
-      <div class="note">
-        <button class="note-del" data-idx="${i}">×</button>
-        <div class="note-title">${esc(n.title)}</div>
-        <div class="note-body">${esc(n.body)}</div>
+function renderPw() {
+  const list = $('#pwList');
+  if (!store.pwLinks.length) { list.innerHTML = '<div class="empty">Koi custom link nahi. Upar se add karo.</div>'; return; }
+  list.innerHTML = store.pwLinks.map((p, i) => `
+    <div class="pdf-item">
+      <div class="pdf-icon">▶</div>
+      <div class="pdf-info"><div class="pdf-title">${esc(p.name)}</div><div class="pdf-meta">${esc(p.url)}</div></div>
+      <div class="pdf-actions">
+        <a href="${escAttr(p.url)}" target="_blank" rel="noopener">Open</a>
+        <button data-idx="${i}">Del</button>
       </div>
-    `).join('');
-    g.querySelectorAll('.note-del').forEach(b => {
-      b.addEventListener('click', e => {
-        store.notes.splice(e.target.dataset.idx, 1);
-        saveAll(); renderNotes();
-      });
-    });
-  }
-  $('#addNote').addEventListener('click', () => {
-    const title = $('#noteTitle').value.trim();
-    const body = $('#noteBody').value.trim();
-    if (!title && !body) return;
-    store.notes.push({ title: title || 'Untitled', body });
-    $('#noteTitle').value = ''; $('#noteBody').value = '';
-    saveAll(); renderNotes();
-  });
-
-  function renderFormulas() {
-    const list = $('#formulaList');
-    if (!store.formulas.length) { list.innerHTML = '<div class="empty">Koi formula nahi. Upar se add karo.</div>'; return; }
-    list.innerHTML = store.formulas.map((f, i) => `
-      <div class="formula-card">
-        <button class="formula-del" data-idx="${i}">×</button>
-        <div class="f-title">${esc(f.title)}</div>
-        <div class="f-body">${esc(f.body)}</div>
-      </div>
-    `).join('');
-    list.querySelectorAll('.formula-del').forEach(b => {
-      b.addEventListener('click', e => {
-        store.formulas.splice(e.target.dataset.idx, 1);
-        saveAll(); renderFormulas();
-      });
-    });
-  }
-  $('#addFormula').addEventListener('click', () => {
-    const title = $('#fTitle').value.trim();
-    const body = $('#fBody').value.trim();
-    if (!title || !body) return;
-    store.formulas.push({ title, body });
-    $('#fTitle').value = ''; $('#fBody').value = '';
-    saveAll(); renderFormulas();
-  });
-
-  function renderPyq() {
-    const list = $('#pyqList');
-    if (!store.pyq.length) { list.innerHTML = '<div class="empty">Koi PYQ log nahi. Upar se add karo.</div>'; return; }
-    list.innerHTML = store.pyq.map((p, i) => {
-      const pct = p.total ? (p.solved / p.total) * 100 : 0;
-      const cls = pct >= 80 ? '' : pct >= 50 ? 'mid' : 'bad';
-      return `<div class="log-item">
-        <div class="score ${cls}">${p.solved}/${p.total}</div>
-        <div class="info"><div class="t">${esc(p.topic)}</div><div class="d">${pct.toFixed(0)}% solved</div></div>
-        <button class="task-del" data-idx="${i}">×</button>
-      </div>`;
-    }).join('');
-    list.querySelectorAll('.task-del').forEach(b => {
-      b.addEventListener('click', e => {
-        store.pyq.splice(e.target.dataset.idx, 1);
-        saveAll(); renderPyq();
-      });
-    });
-  }
-  $('#addPyq').addEventListener('click', () => {
-    const topic = $('#pyqTopic').value.trim();
-    const solved = parseInt($('#pyqSolved').value);
-    const total = parseInt($('#pyqTotal').value);
-    if (!topic || isNaN(solved) || isNaN(total)) return;
-    store.pyq.push({ topic, solved, total });
-    $('#pyqTopic').value = ''; $('#pyqSolved').value = ''; $('#pyqTotal').value = '';
-    saveAll(); renderPyq();
-  });
-
-  function renderMocks() {
-    const list = $('#mockList');
-    if (!store.mocks.length) { list.innerHTML = '<div class="empty">Koi mock log nahi. Upar se add karo.</div>'; return; }
-    list.innerHTML = store.mocks.map((m, i) => {
-      const pct = (m.score / m.total) * 100;
-      const cls = pct >= 70 ? '' : pct >= 45 ? 'mid' : 'bad';
-      return `<div class="log-item">
-        <div class="score ${cls}">${pct.toFixed(0)}%</div>
-        <div class="info"><div class="t">${esc(m.name)}</div><div class="d">${m.score} / ${m.total}</div></div>
-        <button class="task-del" data-idx="${i}">×</button>
-      </div>`;
-    }).join('');
-    list.querySelectorAll('.task-del').forEach(b => {
-      b.addEventListener('click', e => {
-        store.mocks.splice(e.target.dataset.idx, 1);
-        saveAll(); renderMocks();
-      });
-    });
-  }
-  $('#addMock').addEventListener('click', () => {
-    const name = $('#mockName').value.trim();
-    const score = parseFloat($('#mockScore').value);
-    const total = parseFloat($('#mockTotal').value);
-    if (!name || isNaN(score) || isNaN(total) || total <= 0) return;
-    store.mocks.push({ name, score, total });
-    $('#mockName').value = ''; $('#mockScore').value = ''; $('#mockTotal').value = '';
-    saveAll(); renderMocks();
-  });
-
-  function renderMistakes() {
-    const list = $('#misList');
-    if (!store.mistakes.length) { list.innerHTML = '<div class="empty">Koi mistake log nahi. Upar se add karo.</div>'; return; }
-    list.innerHTML = store.mistakes.map((m, i) => `
-      <div class="log-item">
-        <div class="score" style="font-size:0.75rem; width:80px;">${esc(m.subject)}</div>
-        <div class="info"><div class="t">${esc(m.desc)}</div></div>
-        <button class="task-del" data-idx="${i}">×</button>
-      </div>
-    `).join('');
-    list.querySelectorAll('.task-del').forEach(b => {
-      b.addEventListener('click', e => {
-        store.mistakes.splice(e.target.dataset.idx, 1);
-        saveAll(); renderMistakes();
-      });
-    });
-  }
-  $('#addMis').addEventListener('click', () => {
-    const subject = $('#misSubject').value.trim();
-    const desc = $('#misDesc').value.trim();
-    if (!subject || !desc) return;
-    store.mistakes.push({ subject, desc });
-    $('#misSubject').value = ''; $('#misDesc').value = '';
-    saveAll(); renderMistakes();
-  });
-
-  function renderMarks() {
-    const list = $('#mkList');
-    if (!store.marks.length) { list.innerHTML = '<div class="empty">Koi marks log nahi. Upar se add karo.</div>'; return; }
-    list.innerHTML = store.marks.map((m, i) => {
-      const pct = (m.score / m.total) * 100;
-      const cls = pct >= 70 ? '' : pct >= 45 ? 'mid' : 'bad';
-      return `<div class="log-item">
-        <div class="score ${cls}">${pct.toFixed(0)}%</div>
-        <div class="info"><div class="t">${esc(m.chapter)}</div><div class="d">${m.score} / ${m.total}</div></div>
-        <button class="task-del" data-idx="${i}">×</button>
-      </div>`;
-    }).join('');
-    list.querySelectorAll('.task-del').forEach(b => {
-      b.addEventListener('click', e => {
-        store.marks.splice(e.target.dataset.idx, 1);
-        saveAll(); renderMarks();
-      });
-    });
-  }
-  $('#addMk').addEventListener('click', () => {
-    const chapter = $('#mkChapter').value.trim();
-    const score = parseFloat($('#mkScore').value);
-    const total = parseFloat($('#mkTotal').value);
-    if (!chapter || isNaN(score) || isNaN(total) || total <= 0) return;
-    store.marks.push({ chapter, score, total });
-    $('#mkChapter').value = ''; $('#mkScore').value = ''; $('#mkTotal').value = '';
-    saveAll(); renderMarks();
-  });
-
-  function renderTimetable() {
-    const list = $('#ttList');
-    if (!store.timetable.length) { list.innerHTML = '<div class="empty">Koi schedule nahi. Upar se add karo.</div>'; return; }
-    const order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-    const sorted = [...store.timetable].sort((a,b) => order.indexOf(a.day) - order.indexOf(b.day));
-    list.innerHTML = sorted.map(t => `
-      <div class="log-item">
-        <div class="score" style="font-size:0.85rem; width:90px;">${esc(t.day)}</div>
-        <div class="info"><div class="t">${esc(t.task)}</div><div class="d">${esc(t.time)}</div></div>
-        <button class="task-del" data-idx="${store.timetable.indexOf(t)}">×</button>
-      </div>
-    `).join('');
-    list.querySelectorAll('.task-del').forEach(b => {
-      b.addEventListener('click', e => {
-        store.timetable.splice(e.target.dataset.idx, 1);
-        saveAll(); renderTimetable();
-      });
-    });
-  }
-  $('#addTt').addEventListener('click', () => {
-    const day = $('#ttDay').value;
-    const time = $('#ttTime').value.trim();
-    const task = $('#ttTask').value.trim();
-    if (!time || !task) return;
-    store.timetable.push({ day, time, task });
-    $('#ttTime').value = ''; $('#ttTask').value = '';
-    saveAll(); renderTimetable();
-  });
-
-  function renderPdfs() {
-    const list = $('#pdfList');
-    if (!store.pdfs.length) { list.innerHTML = '<div class="empty">Koi PDF nahi. Upar link paste karo.</div>'; return; }
-    list.innerHTML = store.pdfs.map((p, i) => `
-      <div class="pdf-item">
-        <div class="pdf-icon">▤</div>
-        <div class="pdf-info"><div class="pdf-title">${esc(p.title)}</div><div class="pdf-meta">${esc(p.url)}</div></div>
-        <div class="pdf-actions">
-          <a href="${escAttr(p.url)}" target="_blank" rel="noopener">Open</a>
-          <button data-idx="${i}">Del</button>
-        </div>
-      </div>
-    `).join('');
-    list.querySelectorAll('.pdf-actions button').forEach(b => {
-      b.addEventListener('click', e => {
-        store.pdfs.splice(e.target.dataset.idx, 1);
-        saveAll(); renderPdfs();
-      });
-    });
-  }
-  $('#addPdf').addEventListener('click', () => {
-    const title = $('#pdfTitle').value.trim();
-    const url = $('#pdfUrl').value.trim();
-    if (!title || !url) return;
-    store.pdfs.push({ title, url });
-    $('#pdfTitle').value = ''; $('#pdfUrl').value = '';
-    saveAll(); renderPdfs();
-  });
-
-  function renderPw() {
-    const list = $('#pwList');
-    if (!store.pwLinks.length) { list.innerHTML = '<div class="empty">Koi custom link nahi. Upar se add karo.</div>'; return; }
-    list.innerHTML = store.pwLinks.map((p, i) => `
-      <div class="pdf-item">
-        <div class="pdf-icon">▶</div>
-        <div class="pdf-info"><div class="pdf-title">${esc(p.name)}</div><div class="pdf-meta">${esc(p.url)}</div></div>
-        <div class="pdf-actions">
-          <a href="${escAttr(p.url)}" target="_blank" rel="noopener">Open</a>
-          <button data-idx="${i}">Del</button>
-        </div>
-      </div>
-    `).join('');
-    list.querySelectorAll('.pdf-actions button').forEach(b => {
-      b.addEventListener('click', e => {
-        store.pwLinks.splice(e.target.dataset.idx, 1);
-        saveAll(); renderPw();
-      });
-    });
-  }
-  $('#addPw').addEventListener('click', () => {
-    const name = $('#pwName').value.trim();
-    const url = $('#pwUrl').value.trim();
-    if (!name || !url) return;
-    store.pwLinks.push({ name, url });
-    $('#pwName').value = ''; $('#pwUrl').value = '';
-    saveAll(); renderPw();
-  });
-
-  function renderSubjects() {
-    const max = Math.max(1, store.subjects.phy, store.subjects.chem, store.subjects.math);
-    ['phy','chem','math'].forEach(s => {
-      const pct = (store.subjects[s] / max) * 100;
-      $(`#bar${cap(s)}`).style.width = pct + '%';
-      $(`#hrs${cap(s)}`).textContent = store.subjects[s] + 'h';
-    });
-  }
-  function cap(s) { return s[0].toUpperCase() + s.slice(1); }
-  $$('.subject-add').forEach(b => {
-    b.addEventListener('click', () => {
-      store.subjects[b.dataset.subject] += 1;
-      saveAll(); renderSubjects();
+    </div>
+  `).join('');
+  list.querySelectorAll('.pdf-actions button').forEach(b => {
+    b.addEventListener('click', e => {
+      store.pwLinks.splice(e.target.dataset.idx, 1);
+      saveAll(); renderPw();
     });
   });
+}
 
-  function sylKey(sub, idx) { return `${sub}_${idx}`; }
-  function renderSyllabus() {
-    ['phy','chem','math'].forEach(sub => {
-      const el = $(`#syl${cap(sub)}`);
-      el.innerHTML = SYLLABUS[sub].map((ch, i) => {
-        const done = !!store.syllabus[sylKey(sub, i)];
-        return `
-          <div class="chapter ${done ? 'done' : ''}">
-            <input type="checkbox" data-sub="${sub}" data-idx="${i}" ${done ? 'checked' : ''}>
-            <span>${ch}</span>
-          </div>
-        `;
-      }).join('');
-      el.querySelectorAll('input[type=checkbox]').forEach(cb => {
-        cb.addEventListener('change', e => {
-          const k = sylKey(e.target.dataset.sub, e.target.dataset.idx);
-          if (e.target.checked) store.syllabus[k] = true;
-          else delete store.syllabus[k];
-          saveAll(); renderSyllabus();
-        });
-      });
-    });
-    ['phy','chem','math'].forEach(sub => {
-      const total = SYLLABUS[sub].length;
-      let done = 0;
-      for (let i = 0; i < total; i++) if (store.syllabus[sylKey(sub, i)]) done++;
-      $(`#syl${cap(sub)}Pct`).textContent = total ? Math.round(done/total*100) + '%' : '0%';
-    });
-    const tAll = SYLLABUS.phy.length + SYLLABUS.chem.length + SYLLABUS.math.length;
-    let dAll = 0;
-    for (const k in store.syllabus) if (store.syllabus[k]) dAll++;
-    $('#sylTotalPct').textContent = tAll ? Math.round(dAll/tAll*100) + '%' : '0%';
-  }
-
-  let timerTotal = 25 * 60, timerLeft = timerTotal, timerId = null, timerRunning = false, sessionStart = null;
-  function fmt(s) {
-    const m = Math.floor(s / 60), sec = s % 60;
-    return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-  }
-  function renderTimer() { $('#timerDisplay').textContent = fmt(timerLeft); }
-  $('#timerStart').addEventListener('click', () => {
-    if (timerRunning) return;
-    timerRunning = true;
-    sessionStart = Date.now();
-    timerId = setInterval(() => {
-      timerLeft--; renderTimer();
-      if (timerLeft <= 0) {
-        clearInterval(timerId); timerRunning = false; logSession();
-        try {
-          const ac = new (window.AudioContext || window.webkitAudioContext)();
-          const osc = ac.createOscillator(), g = ac.createGain();
-          osc.connect(g); g.connect(ac.destination);
-          osc.frequency.value = 880;
-          g.gain.setValueAtTime(0.2, ac.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.6);
-          osc.start(); osc.stop(ac.currentTime + 0.6);
-        } catch(e) {}
-        alert('Time up, boss man. Break le ya next session.');
-        timerLeft = timerTotal; renderTimer();
-      }
-    }, 1000);
+function renderSubjects() {
+  const max = Math.max(1, store.subjects.phy, store.subjects.chem, store.subjects.math);
+  ['phy','chem','math'].forEach(s => {
+    const pct = (store.subjects[s] / max) * 100;
+    $(`#bar${cap(s)}`).style.width = pct + '%';
+    $(`#hrs${cap(s)}`).textContent = store.subjects[s] + 'h';
   });
-  $('#timerPause').addEventListener('click', () => {
-    if (!timerRunning) return;
-    clearInterval(timerId); timerRunning = false; logSession();
-  });
-  $('#timerReset').addEventListener('click', () => {
-    clearInterval(timerId); timerRunning = false; logSession();
-    timerLeft = timerTotal; renderTimer();
-  });
-  $$('[data-preset]').forEach(b => {
-    b.addEventListener('click', () => {
-      clearInterval(timerId); timerRunning = false; logSession();
-      timerTotal = parseInt(b.dataset.preset) * 60;
-      timerLeft = timerTotal;
-      $('#timerMode').textContent = b.dataset.mode || 'Focus';
-      renderTimer();
-    });
-  });
-  function logSession() {
-    if (!sessionStart) return;
-    const mins = Math.floor((Date.now() - sessionStart) / 60000);
-    if (mins > 0) { store.todayMinutes += mins; store.totalMinutes += mins; saveAll(); }
-    sessionStart = null;
-  }
+}
 
-  let examTotal = 180 * 60, examLeft = examTotal, examId = null, examRunning = false;
-  function fmtExam(s) {
-    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
-    return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-  }
-  function renderExam() { $('#examDisplay').textContent = fmtExam(examLeft); }
-  $('#examStart').addEventListener('click', () => {
-    if (examRunning) return;
-    examRunning = true;
-    examId = setInterval(() => {
-      examLeft--; renderExam();
-      if (examLeft <= 0) {
-        clearInterval(examId); examRunning = false;
-        alert('Exam over! Pen down, boss man.');
-        examLeft = examTotal; renderExam();
-      }
-    }, 1000);
-  });
-  $('#examPause').addEventListener('click', () => { clearInterval(examId); examRunning = false; });
-  $('#examReset').addEventListener('click', () => { clearInterval(examId); examRunning = false; examLeft = examTotal; renderExam(); });
-  $$('[data-exam]').forEach(b => {
-    b.addEventListener('click', () => {
-      clearInterval(examId); examRunning = false;
-      examTotal = parseInt(b.dataset.exam) * 60;
-      examLeft = examTotal; renderExam();
-    });
-  });
-
-  function getSyllabusProgress() {
-    const out = { phy: {done:0,total:0}, chem: {done:0,total:0}, math: {done:0,total:0} };
-    ['phy','chem','math'].forEach(sub => {
-      out[sub].total = SYLLABUS[sub].length;
-      for (let i = 0; i < SYLLABUS[sub].length; i++) {
-        if (store.syllabus[`${sub}_${i}`]) out[sub].done++;
-      }
-    });
-    return out;
-  }
-  function getMockTrend() {
-    if (store.mocks.length < 2) return null;
-    const last3 = store.mocks.slice(-3);
-    const avg = last3.reduce((a,m) => a + (m.score/m.total)*100, 0) / last3.length;
-    return { avg, last: (store.mocks[store.mocks.length-1].score / store.mocks[store.mocks.length-1].total)*100 };
-  }
-  function getSubjectBalance() {
-    const s = store.subjects;
-    const total = s.phy + s.chem + s.math || 1;
-    return { phy: Math.round((s.phy/total)*100), chem: Math.round((s.chem/total)*100), math: Math.round((s.math/total)*100) };
-  }
-  function generateInsights() {
-    const insights = [];
-    const syl = getSyllabusProgress();
-    const todayPct = Math.min(100, (store.todayMinutes / (8*60)) * 100);
-    const balance = getSubjectBalance();
-    const mockTrend = getMockTrend();
-
-    if (todayPct === 0) insights.push({ icon:'◉', color:'warn', title:'Aaj abhi tak 0 minute', body:'Bhai, utha. Timer start kar. 8 ghante ka goal hai.' });
-    else if (todayPct < 50) insights.push({ icon:'◉', color:'warn', title:`Aaj ${store.todayMinutes} min ho gaye`, body:`Goal ka ${todayPct.toFixed(0)}% bhara. ${(8*60 - store.todayMinutes)} min baaki.` });
-    else if (todayPct >= 100) insights.push({ icon:'✓', color:'accent', title:'Aaj ka 8 ghante ka goal complete', body:'Boss man, aaj ka grind solid tha. Ab rest le.' });
-    else insights.push({ icon:'◉', color:'accent', title:`Aaj ${store.todayMinutes} min ho gaye`, body:`Goal ka ${todayPct.toFixed(0)}% — rukna nahi, aage badh.` });
-
-    const subPct = {
-      phy: (syl.phy.done/syl.phy.total)*100,
-      chem: (syl.chem.done/syl.chem.total)*100,
-      math: (syl.math.done/syl.math.total)*100
-    };
-    const weakest = Object.entries(subPct).sort((a,b) => a[1]-b[1])[0];
-    const weakLabel = { phy: 'Physics', chem: 'Chemistry', math: 'Math' }[weakest[0]];
-    if (weakest[1] < 60) insights.push({ icon:'⚠', color:'warn', title:`${weakLabel} sabse peeche hai (${weakest[1].toFixed(0)}%)`, body:`${syl[weakest[0]].done}/${syl[weakest[0]].total} chapters done. Aaj isko time de.` });
-
-    const minSub = Object.entries(balance).sort((a,b) => a[1]-b[1])[0];
-    const balLabel = { phy: 'Physics', chem: 'Chemistry', math: 'Math' }[minSub[0]];
-    if (Math.max(...Object.values(balance)) - minSub[1] > 25) insights.push({ icon:'◐', color:'warn', title:`${balLabel} ko ignore kar raha hai`, body:`Sirf ${minSub[1]}% time diya. Balance banao.` });
-
-    if (mockTrend) {
-      if (mockTrend.last < mockTrend.avg - 5) insights.push({ icon:'▲', color:'warn', title:`Mock score gira — ${mockTrend.last.toFixed(0)}%`, body:`Recent average ${mockTrend.avg.toFixed(0)}% tha. Analysis kar.` });
-      else if (mockTrend.last > mockTrend.avg + 5) insights.push({ icon:'▲', color:'accent', title:`Mock score badha — ${mockTrend.last.toFixed(0)}%`, body:`Average ${mockTrend.avg.toFixed(0)}% tha. Momentum hold kar.` });
-    }
-
-    if (store.mistakes.length >= 5) insights.push({ icon:'⚠', color:'warn', title:`${store.mistakes.length} mistakes logged`, body:'Ek din nikaal ke sirf mistake log revise kar.' });
-
-    if (store.streak >= 7) insights.push({ icon:'◆', color:'accent', title:`${store.streak} din ka streak`, body:'Consistency hi topper ka raaz hai.' });
-
-    const pending = store.tasks.filter(t => !t.done);
-    if (pending.length) insights.push({ icon:'◷', color:'purple', title:`Pending: ${pending[0].text}`, body:`${pending[0].subject} ka task pending hai. Abhi nipta de.` });
-
-    return insights.slice(0, 6);
-  }
-  function renderInsights() {
-    const grid = $('#aiInsights');
-    const insights = generateInsights();
-    grid.innerHTML = insights.map(i => {
-      const cls = i.color === 'accent' ? '' : i.color === 'warn' ? 'warn' : 'purple';
+function renderSyllabus() {
+  ['phy','chem','math'].forEach(sub => {
+    const el = $(`#syl${cap(sub)}`);
+    el.innerHTML = SYLLABUS[sub].map((ch, i) => {
+      const done = !!store.syllabus[sylKey(sub, i)];
       return `
-        <div class="card">
-          <div class="stat-label">${i.icon} Insight</div>
-          <div style="font-size:0.9rem; font-weight:700; margin:0.3rem 0;" class="stat-value ${cls}">${esc(i.title)}</div>
-          <div class="stat-sub">${esc(i.body)}</div>
+        <div class="chapter ${done ? 'done' : ''}">
+          <input type="checkbox" data-sub="${sub}" data-idx="${i}" ${done ? 'checked' : ''}>
+          <span>${ch}</span>
         </div>
       `;
     }).join('');
-  }
-  function aiAnswer(q) {
-    const query = q.toLowerCase();
-    const syl = getSyllabusProgress();
-    const todayPct = Math.min(100, (store.todayMinutes / (8*60)) * 100);
-
-    if (/aaj|today|kya karu|what to do|plan/.test(query)) {
-      const pending = store.tasks.filter(t => !t.done);
-      const weak = Object.entries({
-        Physics: (syl.phy.done/syl.phy.total)*100,
-        Chemistry: (syl.chem.done/syl.chem.total)*100,
-        Math: (syl.math.done/syl.math.total)*100
-      }).sort((a,b) => a[1]-b[1])[0];
-      return `Boss man, aaj ka plan:\n• ${pending.length} pending tasks hai — pehle woh nipat\n• ${weak[0]} weak hai (${weak[1].toFixed(0)}% done) — usko 2 ghante de\n• Goal ka ${todayPct.toFixed(0)}% bhara — 8h tak pahuncha`;
-    }
-    if (/weak|peeche|backlog/.test(query)) {
-      const weak = Object.entries({
-        Physics: (syl.phy.done/syl.phy.total)*100,
-        Chemistry: (syl.chem.done/syl.chem.total)*100,
-        Math: (syl.math.done/syl.math.total)*100
-      }).sort((a,b) => a[1]-b[1])[0];
-      return `${weak[0]} sabse weak hai, boss man — ${weak[1].toFixed(0)}% chapters done. Aaj isko priority de.`;
-    }
-    if (/progress|kitna|how much/.test(query)) {
-      const total = syl.phy.total + syl.chem.total + syl.math.total;
-      const done = syl.phy.done + syl.chem.done + syl.math.done;
-      return `Overall syllabus: ${done}/${total} chapters (${((done/total)*100).toFixed(0)}%). Today: ${store.todayMinutes} min / 480 min goal.`;
-    }
-    if (/mock|test|score/.test(query)) {
-      if (!store.mocks.length) return 'Koi mock log nahi hai, boss man. Pehla mock de aur log kar.';
-      const last = store.mocks[store.mocks.length-1];
-      const pct = (last.score/last.total)*100;
-      return `Last mock: ${last.name} — ${last.score}/${last.total} (${pct.toFixed(0)}%).`;
-    }
-    if (/streak|consistent/.test(query)) return `Tera streak ${store.streak} din ka hai.`;
-    if (/mistake|galti|error/.test(query)) return `Mistake log mein ${store.mistakes.length} entries hai.`;
-    if (/time|hours|ghante|minute/.test(query)) return `All-time: ${(store.totalMinutes/60).toFixed(1)} ghante. Today: ${store.todayMinutes} min.`;
-    if (/pw|batch|lecture|video|doh/.test(query)) return `DOH PW portal: https://dohstudy-web-pw.vercel.app/`;
-    return `Try: "aaj kya karu", "weak", "progress", "mock", "streak", "pw"`;
-  }
-  $('#aiSend').addEventListener('click', () => {
-    const q = $('#aiInput').value.trim();
-    if (!q) return;
-    const reply = aiAnswer(q);
-    const chat = $('#aiChat');
-    chat.insertAdjacentHTML('afterbegin', `
-      <div class="card" style="border-left:3px solid var(--accent-2);">
-        <div class="stat-label">Tune poocha</div>
-        <div style="font-size:0.85rem; margin:0.3rem 0 0.7rem; color:var(--text);">${esc(q)}</div>
-        <div class="stat-label">Axiom Coach</div>
-        <div style="font-size:0.85rem; white-space:pre-wrap; color:var(--accent);">${esc(reply)}</div>
-      </div>
-    `);
-    $('#aiInput').value = '';
+    el.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.addEventListener('change', e => {
+        const k = sylKey(e.target.dataset.sub, e.target.dataset.idx);
+        if (e.target.checked) store.syllabus[k] = true;
+        else delete store.syllabus[k];
+        saveAll(); renderSyllabus();
+      });
+    });
   });
-  $('#aiInput').addEventListener('keydown', e => e.key === 'Enter' && $('#aiSend').click());
-
-  // ================= STUDY ROOMS (BroadcastChannel) =================
-  let roomChannel = null;
-  let currentRoom = null;
-  let currentUser = null;
-  let isAdmin = false;
-  let roomMemberCount = 1;
-  let knownMembers = new Set();
-
-  function genRoomCode() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let code = '';
-    for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
-    return code;
-  }
-
-  function initRoomUI() {
-    $('#createRoomBtn').addEventListener('click', () => {
-      const name = $('#roomNameInput').value.trim() || 'Study Room';
-      const adminName = $('#adminNameInput').value.trim() || 'Admin';
-      const code = genRoomCode();
-      enterRoom(code, name, adminName, true);
-    });
-
-    $('#joinRoomBtn').addEventListener('click', () => {
-      const code = $('#roomCodeInput').value.trim().toUpperCase();
-      const guestName = $('#guestNameInput').value.trim() || 'Guest';
-      if (!code) return alert('Room code daalo, boss man.');
-      enterRoom(code, 'Room ' + code, guestName, false);
-    });
-
-    $('#leaveRoomBtn').addEventListener('click', leaveRoom);
-    $('#copyCodeBtn').addEventListener('click', () => {
-      if (!currentRoom) return;
-      navigator.clipboard.writeText(currentRoom).then(() => {
-        const b = $('#copyCodeBtn');
-        b.textContent = 'Copied!';
-        setTimeout(() => b.textContent = 'Copy Code', 1500);
-      }).catch(() => alert('Code: ' + currentRoom));
-    });
-    $('#sendMsgBtn').addEventListener('click', sendChatMessage);
-    $('#chatInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') sendChatMessage();
-    });
-
-    const params = new URLSearchParams(location.search);
-    const r = params.get('room');
-    if (r && $('#roomCodeInput')) $('#roomCodeInput').value = r.toUpperCase();
-  }
-
-  function enterRoom(code, name, userName, admin) {
-    if (roomChannel) roomChannel.close();
-    currentRoom = code;
-    currentUser = userName;
-    isAdmin = admin;
-    roomMemberCount = 1;
-    knownMembers = new Set([userName]);
-
-    roomChannel = new BroadcastChannel('jee_room_' + code);
-
-    roomChannel.onmessage = (e) => {
-      const msg = e.data;
-      if (msg.type === 'chat') {
-        appendChatMessage(msg.user, msg.text, msg.time, msg.user === currentUser);
-      } else if (msg.type === 'hello') {
-        if (!knownMembers.has(msg.user)) {
-          knownMembers.add(msg.user);
-          roomMemberCount = knownMembers.size;
-          updateMemberCount();
-          appendSystemMessage(`${msg.user} room mein aa gaya`);
-        }
-        roomChannel.postMessage({ type: 'iamhere', user: currentUser });
-      } else if (msg.type === 'iamhere') {
-        if (!knownMembers.has(msg.user)) {
-          knownMembers.add(msg.user);
-          roomMemberCount = knownMembers.size;
-          updateMemberCount();
-        }
-      } else if (msg.type === 'bye') {
-        if (knownMembers.has(msg.user)) {
-          knownMembers.delete(msg.user);
-          roomMemberCount = knownMembers.size;
-          updateMemberCount();
-          appendSystemMessage(`${msg.user} room chhod diya`);
-        }
-      }
-    };
-
-    roomChannel.postMessage({ type: 'hello', user: currentUser });
-
-    $('#roomActive').style.display = 'block';
-    $('#roomTitle').textContent = name;
-    $('#roomCodeDisplay').textContent = code;
-    $('#adminBadge').style.display = admin ? 'inline' : 'none';
-    $('#chatBox').innerHTML = '';
-    appendSystemMessage(`Room "${name}" joined as ${userName}${admin ? ' (Admin)' : ''}`);
-    updateMemberCount();
-  }
-
-  function leaveRoom() {
-    if (roomChannel) {
-      roomChannel.postMessage({ type: 'bye', user: currentUser });
-      roomChannel.close();
-      roomChannel = null;
-    }
-    currentRoom = null;
-    currentUser = null;
-    isAdmin = false;
-    roomMemberCount = 1;
-    knownMembers = new Set();
-    $('#roomActive').style.display = 'none';
-    $('#chatBox').innerHTML = '';
-  }
-
-  function sendChatMessage() {
-    const text = $('#chatInput').value.trim();
-    if (!text || !roomChannel) return;
-    const time = new Date().toLocaleTimeString();
-    roomChannel.postMessage({ type: 'chat', user: currentUser, text, time });
-    appendChatMessage(currentUser, text, time, true);
-    $('#chatInput').value = '';
-  }
-
-  function appendChatMessage(user, text, time, isMine) {
-    const box = $('#chatBox');
-    const div = document.createElement('div');
-    div.style.cssText = `
-      align-self: ${isMine ? 'flex-end' : 'flex-start'};
-      max-width: 75%;
-      background: ${isMine ? 'linear-gradient(135deg, rgba(0,229,160,0.2), rgba(102,170,255,0.15))' : 'var(--surface-2)'};
-      border: 1px solid ${isMine ? 'rgba(0,229,160,0.3)' : 'var(--border)'};
-      border-radius: 12px;
-      padding: 0.55rem 0.85rem;
-      font-size: 0.85rem;
-      color: var(--text);
-      word-wrap: break-word;
-    `;
-    div.innerHTML = `
-      <div style="font-size:0.65rem; color:${isMine ? 'var(--accent)' : 'var(--accent-2)'}; margin-bottom:0.2rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">${esc(user)} · ${esc(time)}</div>
-      <div>${esc(text)}</div>
-    `;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-  }
-
-  function appendSystemMessage(text) {
-    const box = $('#chatBox');
-    const div = document.createElement('div');
-    div.style.cssText = `
-      align-self: center; font-size: 0.7rem; color: var(--muted);
-      padding: 0.3rem 0.7rem; background: var(--surface-2);
-      border-radius: 99px; border: 1px solid var(--border);
-    `;
-    div.textContent = text;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-  }
-
-  function updateMemberCount() {
-    $('#roomMembers').textContent = roomMemberCount;
-  }
-
-  // ================= BACKUP =================
-  $('#exportBtn').addEventListener('click', () => {
-    const data = {};
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k.startsWith('jee_')) data[k] = localStorage.getItem(k);
-    }
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `jee-backup-${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+  ['phy','chem','math'].forEach(sub => {
+    const total = SYLLABUS[sub].length;
+    let done = 0;
+    for (let i = 0; i < total; i++) if (store.syllabus[sylKey(sub, i)]) done++;
+    $(`#syl${cap(sub)}Pct`).textContent = total ? Math.round(done/total*100) + '%' : '0%';
   });
-  $('#importBtn').addEventListener('click', () => $('#importFile').click());
-  $('#importFile').addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
+  const tAll = SYLLABUS.phy.length + SYLLABUS.chem.length + SYLLABUS.math.length;
+  let dAll = 0;
+  for (const k in store.syllabus) if (store.syllabus[k]) dAll++;
+  $('#sylTotalPct').textContent = tAll ? Math.round(dAll/tAll*100) + '%' : '0%';
+}
+
+// ================= EVENT LISTENERS =================
+$('#addTask').addEventListener('click', () => {
+  const text = $('#taskInput').value.trim();
+  if (!text) return;
+  store.tasks.push({ text, subject: $('#taskSubject').value, done: false });
+  $('#taskInput').value = '';
+  saveAll(); renderTasks();
+});
+$('#taskInput').addEventListener('keydown', e => e.key === 'Enter' && $('#addTask').click());
+
+$('#addNote').addEventListener('click', () => {
+  const title = $('#noteTitle').value.trim();
+  const body = $('#noteBody').value.trim();
+  if (!title && !body) return;
+  store.notes.push({ title: title || 'Untitled', body });
+  $('#noteTitle').value = ''; $('#noteBody').value = '';
+  saveAll(); renderNotes();
+});
+
+$('#addFormula').addEventListener('click', () => {
+  const title = $('#fTitle').value.trim();
+  const body = $('#fBody').value.trim();
+  if (!title || !body) return;
+  store.formulas.push({ title, body });
+  $('#fTitle').value = ''; $('#fBody').value = '';
+  saveAll(); renderFormulas();
+});
+
+$('#addPyq').addEventListener('click', () => {
+  const topic = $('#pyqTopic').value.trim();
+  const solved = parseInt($('#pyqSolved').value);
+  const total = parseInt($('#pyqTotal').value);
+  if (!topic || isNaN(solved) || isNaN(total)) return;
+  store.pyq.push({ topic, solved, total });
+  $('#pyqTopic').value = ''; $('#pyqSolved').value = ''; $('#pyqTotal').value = '';
+  saveAll(); renderPyq();
+});
+
+$('#addMock').addEventListener('click', () => {
+  const name = $('#mockName').value.trim();
+  const score = parseFloat($('#mockScore').value);
+  const total = parseFloat($('#mockTotal').value);
+  if (!name || isNaN(score) || isNaN(total) || total <= 0) return;
+  store.mocks.push({ name, score, total });
+  $('#mockName').value = ''; $('#mockScore').value = ''; $('#mockTotal').value = '';
+  saveAll(); renderMocks();
+});
+
+$('#addMis').addEventListener('click', () => {
+  const subject = $('#misSubject').value.trim();
+  const desc = $('#misDesc').value.trim();
+  if (!subject || !desc) return;
+  store.mistakes.push({ subject, desc });
+  $('#misSubject').value = ''; $('#misDesc').value = '';
+  saveAll(); renderMistakes();
+});
+
+$('#addMk').addEventListener('click', () => {
+  const chapter = $('#mkChapter').value.trim();
+  const score = parseFloat($('#mkScore').value);
+  const total = parseFloat($('#mkTotal').value);
+  if (!chapter || isNaN(score) || isNaN(total) || total <= 0) return;
+  store.marks.push({ chapter, score, total });
+  $('#mkChapter').value = ''; $('#mkScore').value = ''; $('#mkTotal').value = '';
+  saveAll(); renderMarks();
+});
+
+$('#addTt').addEventListener('click', () => {
+  const day = $('#ttDay').value;
+  const time = $('#ttTime').value.trim();
+  const task = $('#ttTask').value.trim();
+  if (!time || !task) return;
+  store.timetable.push({ day, time, task });
+  $('#ttTime').value = ''; $('#ttTask').value = '';
+  saveAll(); renderTimetable();
+});
+
+$('#addPdf').addEventListener('click', () => {
+  const title = $('#pdfTitle').value.trim();
+  const url = $('#pdfUrl').value.trim();
+  if (!title || !url) return;
+  store.pdfs.push({ title, url });
+  $('#pdfTitle').value = ''; $('#pdfUrl').value = '';
+  saveAll(); renderPdfs();
+});
+
+$('#addPw').addEventListener('click', () => {
+  const name = $('#pwName').value.trim();
+  const url = $('#pwUrl').value.trim();
+  if (!name || !url) return;
+  store.pwLinks.push({ name, url });
+  $('#pwName').value = ''; $('#pwUrl').value = '';
+  saveAll(); renderPw();
+});
+
+$$('.subject-add').forEach(b => {
+  b.addEventListener('click', () => {
+    store.subjects[b.dataset.subject] += 1;
+    saveAll(); renderSubjects();
+  });
+});
+
+// ================= TIMER =================
+let timerTotal = 25 * 60, timerLeft = timerTotal, timerId = null, timerRunning = false, sessionStart = null;
+function fmt(s) {
+  const m = Math.floor(s / 60), sec = s % 60;
+  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+function renderTimer() { $('#timerDisplay').textContent = fmt(timerLeft); }
+$('#timerStart').addEventListener('click', () => {
+  if (timerRunning) return;
+  timerRunning = true;
+  sessionStart = Date.now();
+  timerId = setInterval(() => {
+    timerLeft--; renderTimer();
+    if (timerLeft <= 0) {
+      clearInterval(timerId); timerRunning = false; logSession();
       try {
-        const data = JSON.parse(ev.target.result);
-        for (const k in data) localStorage.setItem(k, data[k]);
-        alert('Restore ho gaya, boss man. Reload kar raha hu.');
-        location.reload();
-      } catch (err) { alert('File corrupt hai.'); }
-    };
-    reader.readAsText(file);
-  });
-  $('#wipeBtn').addEventListener('click', () => {
-    if (!confirm('Pakka? Sab data delete ho jayega.')) return;
-    if (!confirm('Last warning. Sure hai?')) return;
-    const keys = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k.startsWith('jee_')) keys.push(k);
+        const ac = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ac.createOscillator(), g = ac.createGain();
+        osc.connect(g); g.connect(ac.destination);
+        osc.frequency.value = 880;
+        g.gain.setValueAtTime(0.2, ac.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.6);
+        osc.start(); osc.stop(ac.currentTime + 0.6);
+      } catch(e) {}
+      alert('Time up, boss man. Break le ya next session.');
+      timerLeft = timerTotal; renderTimer();
     }
-    keys.forEach(k => localStorage.removeItem(k));
-    location.reload();
+  }, 1000);
+});
+$('#timerPause').addEventListener('click', () => {
+  if (!timerRunning) return;
+  clearInterval(timerId); timerRunning = false; logSession();
+});
+$('#timerReset').addEventListener('click', () => {
+  clearInterval(timerId); timerRunning = false; logSession();
+  timerLeft = timerTotal; renderTimer();
+});
+$$('[data-preset]').forEach(b => {
+  b.addEventListener('click', () => {
+    clearInterval(timerId); timerRunning = false; logSession();
+    timerTotal = parseInt(b.dataset.preset) * 60;
+    timerLeft = timerTotal;
+    $('#timerMode').textContent = b.dataset.mode || 'Focus';
+    renderTimer();
   });
+});
+function logSession() {
+  if (!sessionStart) return;
+  const mins = Math.floor((Date.now() - sessionStart) / 60000);
+  if (mins > 0) { store.todayMinutes += mins; store.totalMinutes += mins; saveAll(); }
+  sessionStart = null;
+}
 
-  function esc(s) {
-    return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+// ================= EXAM MODE =================
+let examTotal = 180 * 60, examLeft = examTotal, examId = null, examRunning = false;
+function fmtExam(s) {
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+function renderExam() { $('#examDisplay').textContent = fmtExam(examLeft); }
+$('#examStart').addEventListener('click', () => {
+  if (examRunning) return;
+  examRunning = true;
+  examId = setInterval(() => {
+    examLeft--; renderExam();
+    if (examLeft <= 0) {
+      clearInterval(examId); examRunning = false;
+      alert('Exam over! Pen down, boss man.');
+      examLeft = examTotal; renderExam();
+    }
+  }, 1000);
+});
+$('#examPause').addEventListener('click', () => { clearInterval(examId); examRunning = false; });
+$('#examReset').addEventListener('click', () => { clearInterval(examId); examRunning = false; examLeft = examTotal; renderExam(); });
+$$('[data-exam]').forEach(b => {
+  b.addEventListener('click', () => {
+    clearInterval(examId); examRunning = false;
+    examTotal = parseInt(b.dataset.exam) * 60;
+    examLeft = examTotal; renderExam();
+  });
+});
+
+// ================= AI COACH =================
+function getSyllabusProgress() {
+  const out = { phy: {done:0,total:0}, chem: {done:0,total:0}, math: {done:0,total:0} };
+  ['phy','chem','math'].forEach(sub => {
+    out[sub].total = SYLLABUS[sub].length;
+    for (let i = 0; i < SYLLABUS[sub].length; i++) {
+      if (store.syllabus[`${sub}_${i}`]) out[sub].done++;
+    }
+  });
+  return out;
+}
+function getMockTrend() {
+  if (store.mocks.length < 2) return null;
+  const last3 = store.mocks.slice(-3);
+  const avg = last3.reduce((a,m) => a + (m.score/m.total)*100, 0) / last3.length;
+  return { avg, last: (store.mocks[store.mocks.length-1].score / store.mocks[store.mocks.length-1].total)*100 };
+}
+function getSubjectBalance() {
+  const s = store.subjects;
+  const total = s.phy + s.chem + s.math || 1;
+  return { phy: Math.round((s.phy/total)*100), chem: Math.round((s.chem/total)*100), math: Math.round((s.math/total)*100) };
+}
+function generateInsights() {
+  const insights = [];
+  const syl = getSyllabusProgress();
+  const todayPct = Math.min(100, (store.todayMinutes / (8*60)) * 100);
+  const balance = getSubjectBalance();
+  const mockTrend = getMockTrend();
+
+  if (todayPct === 0) insights.push({ icon:'◉', color:'warn', title:'Aaj abhi tak 0 minute', body:'Bhai, utha. Timer start kar. 8 ghante ka goal hai.' });
+  else if (todayPct < 50) insights.push({ icon:'◉', color:'warn', title:`Aaj ${store.todayMinutes} min ho gaye`, body:`Goal ka ${todayPct.toFixed(0)}% bhara.` });
+  else if (todayPct >= 100) insights.push({ icon:'✓', color:'accent', title:'Aaj ka goal complete', body:'Boss man, aaj ka grind solid tha. Rest le.' });
+  else insights.push({ icon:'◉', color:'accent', title:`Aaj ${store.todayMinutes} min ho gaye`, body:`Goal ka ${todayPct.toFixed(0)}% — aage badh.` });
+
+  const subPct = {
+    phy: (syl.phy.done/syl.phy.total)*100,
+    chem: (syl.chem.done/syl.chem.total)*100,
+    math: (syl.math.done/syl.math.total)*100
+  };
+  const weakest = Object.entries(subPct).sort((a,b) => a[1]-b[1])[0];
+  const weakLabel = { phy: 'Physics', chem: 'Chemistry', math: 'Math' }[weakest[0]];
+  if (weakest[1] < 60) insights.push({ icon:'⚠', color:'warn', title:`${weakLabel} sabse peeche hai (${weakest[1].toFixed(0)}%)`, body:`${syl[weakest[0]].done}/${syl[weakest[0]].total} chapters done.` });
+
+  const minSub = Object.entries(balance).sort((a,b) => a[1]-b[1])[0];
+  const balLabel = { phy: 'Physics', chem: 'Chemistry', math: 'Math' }[minSub[0]];
+  if (Math.max(...Object.values(balance)) - minSub[1] > 25) insights.push({ icon:'◐', color:'warn', title:`${balLabel} ko ignore kar raha hai`, body:`Sirf ${minSub[1]}% time diya.` });
+
+  if (mockTrend) {
+    if (mockTrend.last < mockTrend.avg - 5) insights.push({ icon:'▲', color:'warn', title:`Mock score gira — ${mockTrend.last.toFixed(0)}%`, body:`Recent average ${mockTrend.avg.toFixed(0)}% tha.` });
+    else if (mockTrend.last > mockTrend.avg + 5) insights.push({ icon:'▲', color:'accent', title:`Mock score badha — ${mockTrend.last.toFixed(0)}%`, body:`Average ${mockTrend.avg.toFixed(0)}% tha.` });
   }
-  function escAttr(s) { return esc(s); }
 
-  (function bg() {
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let W, H, particles = [];
-    const COUNT = 70;
-    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize);
-    for (let i = 0; i < COUNT; i++) {
-      particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*1.6+0.4, hue: Math.random() > 0.5 ? 160 : 215 });
+  if (store.mistakes.length >= 5) insights.push({ icon:'⚠', color:'warn', title:`${store.mistakes.length} mistakes logged`, body:'Ek din nikaal ke sirf mistake log revise kar.' });
+
+  if (store.streak >= 7) insights.push({ icon:'◆', color:'accent', title:`${store.streak} din ka streak`, body:'Consistency hi topper ka raaz hai.' });
+
+  const pending = store.tasks.filter(t => !t.done);
+  if (pending.length) insights.push({ icon:'◷', color:'purple', title:`Pending: ${pending[0].text}`, body:`${pending[0].subject} ka task pending hai.` });
+
+  return insights.slice(0, 6);
+}
+function renderInsights() {
+  const grid = $('#aiInsights');
+  const insights = generateInsights();
+  grid.innerHTML = insights.map(i => {
+    const cls = i.color === 'accent' ? '' : i.color === 'warn' ? 'warn' : 'purple';
+    return `
+      <div class="card">
+        <div class="stat-label">${i.icon} Insight</div>
+        <div style="font-size:0.9rem; font-weight:700; margin:0.3rem 0;" class="stat-value ${cls}">${esc(i.title)}</div>
+        <div class="stat-sub">${esc(i.body)}</div>
+      </div>
+    `;
+  }).join('');
+}
+function aiAnswer(q) {
+  const query = q.toLowerCase();
+  const syl = getSyllabusProgress();
+  const todayPct = Math.min(100, (store.todayMinutes / (8*60)) * 100);
+
+  if (/aaj|today|kya karu|what to do|plan/.test(query)) {
+    const pending = store.tasks.filter(t => !t.done);
+    const weak = Object.entries({
+      Physics: (syl.phy.done/syl.phy.total)*100,
+      Chemistry: (syl.chem.done/syl.chem.total)*100,
+      Math: (syl.math.done/syl.math.total)*100
+    }).sort((a,b) => a[1]-b[1])[0];
+    return `Boss man, aaj ka plan:\n• ${pending.length} pending tasks hai — pehle woh nipat\n• ${weak[0]} weak hai (${weak[1].toFixed(0)}% done) — usko 2 ghante de\n• Goal ka ${todayPct.toFixed(0)}% bhara — 8h tak pahuncha`;
+  }
+  if (/weak|peeche|backlog/.test(query)) {
+    const weak = Object.entries({
+      Physics: (syl.phy.done/syl.phy.total)*100,
+      Chemistry: (syl.chem.done/syl.chem.total)*100,
+      Math: (syl.math.done/syl.math.total)*100
+    }).sort((a,b) => a[1]-b[1])[0];
+    return `${weak[0]} sabse weak hai, boss man — ${weak[1].toFixed(0)}% chapters done.`;
+  }
+  if (/progress|kitna|how much/.test(query)) {
+    const total = syl.phy.total + syl.chem.total + syl.math.total;
+    const done = syl.phy.done + syl.chem.done + syl.math.done;
+    return `Overall syllabus: ${done}/${total} chapters (${((done/total)*100).toFixed(0)}%). Today: ${store.todayMinutes} min / 480 min goal.`;
+  }
+  if (/mock|test|score/.test(query)) {
+    if (!store.mocks.length) return 'Koi mock log nahi hai, boss man.';
+    const last = store.mocks[store.mocks.length-1];
+    const pct = (last.score/last.total)*100;
+    return `Last mock: ${last.name} — ${last.score}/${last.total} (${pct.toFixed(0)}%).`;
+  }
+  if (/streak|consistent/.test(query)) return `Tera streak ${store.streak} din ka hai.`;
+  if (/mistake|galti|error/.test(query)) return `Mistake log mein ${store.mistakes.length} entries hai.`;
+  if (/time|hours|ghante|minute/.test(query)) return `All-time: ${(store.totalMinutes/60).toFixed(1)} ghante. Today: ${store.todayMinutes} min.`;
+  if (/pw|batch|lecture|video|doh/.test(query)) return `DOH PW portal: https://dohstudy-web-pw.vercel.app/`;
+  return `Try: "aaj kya karu", "weak", "progress", "mock", "streak", "pw"`;
+}
+$('#aiSend').addEventListener('click', () => {
+  const q = $('#aiInput').value.trim();
+  if (!q) return;
+  const reply = aiAnswer(q);
+  const chat = $('#aiChat');
+  chat.insertAdjacentHTML('afterbegin', `
+    <div class="card" style="border-left:3px solid var(--accent-2);">
+      <div class="stat-label">Tune poocha</div>
+      <div style="font-size:0.85rem; margin:0.3rem 0 0.7rem; color:var(--text);">${esc(q)}</div>
+      <div class="stat-label">Axiom Coach</div>
+      <div style="font-size:0.85rem; white-space:pre-wrap; color:var(--accent);">${esc(reply)}</div>
+    </div>
+  `);
+  $('#aiInput').value = '';
+});
+$('#aiInput').addEventListener('keydown', e => e.key === 'Enter' && $('#aiSend').click());
+
+// ================= FIREBASE ROOMS =================
+let currentRoom = null;
+let currentUser = null;
+let isAdmin = false;
+let roomUnsub = null;
+let membersUnsub = null;
+
+function genRoomCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+async function createRoom() {
+  if (!db) { alert('Firebase connect nahi hua. Page refresh kar.'); return; }
+  const name = $('#roomNameInput').value.trim() || 'Study Room';
+  const adminName = $('#adminNameInput').value.trim() || 'Admin';
+  const code = genRoomCode();
+  try {
+    await set(ref(db, 'rooms/' + code + '/meta'), {
+      name, admin: adminName, createdAt: Date.now()
+    });
+    enterRoom(code, name, adminName, true);
+  } catch (err) {
+    console.error(err);
+    alert('Room nahi bana: ' + err.message);
+  }
+}
+
+async function joinRoom() {
+  if (!db) { alert('Firebase connect nahi hua. Page refresh kar.'); return; }
+  const code = $('#roomCodeInput').value.trim().toUpperCase();
+  const guestName = $('#guestNameInput').value.trim() || 'Guest';
+  if (!code) return alert('Room code daalo, boss man.');
+  try {
+    const metaRef = ref(db, 'rooms/' + code + '/meta');
+    const snapshot = await new Promise(resolve => {
+      const unsub = onValue(metaRef, snap => { unsub(); resolve(snap); }, { onlyOnce: true });
+    });
+    if (!snapshot.exists()) {
+      alert('Room nahi mila. Code check kar.');
+      return;
     }
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      for (let i = 0; i < COUNT; i++) {
-        const a = particles[i];
-        for (let j = i + 1; j < COUNT; j++) {
-          const b = particles[j];
-          const dx = a.x - b.x, dy = a.y - b.y;
-          const d2 = dx*dx + dy*dy;
-          if (d2 < 16000) {
-            const alpha = (1 - d2/16000) * 0.22;
-            ctx.strokeStyle = `hsla(${a.hue}, 80%, 60%, ${alpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-          }
+    const meta = snapshot.val();
+    enterRoom(code, meta.name, guestName, false);
+  } catch (err) {
+    console.error(err);
+    alert('Join nahi hua: ' + err.message);
+  }
+}
+
+function enterRoom(code, name, userName, admin) {
+  if (roomUnsub) roomUnsub();
+  if (membersUnsub) membersUnsub();
+
+  currentRoom = code;
+  currentUser = userName;
+  isAdmin = admin;
+
+  $('#roomActive').style.display = 'block';
+  $('#roomTitle').textContent = name;
+  $('#roomCodeDisplay').textContent = code;
+  $('#adminBadge').style.display = admin ? 'inline' : 'none';
+  $('#chatBox').innerHTML = '';
+  appendSystemMessage(`Room "${name}" mein join ho gaya as ${userName}`);
+
+  const myPresenceRef = ref(db, 'rooms/' + code + '/members/' + userName);
+  set(myPresenceRef, { online: true, joinedAt: Date.now() });
+  onDisconnect(myPresenceRef).remove();
+
+  membersUnsub = onValue(ref(db, 'rooms/' + code + '/members'), snap => {
+    const count = snap.exists() ? Object.keys(snap.val()).length : 0;
+    $('#roomMembers').textContent = count;
+  });
+
+  const msgsRef = query(ref(db, 'rooms/' + code + '/messages'), limitToLast(100));
+  let firstLoad = true;
+  roomUnsub = onValue(msgsRef, snap => {
+    const box = $('#chatBox');
+    if (firstLoad) { box.innerHTML = ''; firstLoad = false; }
+    if (!snap.exists()) return;
+    box.innerHTML = '';
+    const msgs = snap.val();
+    Object.values(msgs).forEach(m => {
+      appendChatMessage(m.user, m.text, m.time, m.user === currentUser);
+    });
+  });
+}
+
+function leaveRoom() {
+  if (currentRoom && currentUser && db) {
+    try { remove(ref(db, 'rooms/' + currentRoom + '/members/' + currentUser)); } catch(e){}
+  }
+  if (roomUnsub) { roomUnsub(); roomUnsub = null; }
+  if (membersUnsub) { membersUnsub(); membersUnsub = null; }
+  currentRoom = null; currentUser = null; isAdmin = false;
+  $('#roomActive').style.display = 'none';
+  $('#chatBox').innerHTML = '';
+}
+
+function sendChatMessage() {
+  const input = $('#chatInput');
+  const text = input.value.trim();
+  if (!text || !currentRoom || !db) return;
+  push(ref(db, 'rooms/' + currentRoom + '/messages'), {
+    user: currentUser,
+    text: text,
+    time: new Date().toLocaleTimeString()
+  });
+  input.value = '';
+}
+
+function appendChatMessage(user, text, time, isMine) {
+  const box = $('#chatBox');
+  const div = document.createElement('div');
+  div.style.cssText = `
+    align-self: ${isMine ? 'flex-end' : 'flex-start'};
+    max-width: 75%;
+    background: ${isMine ? 'linear-gradient(135deg, rgba(0,229,160,0.2), rgba(102,170,255,0.15))' : 'var(--surface-2)'};
+    border: 1px solid ${isMine ? 'rgba(0,229,160,0.3)' : 'var(--border)'};
+    border-radius: 12px;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    word-wrap: break-word;
+  `;
+  div.innerHTML = `
+    <div style="font-size:0.65rem; color:${isMine ? 'var(--accent)' : 'var(--accent-2)'}; margin-bottom:0.2rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">${esc(user)} · ${esc(time)}</div>
+    <div>${esc(text)}</div>
+  `;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+function appendSystemMessage(text) {
+  const box = $('#chatBox');
+  const div = document.createElement('div');
+  div.style.cssText = `
+    align-self: center; font-size: 0.7rem; color: var(--muted);
+    padding: 0.3rem 0.7rem; background: var(--surface-2);
+    border-radius: 99px; border: 1px solid var(--border);
+  `;
+  div.textContent = text;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+// Connection status
+if (db) {
+  onValue(ref(db, '.info/connected'), snap => {
+    const status = $('#connStatus');
+    if (!status) return;
+    if (snap.val() === true) {
+      status.classList.add('online');
+      status.classList.remove('offline');
+      status.textContent = '● Online';
+    } else {
+      status.classList.add('offline');
+      status.classList.remove('online');
+      status.textContent = '● Offline';
+    }
+  });
+  // give it a moment then default online if no response
+  setTimeout(() => {
+    const status = $('#connStatus');
+    if (status && status.textContent === '● Connecting...') {
+      status.textContent = '● Ready';
+      status.classList.add('online');
+    }
+  }, 3000);
+} else {
+  const status = $('#connStatus');
+  if (status) { status.textContent = '● Firebase Error'; status.classList.add('offline'); }
+}
+
+$('#createRoomBtn').addEventListener('click', createRoom);
+$('#joinRoomBtn').addEventListener('click', joinRoom);
+$('#leaveRoomBtn').addEventListener('click', leaveRoom);
+$('#sendMsgBtn').addEventListener('click', sendChatMessage);
+$('#chatInput').addEventListener('keydown', e => e.key === 'Enter' && sendChatMessage());
+$('#copyCodeBtn').addEventListener('click', () => {
+  if (!currentRoom) return;
+  navigator.clipboard.writeText(currentRoom).then(() => {
+    const b = $('#copyCodeBtn');
+    b.textContent = 'Copied!';
+    setTimeout(() => b.textContent = 'Copy Code', 1500);
+  });
+});
+$('#copyLinkBtn').addEventListener('click', () => {
+  if (!currentRoom) return;
+  const link = location.origin + location.pathname + '?room=' + currentRoom;
+  navigator.clipboard.writeText(link).then(() => {
+    const b = $('#copyLinkBtn');
+    b.textContent = 'Link Copied!';
+    setTimeout(() => b.textContent = 'Copy Link', 1500);
+  });
+});
+
+// Auto-fill from URL
+(function(){
+  const params = new URLSearchParams(location.search);
+  const r = params.get('room');
+  if (r && $('#roomCodeInput')) $('#roomCodeInput').value = r.toUpperCase();
+})();
+
+// ================= BACKUP =================
+$('#exportBtn').addEventListener('click', () => {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k.startsWith('jee_')) data[k] = localStorage.getItem(k);
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `jee-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+$('#importBtn').addEventListener('click', () => $('#importFile').click());
+$('#importFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      for (const k in data) localStorage.setItem(k, data[k]);
+      alert('Restore ho gaya, boss man.');
+      location.reload();
+    } catch (err) { alert('File corrupt hai.'); }
+  };
+  reader.readAsText(file);
+});
+$('#wipeBtn').addEventListener('click', () => {
+  if (!confirm('Pakka? Sab data delete ho jayega.')) return;
+  if (!confirm('Last warning. Sure hai?')) return;
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k.startsWith('jee_')) keys.push(k);
+  }
+  keys.forEach(k => localStorage.removeItem(k));
+  location.reload();
+});
+
+// ================= BG =================
+(function bg() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const COUNT = 70;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  for (let i = 0; i < COUNT; i++) {
+    particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*1.6+0.4, hue: Math.random() > 0.5 ? 160 : 215 });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < COUNT; i++) {
+      const a = particles[i];
+      for (let j = i + 1; j < COUNT; j++) {
+        const b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d2 = dx*dx + dy*dy;
+        if (d2 < 16000) {
+          const alpha = (1 - d2/16000) * 0.22;
+          ctx.strokeStyle = `hsla(${a.hue}, 80%, 60%, ${alpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
         }
       }
-      for (const p of particles) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1;
-        if (p.y < 0 || p.y > H) p.vy *= -1;
-        ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.8)`;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
-      }
-      requestAnimationFrame(draw);
     }
-    draw();
-  })();
-
-  renderStreak();
-  renderDashboard();
-  renderTasks();
-  renderNotes();
-  renderFormulas();
-  renderPyq();
-  renderMocks();
-  renderMistakes();
-  renderMarks();
-  renderTimetable();
-  renderPdfs();
-  renderPw();
-  renderSubjects();
-  renderSyllabus();
-  renderTimer();
-  renderExam();
-  renderInsights();
-  initRoomUI();
-  initClassSelector();
-  setInterval(() => {
-    if (document.getElementById('assistant').classList.contains('active')) renderInsights();
-  }, 30000);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+      ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.8)`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
 })();
+
+// ================= INIT =================
+renderStreak();
+renderDashboard();
+renderTasks();
+renderNotes();
+renderFormulas();
+renderPyq();
+renderMocks();
+renderMistakes();
+renderMarks();
+renderTimetable();
+renderPdfs();
+renderPw();
+renderSubjects();
+renderSyllabus();
+renderTimer();
+renderExam();
+renderInsights();
+rotateQuote();
+initClassSelector();
+setInterval(rotateQuote, 30000);
+setInterval(() => {
+  if (document.getElementById('assistant').classList.contains('active')) renderInsights();
+}, 30000);
+
+console.log('JEE War Room loaded, boss man.');
 </script>
 </body>
 </html>
