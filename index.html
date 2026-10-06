@@ -359,7 +359,7 @@
   .friend-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 0.55rem; display: flex; align-items: center; gap: 1rem; transition: 0.15s; }
   .friend-item:hover { border-color: var(--accent); }
   .friend-avatar { width: 42px; height: 42px; background: linear-gradient(135deg, var(--accent-2), var(--accent-3)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #06060a; font-size: 1rem; flex-shrink: 0; position: relative; }
-  .online-dot { position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--surface); }
+  .online-dot { position: absolute; bottom: -1px; right: -1px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--surface); }
   .online-dot.on { background: #00e5a0; box-shadow: 0 0 8px #00e5a0; }
   .online-dot.off { background: #7788aa; }
   .friend-info { flex: 1; min-width: 0; }
@@ -378,7 +378,7 @@
   .friend-tab-content.active { display: block; }
 
   /* CHAT */
-  .chat-container { display: grid; grid-template-columns: 260px 1fr; gap: 1rem; height: 560px; }
+  .chat-container { display: grid; grid-template-columns: 260px 1fr; gap: 1rem; height: 600px; }
   .chat-list { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow-y: auto; }
   .chat-list-item { padding: 0.8rem 1rem; cursor: pointer; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.7rem; transition: 0.15s; }
   .chat-list-item:hover { background: var(--surface-2); }
@@ -408,10 +408,159 @@
   .emoji-tray span:hover { background: var(--surface-2); transform: scale(1.15); }
   .typing-indicator { font-size: 0.7rem; color: var(--accent-2); font-style: italic; height: 16px; padding: 0 1rem; }
 
-  /* ADMIN */
-  .admin-pass-box { max-width: 400px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; text-align: center; }
-  .admin-pass-box h2 { color: var(--danger); font-size: 1.2rem; margin-bottom: 0.5rem; }
-  .admin-pass-box p { color: var(--muted); font-size: 0.8rem; margin-bottom: 1.5rem; }
+  /* REPLY SYSTEM */
+  .reply-preview { display: none; background: var(--surface-2); border-left: 3px solid var(--accent-2); border-radius: 6px; padding: 0.4rem 0.6rem; margin: 0.3rem 0; font-size: 0.72rem; color: var(--muted); position: relative; }
+  .reply-preview.show { display: block; }
+  .reply-preview .rp-name { color: var(--accent-2); font-weight: 700; font-size: 0.68rem; margin-bottom: 0.15rem; }
+  .reply-preview .rp-text { color: var(--text); font-size: 0.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .reply-preview .rp-close { position: absolute; top: 0.3rem; right: 0.5rem; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.9rem; }
+  .reply-preview .rp-close:hover { color: var(--danger); }
+  .chat-msg-quote { background: rgba(102,170,255,0.1); border-left: 3px solid var(--accent-2); border-radius: 6px; padding: 0.3rem 0.5rem; margin-bottom: 0.4rem; font-size: 0.7rem; }
+  .chat-msg-quote .qm-name { color: var(--accent-2); font-weight: 700; font-size: 0.65rem; margin-bottom: 0.1rem; }
+  .chat-msg-quote .qm-text { color: var(--muted); font-size: 0.72rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .msg-reply-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 99px; padding: 0.05rem 0.4rem; font-size: 0.65rem; cursor: pointer; font-family: inherit; transition: 0.15s; }
+  .msg-reply-btn:hover { color: var(--accent-2); border-color: var(--accent-2); }
+
+  /* IMAGES + DRAG DROP */
+  .chat-image { max-width: 240px; max-height: 240px; border-radius: 10px; cursor: pointer; display: block; margin-bottom: 0.3rem; border: 1px solid var(--border); transition: 0.15s; }
+  .chat-image:hover { border-color: var(--accent); transform: scale(1.02); }
+  .image-preview-box { display: none; position: relative; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem; margin-bottom: 0.5rem; }
+  .image-preview-box.show { display: block; }
+  .image-preview-box img { max-height: 100px; max-width: 100%; border-radius: 6px; display: block; }
+  .image-preview-box .ip-close { position: absolute; top: 0.4rem; right: 0.4rem; background: rgba(0,0,0,0.6); border: none; color: white; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; line-height: 1; }
+  .image-preview-box .ip-close:hover { background: var(--danger); }
+  .image-preview-box .ip-info { font-size: 0.68rem; color: var(--muted); margin-top: 0.3rem; }
+  .drag-overlay { display: none; position: absolute; inset: 0; background: rgba(0,229,160,0.15); border: 2px dashed var(--accent); border-radius: 12px; z-index: 20; align-items: center; justify-content: center; font-size: 1rem; color: var(--accent); font-weight: 700; pointer-events: none; }
+  .drag-overlay.show { display: flex; animation: pulseDrag 1s infinite; }
+  @keyframes pulseDrag { 0%, 100% { background: rgba(0,229,160,0.15); } 50% { background: rgba(0,229,160,0.25); } }
+  .img-lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 99999; align-items: center; justify-content: center; cursor: zoom-out; }
+  .img-lightbox.show { display: flex; }
+  .img-lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; box-shadow: 0 0 80px rgba(0,229,160,0.3); }
+  .img-lightbox .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--danger); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; }
+
+  /* AI SEARCH */
+  .ai-search-btn { background: linear-gradient(135deg, rgba(102,170,255,0.2), rgba(179,102,255,0.2)); border: 1px solid var(--accent-2); color: var(--accent-2); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-family: inherit; margin-left: 0.5rem; transition: 0.15s; }
+  .ai-search-btn:hover { background: var(--accent-2); color: #06060a; }
+
+  /* FLASHCARDS */
+  .flashcard {
+    background: linear-gradient(135deg, rgba(0,229,160,0.08), rgba(179,102,255,0.08));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+  }
+  .flashcard:hover { border-color: var(--accent); transform: scale(1.01); }
+  .flashcard .fc-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.8rem; }
+  .flashcard .fc-question { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+  .flashcard .fc-answer { font-size: 0.95rem; color: var(--accent); margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); display: none; }
+  .flashcard.revealed .fc-answer { display: block; }
+  .flashcard-nav { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
+
+  /* STUDY LOG */
+  .study-log-entry {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-2); border-radius: 8px;
+    padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .study-log-entry .sl-time { font-size: 0.75rem; color: var(--accent); font-weight: 700; width: 60px; }
+  .study-log-entry .sl-content { flex: 1; font-size: 0.85rem; }
+  .study-log-entry .sl-subject { font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 4px; background: var(--surface-2); color: var(--accent-2); text-transform: uppercase; }
+
+  /* WEAK TOPICS */
+  .weak-topic {
+    background: rgba(255,85,102,0.1); border: 1px solid rgba(255,85,102,0.3);
+    border-radius: 8px; padding: 0.6rem 0.9rem; margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .weak-topic .wt-count { font-size: 1rem; font-weight: 800; color: var(--danger); width: 40px; }
+  .weak-topic .wt-name { flex: 1; font-size: 0.85rem; }
+
+  /* REVISION SCHEDULE */
+  .revision-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .revision-item.due { border-left: 3px solid var(--warn); background: rgba(255,170,68,0.08); }
+  .revision-item .rev-date { font-size: 0.7rem; color: var(--muted); width: 90px; }
+  .revision-item .rev-name { flex: 1; font-size: 0.85rem; font-weight: 600; }
+  .revision-item .rev-stage { font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 4px; background: var(--surface-2); color: var(--accent-2); }
+
+  /* STREAK CALENDAR */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--muted);
+    position: relative;
+  }
+  .cal-day.studied {
+    background: linear-gradient(135deg, rgba(0,229,160,0.3), rgba(102,170,255,0.2));
+    border-color: var(--accent);
+    color: var(--text);
+    font-weight: 700;
+  }
+  .cal-day.studied-high {
+    background: linear-gradient(135deg, rgba(0,229,160,0.5), rgba(102,170,255,0.3));
+    border-color: var(--accent);
+    color: #06060a;
+    font-weight: 800;
+  }
+  .cal-day.today {
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 12px rgba(0,229,160,0.5);
+  }
+  .cal-day .cal-num { font-size: 0.75rem; }
+  .cal-day .cal-hrs { font-size: 0.55rem; }
+
+  /* BOOKMARKS */
+  .bookmark-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .bookmark-item .bm-icon { font-size: 1.3rem; }
+  .bookmark-item .bm-info { flex: 1; min-width: 0; }
+  .bookmark-item .bm-title { font-size: 0.88rem; font-weight: 600; }
+  .bookmark-item .bm-type { font-size: 0.65rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* DAILY REMINDER */
+  .reminder-banner {
+    background: linear-gradient(135deg, rgba(255,170,68,0.15), rgba(255,85,102,0.1));
+    border: 1px solid rgba(255,170,68,0.4);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .reminder-banner .rb-icon { font-size: 1.5rem; }
+  .reminder-banner .rb-text { flex: 1; font-size: 0.85rem; }
+  .reminder-banner .rb-text strong { color: var(--warn); }
+  .reminder-banner .rb-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; }
 
   @media (max-width: 800px) {
     .app { grid-template-columns: 1fr; }
@@ -426,13 +575,12 @@
     h1 { font-size: 1.3rem; }
     .chat-container { grid-template-columns: 1fr; height: auto; }
     .chat-list { max-height: 200px; }
-    .chat-main { height: 400px; }
+    .chat-main { height: 500px; }
+    .calendar-grid { gap: 0.2rem; }
   }
 </style>
 </head>
-
-
-  <body>
+<body>
 <canvas id="bg-canvas"></canvas>
 
 <div class="auth-modal" id="authModal">
@@ -461,7 +609,7 @@
     <div id="signupForm" style="display:none;">
       <div class="auth-field">
         <label>Username</label>
-        <input type="text" id="signupUsername" placeholder="apna username choose kar..." autocomplete="off">
+        <input type="text" id="signupUsername" placeholder="apna username..." autocomplete="off">
       </div>
       <div class="auth-field">
         <label>Password</label>
@@ -485,24 +633,15 @@
     <div class="class-options">
       <button class="class-opt" data-class="11">
         <div class="emoji">📘</div>
-        <div class="info">
-          <div class="title">Class 11th</div>
-          <div class="desc">JEE 2028 target · 2 saal ka time</div>
-        </div>
+        <div class="info"><div class="title">Class 11th</div><div class="desc">JEE 2028 target</div></div>
       </button>
       <button class="class-opt" data-class="12">
         <div class="emoji">📕</div>
-        <div class="info">
-          <div class="title">Class 12th</div>
-          <div class="desc">JEE 2027 target · 1 saal ka time</div>
-        </div>
+        <div class="info"><div class="title">Class 12th</div><div class="desc">JEE 2027 target</div></div>
       </button>
       <button class="class-opt" data-class="drop">
         <div class="emoji">🎯</div>
-        <div class="info">
-          <div class="title">Dropper</div>
-          <div class="desc">JEE 2026 target · full focus mode</div>
-        </div>
+        <div class="info"><div class="title">Dropper</div><div class="desc">JEE 2026 target</div></div>
       </button>
     </div>
   </div>
@@ -510,9 +649,15 @@
 
 <div class="bg-glow"></div>
 
+<div class="img-lightbox" id="imgLightbox">
+  <button class="lb-close" onclick="document.getElementById('imgLightbox').classList.remove('show')">×</button>
+  <img id="lightboxImg" src="" alt="preview">
+</div>
+
 <div class="app" id="app" style="display:none;">
   <aside class="sidebar">
     <div class="logo">JEE<span>WAR ROOM <span class="class-badge" id="classBadge" style="display:none;"></span></span></div>
+
     <div class="user-box">
       <div class="user-avatar" id="userAvatar">?</div>
       <div class="user-info">
@@ -520,15 +665,26 @@
         <div class="user-sub" id="userSubDisplay">—</div>
       </div>
     </div>
+
     <div class="streak-box">
       <div class="num" id="streakNum">0</div>
       <div class="lbl">day streak</div>
     </div>
+
     <button class="nav-btn active" data-page="dashboard"><span class="icon">◈</span> Dashboard</button>
+    <button class="nav-btn" data-page="friends"><span class="icon">👥</span> Friends <span class="nav-badge" id="friendBadge" style="display:none;">0</span></button>
+    <button class="nav-btn" data-page="friendchat"><span class="icon">💬</span> Friend Chat</button>
+    <button class="nav-btn" data-page="friendprogress"><span class="icon">📊</span> Friend Progress</button>
     <button class="nav-btn" data-page="routine"><span class="icon">◷</span> Routine</button>
     <button class="nav-btn" data-page="timer"><span class="icon">◉</span> Timer</button>
     <button class="nav-btn" data-page="subjects"><span class="icon">◐</span> Subjects</button>
     <button class="nav-btn" data-page="syllabus"><span class="icon">✓</span> Syllabus</button>
+    <button class="nav-btn" data-page="flashcards"><span class="icon">📇</span> Flashcards</button>
+    <button class="nav-btn" data-page="studylog"><span class="icon">📝</span> Study Log</button>
+    <button class="nav-btn" data-page="revision"><span class="icon">🔄</span> Revision</button>
+    <button class="nav-btn" data-page="calendar"><span class="icon">📅</span> Calendar</button>
+    <button class="nav-btn" data-page="weaktopics"><span class="icon">⚠</span> Weak Topics</button>
+    <button class="nav-btn" data-page="bookmarks"><span class="icon">🔖</span> Bookmarks</button>
     <button class="nav-btn" data-page="timetable"><span class="icon">◫</span> Timetable</button>
     <button class="nav-btn" data-page="notes"><span class="icon">✎</span> Notes</button>
     <button class="nav-btn" data-page="formulas"><span class="icon">∑</span> Formulas</button>
@@ -539,20 +695,23 @@
     <button class="nav-btn" data-page="exammode"><span class="icon">⏱</span> Exam Mode</button>
     <button class="nav-btn" data-page="pdfs"><span class="icon">▤</span> PDF Library</button>
     <button class="nav-btn" data-page="pw"><span class="icon">▶</span> PW Courses</button>
-    <button class="nav-btn" data-page="friends"><span class="icon">👥</span> Friends <span class="nav-badge" id="friendBadge" style="display:none;">0</span></button>
-    <button class="nav-btn" data-page="friendchat"><span class="icon">💬</span> Friend Chat</button>
-    <button class="nav-btn" data-page="friendprogress"><span class="icon">📊</span> Friend Progress</button>
     <button class="nav-btn" data-page="rooms"><span class="icon">◍</span> Study Rooms</button>
     <button class="nav-btn" data-page="assistant"><span class="icon">✦</span> AI Coach</button>
     <button class="nav-btn" data-page="admin"><span class="icon">🔒</span> Admin</button>
     <button class="nav-btn" data-page="backup"><span class="icon">⬇</span> Backup</button>
     <button class="logout-btn" id="logoutBtn">Logout</button>
+    <div class="sidebar-footer">localStorage + Firebase</div>
   </aside>
 
   <main class="main">
     <section class="page active" id="dashboard">
       <h1>Dashboard <span class="accent">//</span></h1>
       <p class="subtitle">Aaj ka scene, boss man.</p>
+      <div class="reminder-banner" id="reminderBanner" style="display:none;">
+        <div class="rb-icon">⚠️</div>
+        <div class="rb-text" id="reminderText"></div>
+        <button class="rb-close" onclick="document.getElementById('reminderBanner').style.display='none'">×</button>
+      </div>
       <div class="countdown">
         <div>
           <div class="label">JEE Main Countdown</div>
@@ -571,7 +730,7 @@
       <div class="grid">
         <div class="card"><div class="stat-label">Tasks Pending</div><div class="stat-value" id="statTasks">0</div><div class="stat-sub" id="statTasksSub">sab clear</div></div>
         <div class="card"><div class="stat-label">Today's Study</div><div class="stat-value blue" id="statTime">0m</div><div class="stat-sub">focus total</div></div>
-        <div class="card"><div class="stat-label">Total Hours</div><div class="stat-value purple" id="statTotal">0h</div><div class="stat-sub">all-time grind</div></div>
+        <div class="card"><div class="stat-label">Total Hours</div><div class="stat-value purple" id="statTotal">0h</div><div class="stat-sub">all-time</div></div>
         <div class="card"><div class="stat-label">Mocks Given</div><div class="stat-value warn" id="statMocks">0</div><div class="stat-sub" id="statAvg">avg --</div></div>
       </div>
       <h2>Daily Goal (8h)</h2>
@@ -579,6 +738,82 @@
         <div class="progress-wrap"><div class="progress-bar" id="dailyProgress" style="width:0%"></div></div>
         <div class="stat-sub" id="dailyProgressText" style="margin-top:0.6rem;">0 / 8 hours</div>
       </div>
+      <h2>Quick Stats</h2>
+      <div class="grid">
+        <div class="card"><div class="stat-label">Flashcards</div><div class="stat-value" id="statFlash" style="font-size:1.3rem;">0</div></div>
+        <div class="card"><div class="stat-label">Revision Due</div><div class="stat-value warn" id="statRevDue" style="font-size:1.3rem;">0</div></div>
+        <div class="card"><div class="stat-label">Weak Topics</div><div class="stat-value" id="statWeak" style="font-size:1.3rem; color:var(--danger);">0</div></div>
+        <div class="card"><div class="stat-label">Bookmarks</div><div class="stat-value blue" id="statBm" style="font-size:1.3rem;">0</div></div>
+      </div>
+    </section>
+        <section class="page" id="friends">
+      <h1>Friends <span class="accent">//</span></h1>
+      <p class="subtitle">Dost banao, saath padho.</p>
+      <div class="friend-tabs">
+        <button class="friend-tab active" data-ftab="add">Add Friend</button>
+        <button class="friend-tab" data-ftab="requests">Requests <span id="reqCount" style="color:var(--danger);">0</span></button>
+        <button class="friend-tab" data-ftab="list">My Friends <span id="friendCount">0</span></button>
+      </div>
+      <div class="friend-tab-content active" id="ftab-add">
+        <div class="input-row">
+          <input type="text" id="friendUsernameInput" placeholder="Friend ka username daal...">
+          <button class="btn primary" id="sendFriendReqBtn">Send Request</button>
+        </div>
+        <div id="searchResult"></div>
+      </div>
+      <div class="friend-tab-content" id="ftab-requests">
+        <h2>Incoming Requests</h2>
+        <div id="incomingReqs"></div>
+        <h2>Sent Requests</h2>
+        <div id="outgoingReqs"></div>
+      </div>
+      <div class="friend-tab-content" id="ftab-list">
+        <div id="friendsList"></div>
+      </div>
+    </section>
+
+    <section class="page" id="friendchat">
+      <h1>Friend Chat <span class="accent">//</span></h1>
+      <p class="subtitle">Real-time chat — image, reply, emoji, reactions, sab.</p>
+      <div class="chat-container">
+        <div class="chat-list" id="chatFriendList"></div>
+        <div class="chat-main">
+          <div class="chat-header" id="chatHeader">
+            <div class="friend-avatar" id="chatHeaderAvatar">?</div>
+            <div>
+              <div class="friend-name" id="chatHeaderName">Select a friend</div>
+              <div class="friend-sub" id="chatHeaderSub">Koi friend choose kar</div>
+            </div>
+          </div>
+          <div class="chat-messages" id="chatMessages"></div>
+          <div class="typing-indicator" id="typingIndicator"></div>
+          <div class="drag-overlay" id="dragOverlay">📎 Image chhod de yahan</div>
+          <div class="image-preview-box" id="imagePreviewBox">
+            <button class="ip-close" id="imgPreviewClose">×</button>
+            <img id="imgPreviewEl" src="" alt="preview">
+            <div class="ip-info" id="imgPreviewInfo">Ready to send</div>
+          </div>
+          <div class="reply-preview" id="replyPreview">
+            <button class="rp-close" id="replyClose">×</button>
+            <div class="rp-name" id="replyName"></div>
+            <div class="rp-text" id="replyText"></div>
+          </div>
+          <div class="emoji-tray" id="emojiTray"></div>
+          <div class="chat-input-row">
+            <button class="btn" id="imgBtn" style="padding:0.6rem 0.85rem; font-size:1.1rem;">📎</button>
+            <button class="btn" id="emojiBtn" style="padding:0.6rem 0.85rem; font-size:1.1rem;">😀</button>
+            <input type="text" id="friendChatInput" placeholder="Message likho... (@ se tag kar)" disabled>
+            <button class="btn primary" id="sendFriendMsgBtn" disabled>Send</button>
+          </div>
+          <input type="file" id="imgFileInput" accept="image/*" style="display:none;">
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="friendprogress">
+      <h1>Friend Progress <span class="accent">//</span></h1>
+      <p class="subtitle">Dekh boss man, tere dost kaise grind kar rahe hain.</p>
+      <div id="friendProgressList"></div>
     </section>
 
     <section class="page" id="routine">
@@ -616,11 +851,6 @@
           <button class="btn sm" data-preset="10" data-mode="Break">10 break</button>
         </div>
       </div>
-      <h2>Today's Sessions</h2>
-      <div class="card">
-        <div class="stat-label">Minutes Studied Today</div>
-        <div class="stat-value blue" id="timerToday">0</div>
-      </div>
     </section>
 
     <section class="page" id="subjects">
@@ -648,19 +878,126 @@
 
     <section class="page" id="syllabus">
       <h1>JEE Syllabus Tracker</h1>
-      <p class="subtitle">Chapter complete hue toh tick karo. Progress apne aap banega.</p>
+      <p class="subtitle">Chapter complete hue toh tick karo.</p>
       <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
         <div class="card"><div class="stat-label">Physics</div><div class="stat-value" id="sylPhyPct">0%</div></div>
         <div class="card"><div class="stat-label">Chemistry</div><div class="stat-value blue" id="sylChemPct">0%</div></div>
         <div class="card"><div class="stat-label">Math</div><div class="stat-value purple" id="sylMathPct">0%</div></div>
         <div class="card"><div class="stat-label">Overall</div><div class="stat-value warn" id="sylTotalPct">0%</div></div>
       </div>
-      <h2>Physics</h2>
-      <div class="chapter-list" id="sylPhy"></div>
-      <h2>Chemistry</h2>
-      <div class="chapter-list" id="sylChem"></div>
-      <h2>Math</h2>
-      <div class="chapter-list" id="sylMath"></div>
+      <h2>Physics</h2><div class="chapter-list" id="sylPhy"></div>
+      <h2>Chemistry</h2><div class="chapter-list" id="sylChem"></div>
+      <h2>Math</h2><div class="chapter-list" id="sylMath"></div>
+    </section>
+
+    <section class="page" id="flashcards">
+      <h1>Flashcards <span class="accent">//</span></h1>
+      <p class="subtitle">Revision ke liye flashcard. Click karke answer dekho.</p>
+      <div class="input-row">
+        <input type="text" id="fcQuestion" placeholder="Question / Term">
+        <input type="text" id="fcAnswer" placeholder="Answer / Definition">
+        <select id="fcSubject" style="max-width:120px;">
+          <option value="PHY">Physics</option>
+          <option value="CHEM">Chemistry</option>
+          <option value="MATH">Math</option>
+          <option value="GEN">General</option>
+        </select>
+        <button class="btn primary" id="addFc">+ Add</button>
+      </div>
+      <div style="max-width:600px; margin:1rem auto;">
+        <div class="flashcard" id="fcDisplay" style="display:none;">
+          <div class="fc-label" id="fcSubjectLabel">PHYSICS</div>
+          <div class="fc-question" id="fcQuestionShow">—</div>
+          <div class="fc-answer" id="fcAnswerShow">—</div>
+        </div>
+        <div class="empty" id="fcEmpty">Koi flashcard nahi. Upar se add karo.</div>
+        <div class="flashcard-nav">
+          <button class="btn" id="fcPrev">← Prev</button>
+          <button class="btn primary" id="fcReveal">Reveal</button>
+          <button class="btn" id="fcNext">Next →</button>
+          <button class="btn" id="fcShuffle">🔀 Shuffle</button>
+        </div>
+      </div>
+      <h2>All Flashcards <span id="fcCount" style="color:var(--muted); font-size:0.8rem;">(0)</span></h2>
+      <div id="fcList"></div>
+    </section>
+
+    <section class="page" id="studylog">
+      <h1>Study Log <span class="accent">//</span></h1>
+      <p class="subtitle">Aaj kya padha, kitna time diya — sab note karo.</p>
+      <div class="input-row">
+        <input type="text" id="slContent" placeholder="Kya padha? (e.g. Rotational Motion - 10 numericals)">
+        <select id="slSubject" style="max-width:120px;">
+          <option value="PHY">Physics</option>
+          <option value="CHEM">Chemistry</option>
+          <option value="MATH">Math</option>
+          <option value="GEN">General</option>
+        </select>
+        <input type="number" id="slMinutes" placeholder="Minutes" style="max-width:100px;">
+        <button class="btn primary" id="addSl">+ Log</button>
+      </div>
+      <div id="slList"></div>
+    </section>
+
+    <section class="page" id="revision">
+      <h1>Revision Schedule <span class="accent">//</span></h1>
+      <p class="subtitle">Spaced repetition — 1 din, 3 din, 7 din, 30 din baad revise karo.</p>
+      <div class="input-row">
+        <input type="text" id="revTopic" placeholder="Topic name...">
+        <select id="revSubject" style="max-width:120px;">
+          <option value="PHY">Physics</option>
+          <option value="CHEM">Chemistry</option>
+          <option value="MATH">Math</option>
+          <option value="GEN">General</option>
+        </select>
+        <button class="btn primary" id="addRev">+ Add</button>
+      </div>
+      <div id="revList"></div>
+    </section>
+
+    <section class="page" id="calendar">
+      <h1>Streak Calendar <span class="accent">//</span></h1>
+      <p class="subtitle">Mahine ka calendar — dekho kaunse din padha.</p>
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <button class="btn sm" id="calPrev">← Prev</button>
+          <div style="font-weight:700; color:var(--accent); font-size:1.1rem;" id="calMonth">—</div>
+          <button class="btn sm" id="calNext">Next →</button>
+        </div>
+        <div class="calendar-grid" id="calGrid"></div>
+        <div class="stat-sub" style="margin-top:1rem; text-align:center;">
+          <span style="display:inline-block; width:12px; height:12px; background:rgba(0,229,160,0.3); border:1px solid var(--accent); border-radius:3px; vertical-align:middle;"></span> Padha
+          <span style="display:inline-block; width:12px; height:12px; background:rgba(0,229,160,0.6); border:1px solid var(--accent); border-radius:3px; vertical-align:middle; margin-left:1rem;"></span> 6+ ghante
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="weaktopics">
+      <h1>Weak Topics <span class="accent">//</span></h1>
+      <p class="subtitle">Jahan bar bar galti hoti hai. Extra time do.</p>
+      <div class="input-row">
+        <input type="text" id="wtName" placeholder="Topic name...">
+        <input type="number" id="wtCount" placeholder="Galti count" style="max-width:120px;" value="1">
+        <button class="btn primary" id="addWt">+ Add</button>
+      </div>
+      <div id="wtList"></div>
+    </section>
+
+    <section class="page" id="bookmarks">
+      <h1>Bookmarks <span class="accent">//</span></h1>
+      <p class="subtitle">Important PDF, YouTube lecture, ya link — sab yahan save karo.</p>
+      <div class="input-row">
+        <input type="text" id="bmTitle" placeholder="Title..." style="max-width:220px;">
+        <input type="text" id="bmUrl" placeholder="https://...">
+        <select id="bmType" style="max-width:130px;">
+          <option value="PDF">📄 PDF</option>
+          <option value="YouTube">▶️ YouTube</option>
+          <option value="Link">🔗 Link</option>
+          <option value="Notes">✏️ Notes</option>
+        </select>
+        <button class="btn primary" id="addBm">+ Add</button>
+      </div>
+      <div id="bmList"></div>
     </section>
 
     <section class="page" id="timetable">
@@ -671,7 +1008,7 @@
           <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
           <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
         </select>
-        <input type="text" id="ttTime" placeholder="Time (e.g. 6-8 AM)" style="max-width:140px;">
+        <input type="text" id="ttTime" placeholder="Time" style="max-width:140px;">
         <input type="text" id="ttTask" placeholder="What to study...">
         <button class="btn primary" id="addTt">+ Add</button>
       </div>
@@ -694,7 +1031,7 @@
       <p class="subtitle">Important formulas ek jagah. Revision fast.</p>
       <div class="input-row">
         <input type="text" id="fTitle" placeholder="Formula name..." style="max-width:200px;">
-        <input type="text" id="fBody" placeholder="F = ma  |  E = mc²">
+        <input type="text" id="fBody" placeholder="F = ma">
         <button class="btn primary" id="addFormula">+ Add</button>
       </div>
       <div id="formulaList"></div>
@@ -704,7 +1041,7 @@
       <h1>PYQ Log</h1>
       <p class="subtitle">Previous Year Questions practice. Track karo.</p>
       <div class="input-row">
-        <input type="text" id="pyqTopic" placeholder="Topic (e.g. Rotational Motion)">
+        <input type="text" id="pyqTopic" placeholder="Topic">
         <input type="number" id="pyqSolved" placeholder="Solved" style="max-width:100px;">
         <input type="number" id="pyqTotal" placeholder="Total" style="max-width:100px;">
         <button class="btn primary" id="addPyq">+ Log</button>
@@ -716,7 +1053,7 @@
       <h1>Mock Test Log</h1>
       <p class="subtitle">Har mock ka score. Progress dikhega.</p>
       <div class="input-row">
-        <input type="text" id="mockName" placeholder="Mock name (e.g. AITS-1)" style="max-width:200px;">
+        <input type="text" id="mockName" placeholder="Mock name" style="max-width:200px;">
         <input type="number" id="mockScore" placeholder="Score" style="max-width:100px;">
         <input type="number" id="mockTotal" placeholder="Out of" style="max-width:100px;">
         <button class="btn primary" id="addMock">+ Log</button>
@@ -728,7 +1065,7 @@
       <h1>Mistake Log</h1>
       <p class="subtitle">Har galti yahan likho. Revision ke waqt yahi goldmine hai.</p>
       <div class="input-row">
-        <input type="text" id="misSubject" placeholder="Subject (Phy/Chem/Math)" style="max-width:140px;">
+        <input type="text" id="misSubject" placeholder="Subject" style="max-width:140px;">
         <input type="text" id="misDesc" placeholder="Mistake kya thi?">
         <button class="btn primary" id="addMis">+ Add</button>
       </div>
@@ -758,17 +1095,12 @@
           <button class="btn" id="examPause">Pause</button>
           <button class="btn danger" id="examReset">Reset</button>
         </div>
-        <div style="margin-top:1.5rem; display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
-          <button class="btn sm" data-exam="180">JEE Main (3h)</button>
-          <button class="btn sm" data-exam="120">JEE Adv Paper (2h)</button>
-          <button class="btn sm" data-exam="60">Subject Test (1h)</button>
-        </div>
       </div>
     </section>
 
     <section class="page" id="pdfs">
       <h1>PDF Library</h1>
-      <p class="subtitle">Books, notes, DPPs. Link paste karo, browser mein khulega.</p>
+      <p class="subtitle">Books, notes, DPPs. Link paste karo.</p>
       <div class="input-row">
         <input type="text" id="pdfTitle" placeholder="Book name..." style="max-width:220px;">
         <input type="text" id="pdfUrl" placeholder="https://...">
@@ -783,116 +1115,40 @@
       <div class="grid">
         <div class="card">
           <div class="stat-label">PW Official Web</div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">Login karke apne paid batch access kar.</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Paid batch access kar.</div>
           <button class="btn primary" onclick="window.open('https://www.pw.live', '_blank', 'noopener')">▶ Open PW Live</button>
         </div>
         <div class="card">
           <div class="stat-label">PW App Web</div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">Batch videos, DPP, notes sab yahan.</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Batch videos, DPP, notes.</div>
           <button class="btn primary" onclick="window.open('https://www.pw.live/study-v2/my-courses', '_blank', 'noopener')">▶ My Courses</button>
         </div>
         <div class="card">
           <div class="stat-label">YouTube (Free PW)</div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">PW ke free lectures — legal, safe.</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Free lectures.</div>
           <button class="btn" onclick="window.open('https://www.youtube.com/@PhysicsWallah', '_blank', 'noopener')">▶ PW YouTube</button>
         </div>
         <div class="card" style="border-left:3px solid #b366ff;">
           <div class="stat-label">DOH PW <span style="color:#b366ff;">★</span></div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">Custom PW portal — login karke batches access kar.</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Custom PW portal.</div>
           <button class="btn primary" onclick="window.open('https://dohstudy-web-pw.vercel.app/', '_blank', 'noopener')" style="background:#b366ff; border-color:#b366ff;">▶ Open DOH PW</button>
         </div>
-        <div class="card" style="border-left:3px solid #b366ff;">
-          <div class="stat-label">DOH PW — My Batches</div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">Direct batches page (login required).</div>
-          <button class="btn" onclick="window.open('https://dohstudy-web-pw.vercel.app/', '_blank', 'noopener')">▶ My Batches</button>
-        </div>
       </div>
-      <h2>Apne Custom Links</h2>
-      <p class="subtitle" style="margin-bottom:1rem;">Jo bhi link chahiye — PW batch, telegram, notes — yahan save kar.</p>
-      <div class="input-row">
-        <input type="text" id="pwName" placeholder="Naam (e.g. Lakshya JEE 2026)" style="max-width:220px;">
-        <input type="text" id="pwUrl" placeholder="https://...">
-        <button class="btn primary" id="addPw">+ Add</button>
-      </div>
-      <div id="pwList"></div>
-    </section>
-
-    <section class="page" id="friends">
-      <h1>Friends <span class="accent">//</span></h1>
-      <p class="subtitle">Dost banao, saath padho.</p>
-      <div class="friend-tabs">
-        <button class="friend-tab active" data-ftab="add">Add Friend</button>
-        <button class="friend-tab" data-ftab="requests">Requests <span id="reqCount" style="color:var(--danger);">0</span></button>
-        <button class="friend-tab" data-ftab="list">My Friends <span id="friendCount">0</span></button>
-      </div>
-      <div class="friend-tab-content active" id="ftab-add">
-        <div class="input-row">
-          <input type="text" id="friendUsernameInput" placeholder="Friend ka username daal...">
-          <button class="btn primary" id="sendFriendReqBtn">Send Request</button>
-        </div>
-        <div id="searchResult"></div>
-      </div>
-      <div class="friend-tab-content" id="ftab-requests">
-        <h2>Incoming Requests</h2>
-        <div id="incomingReqs"></div>
-        <h2>Sent Requests</h2>
-        <div id="outgoingReqs"></div>
-      </div>
-      <div class="friend-tab-content" id="ftab-list">
-        <div id="friendsList"></div>
-      </div>
-    </section>
-
-    <section class="page" id="friendchat">
-      <h1>Friend Chat <span class="accent">//</span></h1>
-      <p class="subtitle">Real-time chat. Emoji, tag, reactions, read receipts sab hai.</p>
-      <div class="chat-container">
-        <div class="chat-list" id="chatFriendList"></div>
-        <div class="chat-main">
-          <div class="chat-header" id="chatHeader">
-            <div class="friend-avatar" id="chatHeaderAvatar">?</div>
-            <div>
-              <div class="friend-name" id="chatHeaderName">Select a friend</div>
-              <div class="friend-sub" id="chatHeaderSub">Koi friend choose kar</div>
-            </div>
-          </div>
-          <div class="chat-messages" id="chatMessages"></div>
-          <div class="typing-indicator" id="typingIndicator"></div>
-          <div class="emoji-tray" id="emojiTray"></div>
-          <div class="chat-input-row">
-            <button class="btn" id="emojiBtn" style="padding:0.6rem 0.85rem; font-size:1.1rem;">😀</button>
-            <input type="text" id="friendChatInput" placeholder="Message likho... (@ se tag kar)" disabled>
-            <button class="btn primary" id="sendFriendMsgBtn" disabled>Send</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="page" id="friendprogress">
-      <h1>Friend Progress <span class="accent">//</span></h1>
-      <p class="subtitle">Dekh boss man, tere dost kaise grind kar rahe hain.</p>
-      <div id="friendProgressList"></div>
     </section>
 
     <section class="page" id="rooms">
       <h1>Study Rooms</h1>
-      <p class="subtitle">Admin room banata hai, code share karta hai, same browser tabs se join karo.</p>
+      <p class="subtitle">Same browser tabs ke beech room chat.</p>
       <div class="grid">
         <div class="card">
-          <div class="stat-label">Admin — Create Room</div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">Room banao, code generate hoga.</div>
-          <div class="input-row" style="margin-bottom:0.6rem;">
-            <input type="text" id="roomNameInput" placeholder="Room ka naam...">
-          </div>
-          <button class="btn primary" id="createRoomBtn">+ Create Room</button>
+          <div class="stat-label">Create Room</div>
+          <div class="input-row" style="margin:0.6rem 0;"><input type="text" id="roomNameInput" placeholder="Room ka naam..."></div>
+          <button class="btn primary" id="createRoomBtn">+ Create</button>
         </div>
         <div class="card">
           <div class="stat-label">Join Room</div>
-          <div class="stat-sub" style="margin-bottom:0.8rem;">Code daalo, andar aa jao.</div>
-          <div class="input-row" style="margin-bottom:0.6rem;">
-            <input type="text" id="roomCodeInput" placeholder="Room code (e.g. A1B2C3)">
-          </div>
-          <button class="btn primary" id="joinRoomBtn">▶ Join Room</button>
+          <div class="input-row" style="margin:0.6rem 0;"><input type="text" id="roomCodeInput" placeholder="Code"></div>
+          <button class="btn primary" id="joinRoomBtn">▶ Join</button>
         </div>
       </div>
       <div id="roomActive" style="display:none;">
@@ -901,7 +1157,7 @@
             <div>
               <div class="stat-label">Active Room</div>
               <div style="font-size:1.1rem; font-weight:800; color:var(--accent);" id="roomTitle">—</div>
-              <div class="stat-sub">Code: <span id="roomCodeDisplay" style="color:var(--accent-2); font-weight:700;"></span> · Online: <span id="roomMembers">1</span></div>
+              <div class="stat-sub">Code: <span id="roomCodeDisplay"></span> · Online: <span id="roomMembers">1</span></div>
             </div>
             <div style="display:flex; gap:0.4rem;">
               <button class="btn sm" id="copyCodeBtn">Copy Code</button>
@@ -919,12 +1175,13 @@
 
     <section class="page" id="assistant">
       <h1>AI Coach <span class="accent">//</span></h1>
-      <p class="subtitle">Tera data padhta hai, seedha bolta hai kya karna hai.</p>
+      <p class="subtitle">Tera data padhta hai, Google pe bhi search kar sakta hai.</p>
       <div id="aiInsights" class="grid"></div>
       <h2>Quick Ask</h2>
       <div class="input-row">
-        <input type="text" id="aiInput" placeholder="Pooch kuch... (e.g. 'aaj kya karu')">
+        <input type="text" id="aiInput" placeholder="Pooch kuch... (e.g. 'aaj kya karu', 'HC Verma PDF')">
         <button class="btn primary" id="aiSend">Ask</button>
+        <button class="btn" id="aiGoogleSearch" style="background:linear-gradient(135deg,rgba(102,170,255,0.2),rgba(179,102,255,0.2)); border-color:var(--accent-2); color:var(--accent-2);">🔍 Google</button>
       </div>
       <div id="aiChat" style="margin-top:1rem;"></div>
     </section>
@@ -947,13 +1204,12 @@
       <div id="adminContent" style="display:none;">
         <div class="grid">
           <div class="card"><div class="stat-label">Total Users</div><div class="stat-value" id="adminTotalUsers">0</div></div>
-          <div class="card"><div class="stat-label">Total Friendships</div><div class="stat-value blue" id="adminTotalFriends">0</div></div>
-          <div class="card"><div class="stat-label">Pending Requests</div><div class="stat-value warn" id="adminPendingReqs">0</div></div>
-          <div class="card"><div class="stat-label">Active Rooms</div><div class="stat-value purple" id="adminActiveRooms">0</div></div>
+          <div class="card"><div class="stat-label">Friendships</div><div class="stat-value blue" id="adminTotalFriends">0</div></div>
+          <div class="card"><div class="stat-label">Pending Reqs</div><div class="stat-value warn" id="adminPendingReqs">0</div></div>
         </div>
         <h2>All Users</h2>
         <div id="adminUserList"></div>
-        <button class="btn danger" id="adminExitBtn" style="margin-top:1rem;">Exit Admin Mode</button>
+        <button class="btn danger" id="adminExitBtn" style="margin-top:1rem;">Exit Admin</button>
       </div>
     </section>
 
@@ -964,25 +1220,24 @@
         <div class="card">
           <div class="stat-label">Export Data</div>
           <div class="stat-sub" style="margin-bottom:0.8rem;">JSON file download hogi.</div>
-          <button class="btn primary" id="exportBtn">⬇ Download Backup</button>
+          <button class="btn primary" id="exportBtn">⬇ Download</button>
         </div>
         <div class="card">
           <div class="stat-label">Import Data</div>
           <div class="stat-sub" style="margin-bottom:0.8rem;">Backup restore karo.</div>
           <input type="file" id="importFile" accept=".json" style="display:none;">
-          <button class="btn" id="importBtn">⬆ Restore Backup</button>
+          <button class="btn" id="importBtn">⬆ Restore</button>
         </div>
         <div class="card">
           <div class="stat-label">Danger Zone</div>
           <div class="stat-sub" style="margin-bottom:0.8rem;">Sab data delete.</div>
-          <button class="btn danger" id="wipeBtn">⚠ Wipe Everything</button>
+          <button class="btn danger" id="wipeBtn">⚠ Wipe</button>
         </div>
       </div>
     </section>
   </main>
 </div>
-
-    <script type="module">
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, push, onValue, set, remove, onDisconnect, query, limitToLast, get, update }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -1019,7 +1274,8 @@ const SYLLABUS = {
 let currentUser = null;
 const store = {
   tasks: [], notes: [], pdfs: [], formulas: [], pyq: [], mocks: [], mistakes: [], marks: [],
-  timetable: [], pwLinks: [],
+  timetable: [], pwLinks: [], flashcards: [], studyLog: [], revision: [], weakTopics: [],
+  bookmarks: [], studyCalendar: {},
   subjects: {phy:0,chem:0,math:0}, syllabus: {},
   totalMinutes: 0, todayMinutes: 0, todayDate: '', streak: 0, lastActive: ''
 };
@@ -1039,6 +1295,12 @@ function loadUserData() {
   store.marks = JSON.parse(localStorage.getItem(p+'marks') || '[]');
   store.timetable = JSON.parse(localStorage.getItem(p+'timetable') || '[]');
   store.pwLinks = JSON.parse(localStorage.getItem(p+'pwLinks') || '[]');
+  store.flashcards = JSON.parse(localStorage.getItem(p+'flashcards') || '[]');
+  store.studyLog = JSON.parse(localStorage.getItem(p+'studyLog') || '[]');
+  store.revision = JSON.parse(localStorage.getItem(p+'revision') || '[]');
+  store.weakTopics = JSON.parse(localStorage.getItem(p+'weakTopics') || '[]');
+  store.bookmarks = JSON.parse(localStorage.getItem(p+'bookmarks') || '[]');
+  store.studyCalendar = JSON.parse(localStorage.getItem(p+'studyCalendar') || '{}');
   store.subjects = JSON.parse(localStorage.getItem(p+'subjects') || '{"phy":0,"chem":0,"math":0}');
   store.syllabus = JSON.parse(localStorage.getItem(p+'syllabus') || '{}');
   store.totalMinutes = parseInt(localStorage.getItem(p+'totalMin') || '0');
@@ -1059,9 +1321,10 @@ function loadUserData() {
 function saveAll() {
   if (!currentUser) return;
   const p = userPrefix();
-  ['tasks','notes','pdfs','formulas','pyq','mocks','mistakes','marks','timetable','pwLinks'].forEach(k => {
+  ['tasks','notes','pdfs','formulas','pyq','mocks','mistakes','marks','timetable','pwLinks','flashcards','studyLog','revision','weakTopics','bookmarks'].forEach(k => {
     localStorage.setItem(p+k, JSON.stringify(store[k]));
   });
+  localStorage.setItem(p+'studyCalendar', JSON.stringify(store.studyCalendar));
   localStorage.setItem(p+'subjects', JSON.stringify(store.subjects));
   localStorage.setItem(p+'syllabus', JSON.stringify(store.syllabus));
   localStorage.setItem(p+'totalMin', store.totalMinutes);
@@ -1226,6 +1489,9 @@ $$('.nav-btn').forEach(btn => {
     if (btn.dataset.page === 'friendchat') renderChatFriendList();
     if (btn.dataset.page === 'friendprogress') renderFriendProgress();
     if (btn.dataset.page === 'friends') renderFriendsPage();
+    if (btn.dataset.page === 'calendar') renderCalendar();
+    if (btn.dataset.page === 'revision') renderRevision();
+    if (btn.dataset.page === 'flashcards') renderFlashcards();
   });
 });
 
@@ -1275,7 +1541,22 @@ function renderDashboard() {
   const pct = Math.min(100, (store.todayMinutes/(8*60))*100);
   $('#dailyProgress').style.width = pct + '%';
   $('#dailyProgressText').textContent = `${(store.todayMinutes/60).toFixed(1)} / 8 hours`;
-  $('#timerToday').textContent = store.todayMinutes;
+  if ($('#timerToday')) $('#timerToday').textContent = store.todayMinutes;
+  if ($('#statFlash')) $('#statFlash').textContent = store.flashcards.length;
+  if ($('#statRevDue')) $('#statRevDue').textContent = store.revision.filter(r => r.nextDate && r.nextDate <= Date.now()).length;
+  if ($('#statWeak')) $('#statWeak').textContent = store.weakTopics.length;
+  if ($('#statBm')) $('#statBm').textContent = store.bookmarks.length;
+  // Reminder
+  const reminder = $('#reminderBanner');
+  if (reminder) {
+    if (store.todayMinutes < 8*60 && new Date().getHours() >= 18) {
+      reminder.style.display = 'flex';
+      $('#reminderText').innerHTML = `Boss man, aaj ka goal ka <strong>${pct.toFixed(0)}%</strong> hua. Baaki <strong>${((8*60 - store.todayMinutes)/60).toFixed(1)}h</strong> baaki hai. Laga le!`;
+    } else if (store.revision.some(r => r.nextDate && r.nextDate <= Date.now())) {
+      reminder.style.display = 'flex';
+      $('#reminderText').innerHTML = `Aaj <strong>revision due</strong> hai — Revision section check kar.`;
+    } else reminder.style.display = 'none';
+  }
 }
 
 function renderTasks() {
@@ -1364,6 +1645,7 @@ function renderPdfs() {
 
 function renderPw() {
   const l = $('#pwList');
+  if (!l) return;
   if (!store.pwLinks.length) { l.innerHTML = '<div class="empty">Koi custom link nahi.</div>'; return; }
   l.innerHTML = store.pwLinks.map((p,i) => `<div class="pdf-item"><div class="pdf-icon">▶</div><div class="pdf-info"><div class="pdf-title">${esc(p.name)}</div><div class="pdf-meta">${esc(p.url)}</div></div><div class="pdf-actions"><a href="${esc(p.url)}" target="_blank" rel="noopener">Open</a><button data-idx="${i}">Del</button></div></div>`).join('');
   l.querySelectorAll('.pdf-actions button').forEach(b => b.addEventListener('click', e => { store.pwLinks.splice(e.target.dataset.idx,1); saveAll(); renderPw(); }));
@@ -1373,8 +1655,8 @@ function renderSubjects() {
   const mx = Math.max(1, store.subjects.phy, store.subjects.chem, store.subjects.math);
   ['phy','chem','math'].forEach(s => {
     const pct = (store.subjects[s]/mx)*100;
-    $(`#bar${cap(s)}`).style.width = pct + '%';
-    $(`#hrs${cap(s)}`).textContent = store.subjects[s] + 'h';
+    if ($(`#bar${cap(s)}`)) $(`#bar${cap(s)}`).style.width = pct + '%';
+    if ($(`#hrs${cap(s)}`)) $(`#hrs${cap(s)}`).textContent = store.subjects[s] + 'h';
   });
 }
 
@@ -1395,166 +1677,14 @@ function renderSyllabus() {
     const total = SYLLABUS[sub].length;
     let done = 0;
     for (let i = 0; i < total; i++) if (store.syllabus[sylKey(sub,i)]) done++;
-    $(`#syl${cap(sub)}Pct`).textContent = total ? Math.round(done/total*100)+'%' : '0%';
+    if ($(`#syl${cap(sub)}Pct`)) $(`#syl${cap(sub)}Pct`).textContent = total ? Math.round(done/total*100)+'%' : '0%';
   });
   const tA = SYLLABUS.phy.length + SYLLABUS.chem.length + SYLLABUS.math.length;
   let dA = 0;
   for (const k in store.syllabus) if (store.syllabus[k]) dA++;
-  $('#sylTotalPct').textContent = tA ? Math.round(dA/tA*100)+'%' : '0%';
+  if ($('#sylTotalPct')) $('#sylTotalPct').textContent = tA ? Math.round(dA/tA*100)+'%' : '0%';
 }
-
-// ============ EVENTS ============
-$('#addTask').addEventListener('click', () => {
-  const t = $('#taskInput').value.trim(); if (!t) return;
-  store.tasks.push({ text: t, subject: $('#taskSubject').value, done: false });
-  $('#taskInput').value = ''; saveAll(); renderTasks();
-});
-$('#taskInput').addEventListener('keydown', e => e.key === 'Enter' && $('#addTask').click());
-$('#addNote').addEventListener('click', () => {
-  const t = $('#noteTitle').value.trim(), b = $('#noteBody').value.trim();
-  if (!t && !b) return;
-  store.notes.push({ title: t || 'Untitled', body: b });
-  $('#noteTitle').value = ''; $('#noteBody').value = ''; saveAll(); renderNotes();
-});
-$('#addFormula').addEventListener('click', () => {
-  const t = $('#fTitle').value.trim(), b = $('#fBody').value.trim();
-  if (!t || !b) return;
-  store.formulas.push({ title: t, body: b });
-  $('#fTitle').value = ''; $('#fBody').value = ''; saveAll(); renderFormulas();
-});
-$('#addPyq').addEventListener('click', () => {
-  const t = $('#pyqTopic').value.trim(), s = parseInt($('#pyqSolved').value), tot = parseInt($('#pyqTotal').value);
-  if (!t || isNaN(s) || isNaN(tot)) return;
-  store.pyq.push({ topic: t, solved: s, total: tot });
-  $('#pyqTopic').value = ''; $('#pyqSolved').value = ''; $('#pyqTotal').value = ''; saveAll(); renderPyq();
-});
-$('#addMock').addEventListener('click', () => {
-  const n = $('#mockName').value.trim(), s = parseFloat($('#mockScore').value), tot = parseFloat($('#mockTotal').value);
-  if (!n || isNaN(s) || isNaN(tot) || tot <= 0) return;
-  store.mocks.push({ name: n, score: s, total: tot });
-  $('#mockName').value = ''; $('#mockScore').value = ''; $('#mockTotal').value = ''; saveAll(); renderMocks();
-});
-$('#addMis').addEventListener('click', () => {
-  const s = $('#misSubject').value.trim(), d = $('#misDesc').value.trim();
-  if (!s || !d) return;
-  store.mistakes.push({ subject: s, desc: d });
-  $('#misSubject').value = ''; $('#misDesc').value = ''; saveAll(); renderMistakes();
-});
-$('#addMk').addEventListener('click', () => {
-  const c = $('#mkChapter').value.trim(), s = parseFloat($('#mkScore').value), tot = parseFloat($('#mkTotal').value);
-  if (!c || isNaN(s) || isNaN(tot) || tot <= 0) return;
-  store.marks.push({ chapter: c, score: s, total: tot });
-  $('#mkChapter').value = ''; $('#mkScore').value = ''; $('#mkTotal').value = ''; saveAll(); renderMarks();
-});
-$('#addTt').addEventListener('click', () => {
-  const d = $('#ttDay').value, t = $('#ttTime').value.trim(), tk = $('#ttTask').value.trim();
-  if (!t || !tk) return;
-  store.timetable.push({ day: d, time: t, task: tk });
-  $('#ttTime').value = ''; $('#ttTask').value = ''; saveAll(); renderTimetable();
-});
-$('#addPdf').addEventListener('click', () => {
-  const t = $('#pdfTitle').value.trim(), u = $('#pdfUrl').value.trim();
-  if (!t || !u) return;
-  store.pdfs.push({ title: t, url: u });
-  $('#pdfTitle').value = ''; $('#pdfUrl').value = ''; saveAll(); renderPdfs();
-});
-$('#addPw').addEventListener('click', () => {
-  const n = $('#pwName').value.trim(), u = $('#pwUrl').value.trim();
-  if (!n || !u) return;
-  store.pwLinks.push({ name: n, url: u });
-  $('#pwName').value = ''; $('#pwUrl').value = ''; saveAll(); renderPw();
-});
-$$('.subject-add').forEach(b => b.addEventListener('click', () => { store.subjects[b.dataset.subject] += 1; saveAll(); renderSubjects(); }));
-
-// ============ TIMER ============
-let timerTotal = 25*60, timerLeft = timerTotal, timerId = null, timerRunning = false, sessionStart = null;
-function fmt(s){ const m = Math.floor(s/60), sec = s%60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
-function renderTimer(){ $('#timerDisplay').textContent = fmt(timerLeft); }
-$('#timerStart').addEventListener('click', () => {
-  if (timerRunning) return; timerRunning = true; sessionStart = Date.now();
-  timerId = setInterval(() => {
-    timerLeft--; renderTimer();
-    if (timerLeft <= 0) {
-      clearInterval(timerId); timerRunning = false; logSession();
-      try { const ac = new (window.AudioContext||window.webkitAudioContext)(); const osc = ac.createOscillator(), g = ac.createGain(); osc.connect(g); g.connect(ac.destination); osc.frequency.value = 880; g.gain.setValueAtTime(0.2, ac.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+0.6); osc.start(); osc.stop(ac.currentTime+0.6); } catch(e){}
-      alert('Time up, boss man.'); timerLeft = timerTotal; renderTimer();
-    }
-  }, 1000);
-});
-$('#timerPause').addEventListener('click', () => { if (!timerRunning) return; clearInterval(timerId); timerRunning = false; logSession(); });
-$('#timerReset').addEventListener('click', () => { clearInterval(timerId); timerRunning = false; logSession(); timerLeft = timerTotal; renderTimer(); });
-$$('[data-preset]').forEach(b => b.addEventListener('click', () => {
-  clearInterval(timerId); timerRunning = false; logSession();
-  timerTotal = parseInt(b.dataset.preset) * 60; timerLeft = timerTotal;
-  $('#timerMode').textContent = b.dataset.mode || 'Focus'; renderTimer();
-}));
-function logSession() { if (!sessionStart) return; const mins = Math.floor((Date.now()-sessionStart)/60000); if (mins > 0) { store.todayMinutes += mins; store.totalMinutes += mins; saveAll(); } sessionStart = null; }
-
-// ============ EXAM ============
-let examTotal = 180*60, examLeft = examTotal, examId = null, examRunning = false;
-function fmtExam(s){ const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60; return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
-function renderExam(){ $('#examDisplay').textContent = fmtExam(examLeft); }
-$('#examStart').addEventListener('click', () => {
-  if (examRunning) return; examRunning = true;
-  examId = setInterval(() => {
-    examLeft--; renderExam();
-    if (examLeft <= 0) { clearInterval(examId); examRunning = false; alert('Exam over!'); examLeft = examTotal; renderExam(); }
-  }, 1000);
-});
-$('#examPause').addEventListener('click', () => { clearInterval(examId); examRunning = false; });
-$('#examReset').addEventListener('click', () => { clearInterval(examId); examRunning = false; examLeft = examTotal; renderExam(); });
-$$('[data-exam]').forEach(b => b.addEventListener('click', () => { clearInterval(examId); examRunning = false; examTotal = parseInt(b.dataset.exam)*60; examLeft = examTotal; renderExam(); }));
-
-// ============ AI COACH ============
-function getSyllabusProgress() {
-  const out = { phy:{done:0,total:0}, chem:{done:0,total:0}, math:{done:0,total:0} };
-  ['phy','chem','math'].forEach(sub => {
-    out[sub].total = SYLLABUS[sub].length;
-    for (let i = 0; i < SYLLABUS[sub].length; i++) if (store.syllabus[`${sub}_${i}`]) out[sub].done++;
-  });
-  return out;
-}
-function generateInsights() {
-  const insights = [];
-  const syl = getSyllabusProgress();
-  const todayPct = Math.min(100, (store.todayMinutes/(8*60))*100);
-  if (todayPct === 0) insights.push({ icon:'◉', color:'warn', title:'Aaj 0 minute', body:'Timer start kar.' });
-  else if (todayPct < 50) insights.push({ icon:'◉', color:'warn', title:`${store.todayMinutes} min aaj`, body:`Goal ka ${todayPct.toFixed(0)}% bhara.` });
-  else insights.push({ icon:'✓', color:'accent', title:`${store.todayMinutes} min aaj`, body:`Goal ka ${todayPct.toFixed(0)}% bhara.` });
-  const subPct = { phy:(syl.phy.done/syl.phy.total)*100, chem:(syl.chem.done/syl.chem.total)*100, math:(syl.math.done/syl.math.total)*100 };
-  const weakest = Object.entries(subPct).sort((a,b) => a[1]-b[1])[0];
-  const weakLabel = { phy:'Physics', chem:'Chemistry', math:'Math' }[weakest[0]];
-  if (weakest[1] < 60) insights.push({ icon:'⚠', color:'warn', title:`${weakLabel} peeche (${weakest[1].toFixed(0)}%)`, body:`${syl[weakest[0]].done}/${syl[weakest[0]].total} chapters done.` });
-  if (store.streak >= 7) insights.push({ icon:'◆', color:'accent', title:`${store.streak} din streak`, body:'Consistency hi topper ka raaz hai.' });
-  const pending = store.tasks.filter(t => !t.done);
-  if (pending.length) insights.push({ icon:'◷', color:'purple', title:`Pending: ${pending[0].text}`, body:`${pending[0].subject} ka task.` });
-  return insights.slice(0, 6);
-}
-function renderInsights() {
-  const grid = $('#aiInsights'); if (!grid) return;
-  grid.innerHTML = generateInsights().map(i => {
-    const cls = i.color === 'accent' ? '' : i.color === 'warn' ? 'warn' : 'purple';
-    return `<div class="card"><div class="stat-label">${i.icon} Insight</div><div style="font-size:0.9rem; font-weight:700; margin:0.3rem 0;" class="stat-value ${cls}">${esc(i.title)}</div><div class="stat-sub">${esc(i.body)}</div></div>`;
-  }).join('');
-}
-function aiAnswer(q) {
-  const query = q.toLowerCase(); const syl = getSyllabusProgress();
-  if (/aaj|today|kya karu|plan/.test(query)) return `Aaj: ${store.todayMinutes} min ho gaye. Goal 480 min.`;
-  if (/weak|peeche/.test(query)) { const weak = Object.entries({ Physics:(syl.phy.done/syl.phy.total)*100, Chemistry:(syl.chem.done/syl.chem.total)*100, Math:(syl.math.done/syl.math.total)*100 }).sort((a,b) => a[1]-b[1])[0]; return `${weak[0]} weak hai (${weak[1].toFixed(0)}% done).`; }
-  if (/progress|kitna/.test(query)) { const total = syl.phy.total + syl.chem.total + syl.math.total; const done = syl.phy.done + syl.chem.done + syl.math.done; return `Syllabus: ${done}/${total} (${((done/total)*100).toFixed(0)}%).`; }
-  if (/streak/.test(query)) return `Streak: ${store.streak} din.`;
-  if (/time|hours|ghante/.test(query)) return `Total: ${(store.totalMinutes/60).toFixed(1)}h. Today: ${store.todayMinutes}m.`;
-  return `Try: "aaj kya karu", "weak", "progress", "streak"`;
-}
-$('#aiSend').addEventListener('click', () => {
-  const q = $('#aiInput').value.trim(); if (!q) return;
-  const reply = aiAnswer(q);
-  $('#aiChat').insertAdjacentHTML('afterbegin', `<div class="card" style="border-left:3px solid var(--accent-2);"><div class="stat-label">Tune poocha</div><div style="font-size:0.85rem; margin:0.3rem 0 0.7rem;">${esc(q)}</div><div class="stat-label">Axiom Coach</div><div style="font-size:0.85rem; white-space:pre-wrap; color:var(--accent);">${esc(reply)}</div></div>`);
-  $('#aiInput').value = '';
-});
-$('#aiInput').addEventListener('keydown', e => e.key === 'Enter' && $('#aiSend').click());
-
-// ============ FRIENDS ============
+  // ============ FRIENDS ============
 let allUsers = {};
 let myFriends = [];
 let incomingReqs = [];
@@ -1585,91 +1715,102 @@ function listenFriendRequests() {
     });
     myFriends = [...new Set(myFriends)];
     const badge = $('#friendBadge');
-    if (incomingReqs.length) { badge.textContent = incomingReqs.length; badge.style.display = 'inline-block'; }
-    else badge.style.display = 'none';
+    if (badge) {
+      if (incomingReqs.length) { badge.textContent = incomingReqs.length; badge.style.display = 'inline-block'; }
+      else badge.style.display = 'none';
+    }
     renderFriendsPage(); renderChatFriendList(); renderFriendProgress();
   });
 }
 
 function renderFriendsPage() {
+  if (!$('#reqCount')) return;
   $('#reqCount').textContent = incomingReqs.length;
   $('#friendCount').textContent = myFriends.length;
 
   const inEl = $('#incomingReqs');
-  if (!incomingReqs.length) inEl.innerHTML = '<div class="empty">Koi incoming request nahi.</div>';
-  else inEl.innerHTML = incomingReqs.map(r => {
-    const ud = allUsers[r.from] || {};
-    const on = isOnline(ud);
-    return `<div class="friend-item">
-      <div class="friend-avatar">${esc(r.from[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
-      <div class="friend-info"><div class="friend-name">${esc(r.from)}</div><div class="friend-sub">${on?'● Online':'● Offline'}</div></div>
-      <div class="friend-actions"><button data-accept="${r.key}">Accept</button><button class="danger" data-reject="${r.key}">Reject</button></div>
-    </div>`;
-  }).join('');
-  inEl.querySelectorAll('[data-accept]').forEach(b => b.addEventListener('click', async () => {
-    await update(ref(db, 'friendRequests/' + b.dataset.accept), { status: 'accepted', acceptedAt: Date.now() });
-  }));
-  inEl.querySelectorAll('[data-reject]').forEach(b => b.addEventListener('click', async () => {
-    await remove(ref(db, 'friendRequests/' + b.dataset.reject));
-  }));
+  if (inEl) {
+    if (!incomingReqs.length) inEl.innerHTML = '<div class="empty">Koi incoming request nahi.</div>';
+    else inEl.innerHTML = incomingReqs.map(r => {
+      const ud = allUsers[r.from] || {};
+      const on = isOnline(ud);
+      return `<div class="friend-item">
+        <div class="friend-avatar">${esc(r.from[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+        <div class="friend-info"><div class="friend-name">${esc(r.from)}</div><div class="friend-sub">${on?'● Online':'● Offline'}</div></div>
+        <div class="friend-actions"><button data-accept="${r.key}">Accept</button><button class="danger" data-reject="${r.key}">Reject</button></div>
+      </div>`;
+    }).join('');
+    inEl.querySelectorAll('[data-accept]').forEach(b => b.addEventListener('click', async () => {
+      await update(ref(db, 'friendRequests/' + b.dataset.accept), { status: 'accepted', acceptedAt: Date.now() });
+    }));
+    inEl.querySelectorAll('[data-reject]').forEach(b => b.addEventListener('click', async () => {
+      await remove(ref(db, 'friendRequests/' + b.dataset.reject));
+    }));
+  }
 
   const outEl = $('#outgoingReqs');
-  if (!outgoingReqs.length) outEl.innerHTML = '<div class="empty">Koi sent request nahi.</div>';
-  else outEl.innerHTML = outgoingReqs.map(r => `
-    <div class="friend-item">
-      <div class="friend-avatar">${esc(r.to[0].toUpperCase())}</div>
-      <div class="friend-info"><div class="friend-name">${esc(r.to)}</div><div class="friend-sub">Pending...</div></div>
-      <div class="friend-actions"><button class="danger" data-cancel="${r.key}">Cancel</button></div>
-    </div>`).join('');
-  outEl.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', async () => {
-    await remove(ref(db, 'friendRequests/' + b.dataset.cancel));
-  }));
+  if (outEl) {
+    if (!outgoingReqs.length) outEl.innerHTML = '<div class="empty">Koi sent request nahi.</div>';
+    else outEl.innerHTML = outgoingReqs.map(r => `
+      <div class="friend-item">
+        <div class="friend-avatar">${esc(r.to[0].toUpperCase())}</div>
+        <div class="friend-info"><div class="friend-name">${esc(r.to)}</div><div class="friend-sub">Pending...</div></div>
+        <div class="friend-actions"><button class="danger" data-cancel="${r.key}">Cancel</button></div>
+      </div>`).join('');
+    outEl.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', async () => {
+      await remove(ref(db, 'friendRequests/' + b.dataset.cancel));
+    }));
+  }
 
   const fl = $('#friendsList');
-  if (!myFriends.length) fl.innerHTML = '<div class="empty">Abhi koi friend nahi.</div>';
-  else fl.innerHTML = myFriends.map(u => {
-    const ud = allUsers[u] || {};
-    const cls = ud.class ? CLASS_CONFIG[ud.class].label : 'Class ?';
-    const on = isOnline(ud);
-    return `<div class="friend-item">
-      <div class="friend-avatar">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
-      <div class="friend-info"><div class="friend-name">${esc(ud.username || u)}</div><div class="friend-sub">${cls} · ${on?'<span style="color:#00e5a0;">● Online</span>':'● Offline'}</div></div>
-      <div class="friend-actions"><button data-remove-friend="${u}" class="danger">Remove</button></div>
-    </div>`;
-  }).join('');
-  fl.querySelectorAll('[data-remove-friend]').forEach(b => b.addEventListener('click', async () => {
-    if (!confirm('Friend remove karna hai?')) return;
-    const friendU = b.dataset.removeFriend;
+  if (fl) {
+    if (!myFriends.length) fl.innerHTML = '<div class="empty">Abhi koi friend nahi.</div>';
+    else fl.innerHTML = myFriends.map(u => {
+      const ud = allUsers[u] || {};
+      const cls = ud.class ? CLASS_CONFIG[ud.class].label : 'Class ?';
+      const on = isOnline(ud);
+      return `<div class="friend-item">
+        <div class="friend-avatar">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+        <div class="friend-info"><div class="friend-name">${esc(ud.username || u)}</div><div class="friend-sub">${cls} · ${on?'<span style="color:#00e5a0;">● Online</span>':'● Offline'}</div></div>
+        <div class="friend-actions"><button data-remove-friend="${u}" class="danger">Remove</button></div>
+      </div>`;
+    }).join('');
+    fl.querySelectorAll('[data-remove-friend]').forEach(b => b.addEventListener('click', async () => {
+      if (!confirm('Friend remove karna hai?')) return;
+      const friendU = b.dataset.removeFriend;
+      const snap = await get(ref(db, 'friendRequests'));
+      if (snap.exists()) {
+        const all = snap.val();
+        for (const [key, r] of Object.entries(all)) {
+          if (r.status === 'accepted' && ((r.from === currentUser.username.toLowerCase() && r.to === friendU) || (r.to === currentUser.username.toLowerCase() && r.from === friendU))) {
+            await remove(ref(db, 'friendRequests/' + key));
+          }
+        }
+      }
+    }));
+  }
+}
+
+if ($('#sendFriendReqBtn')) {
+  $('#sendFriendReqBtn').addEventListener('click', async () => {
+    const target = $('#friendUsernameInput').value.trim().toLowerCase();
+    if (!target || !currentUser) return;
+    if (target === currentUser.username.toLowerCase()) return alert('Khud ko friend nahi bana sakta.');
+    if (!allUsers[target]) return alert('Username exist nahi karta.');
+    if (myFriends.includes(target)) return alert('Already friend hai.');
     const snap = await get(ref(db, 'friendRequests'));
     if (snap.exists()) {
       const all = snap.val();
-      for (const [key, r] of Object.entries(all)) {
-        if (r.status === 'accepted' && ((r.from === currentUser.username.toLowerCase() && r.to === friendU) || (r.to === currentUser.username.toLowerCase() && r.from === friendU))) {
-          await remove(ref(db, 'friendRequests/' + key));
-        }
+      for (const r of Object.values(all)) {
+        if (r.status === 'pending' && ((r.from === currentUser.username.toLowerCase() && r.to === target) || (r.to === currentUser.username.toLowerCase() && r.from === target))) return alert('Request already pending.');
       }
     }
-  }));
+    await push(ref(db, 'friendRequests'), { from: currentUser.username.toLowerCase(), to: target, status: 'pending', createdAt: Date.now() });
+    $('#friendUsernameInput').value = '';
+    $('#searchResult').innerHTML = `<div class="card" style="border-left:3px solid var(--accent);">Request bhej diya <b>${esc(target)}</b> ko.</div>`;
+    setTimeout(() => $('#searchResult').innerHTML = '', 3000);
+  });
 }
-
-$('#sendFriendReqBtn').addEventListener('click', async () => {
-  const target = $('#friendUsernameInput').value.trim().toLowerCase();
-  if (!target || !currentUser) return;
-  if (target === currentUser.username.toLowerCase()) return alert('Khud ko friend nahi bana sakta.');
-  if (!allUsers[target]) return alert('Username exist nahi karta.');
-  if (myFriends.includes(target)) return alert('Already friend hai.');
-  const snap = await get(ref(db, 'friendRequests'));
-  if (snap.exists()) {
-    const all = snap.val();
-    for (const r of Object.values(all)) {
-      if (r.status === 'pending' && ((r.from === currentUser.username.toLowerCase() && r.to === target) || (r.to === currentUser.username.toLowerCase() && r.from === target))) return alert('Request already pending.');
-    }
-  }
-  await push(ref(db, 'friendRequests'), { from: currentUser.username.toLowerCase(), to: target, status: 'pending', createdAt: Date.now() });
-  $('#friendUsernameInput').value = '';
-  $('#searchResult').innerHTML = `<div class="card" style="border-left:3px solid var(--accent);">Request bhej diya <b>${esc(target)}</b> ko.</div>`;
-  setTimeout(() => $('#searchResult').innerHTML = '', 3000);
-});
 
 $$('.friend-tab').forEach(t => t.addEventListener('click', () => {
   $$('.friend-tab').forEach(x => x.classList.remove('active'));
@@ -1678,9 +1819,11 @@ $$('.friend-tab').forEach(t => t.addEventListener('click', () => {
   $('#ftab-' + t.dataset.ftab).classList.add('active');
 }));
 
-// ============ FRIEND CHAT with READ RECEIPTS + REACTIONS ============
+// ============ FRIEND CHAT ============
 let activeChatFriend = null;
 let chatUnsub = null;
+let pendingImage = null;
+let pendingReply = null;
 
 function renderChatFriendList() {
   const list = $('#chatFriendList'); if (!list) return;
@@ -1705,6 +1848,8 @@ function chatRoomId(u1, u2) { return [u1, u2].sort().join('__'); }
 function openChat(friendU) {
   if (!db || !currentUser) return;
   activeChatFriend = friendU;
+  pendingImage = null;
+  pendingReply = null;
   const ud = allUsers[friendU] || {};
   $('#chatHeaderAvatar').textContent = friendU[0].toUpperCase();
   $('#chatHeaderName').textContent = ud.username || friendU;
@@ -1712,6 +1857,8 @@ function openChat(friendU) {
   $('#chatHeaderSub').textContent = (ud.class ? CLASS_CONFIG[ud.class].label : 'Friend') + ' · ' + (on?'● Online':'● Offline');
   $('#friendChatInput').disabled = false;
   $('#sendFriendMsgBtn').disabled = false;
+  $('#imagePreviewBox').classList.remove('show');
+  $('#replyPreview').classList.remove('show');
 
   if (chatUnsub) chatUnsub();
   const roomId = chatRoomId(currentUser.username.toLowerCase(), friendU);
@@ -1728,16 +1875,13 @@ function openChat(friendU) {
       const div = document.createElement('div');
       div.className = 'chat-msg ' + (isMine ? 'mine' : 'theirs');
 
-      // Tick
       const isRead = m.readBy && m.readBy[friendU];
       let tick = '';
       if (isMine) tick = isRead ? '<span class="tick-read">✓✓</span>' : '<span class="tick-sent">✓</span>';
 
-      // Tag highlight
-      let text = esc(m.text);
+      let text = esc(m.text || '');
       text = text.replace(/@(\w+)/g, '<span class="tag">@$1</span>');
 
-      // Reactions
       const reactions = m.reactions || {};
       const reactionCounts = {};
       Object.values(reactions).forEach(emoji => { reactionCounts[emoji] = (reactionCounts[emoji] || 0) + 1; });
@@ -1745,12 +1889,23 @@ function openChat(friendU) {
         `<span class="reaction-chip" data-msg-key="${msgKey}" data-emoji="${emoji}">${emoji} ${count}</span>`
       ).join('');
 
+      let quoteHtml = '';
+      if (m.replyTo) {
+        quoteHtml = `<div class="chat-msg-quote"><div class="qm-name">${esc(m.replyTo.user)}</div><div class="qm-text">${esc(m.replyTo.text || '📎 Image')}</div></div>`;
+      }
+
+      let imageHtml = '';
+      if (m.image) imageHtml = `<img class="chat-image" src="${esc(m.image)}" data-lightbox="1" alt="img">`;
+
       div.innerHTML = `
-        <div>${text}</div>
+        ${quoteHtml}
+        ${imageHtml}
+        ${text ? `<div>${text}</div>` : ''}
         <div class="msg-time">${esc(m.time)} ${tick}</div>
         <div style="display:flex;gap:0.3rem;margin-top:0.3rem;flex-wrap:wrap;align-items:center;">
           ${reactionsHtml}
           <button class="react-btn" data-msg-key="${msgKey}" title="React">＋</button>
+          <button class="msg-reply-btn" data-msg-key="${msgKey}" data-msg-user="${esc(m.from)}" data-msg-text="${esc(m.text || '📎 Image')}" title="Reply">↩</button>
         </div>
         <div class="emoji-picker" data-msg-key="${msgKey}" style="display:none;">
           <span data-emoji="👍">👍</span><span data-emoji="❤️">❤️</span><span data-emoji="😂">😂</span><span data-emoji="🔥">🔥</span><span data-emoji="😮">😮</span><span data-emoji="😢">😢</span><span data-emoji="💯">💯</span>
@@ -1758,13 +1913,11 @@ function openChat(friendU) {
       `;
       box.appendChild(div);
 
-      // Auto-mark incoming messages as read
       if (!isMine && (!m.readBy || !m.readBy[myU])) {
         set(ref(db, `friendChats/${roomId}/${msgKey}/readBy/${myU}`), true);
       }
     });
 
-    // Wire reaction buttons
     box.querySelectorAll('.react-btn').forEach(btn => btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const key = btn.dataset.msgKey;
@@ -1787,6 +1940,17 @@ function openChat(friendU) {
       if (snap2.exists() && snap2.val() === emoji) await remove(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`));
       else await set(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`), emoji);
     }));
+    box.querySelectorAll('.msg-reply-btn').forEach(btn => btn.addEventListener('click', () => {
+      pendingReply = { user: btn.dataset.msgUser, text: btn.dataset.msgText };
+      $('#replyName').textContent = btn.dataset.msgUser;
+      $('#replyText').textContent = btn.dataset.msgText;
+      $('#replyPreview').classList.add('show');
+      $('#friendChatInput').focus();
+    }));
+    box.querySelectorAll('.chat-image').forEach(img => img.addEventListener('click', () => {
+      $('#lightboxImg').src = img.src;
+      $('#imgLightbox').classList.add('show');
+    }));
 
     box.scrollTop = box.scrollHeight;
   });
@@ -1794,29 +1958,103 @@ function openChat(friendU) {
   renderChatFriendList();
 }
 
-function sendFriendMsg() {
+async function sendFriendMsg() {
   const input = $('#friendChatInput');
   const text = input.value.trim();
-  if (!text || !activeChatFriend || !db) return;
+  if ((!text && !pendingImage) || !activeChatFriend || !db) return;
   const roomId = chatRoomId(currentUser.username.toLowerCase(), activeChatFriend);
-  push(ref(db, 'friendChats/' + roomId), {
+
+  const msg = {
     from: currentUser.username.toLowerCase(),
     text: text,
     time: new Date().toLocaleTimeString(),
     readBy: {}
-  });
+  };
+
+  if (pendingImage) msg.image = pendingImage;
+  if (pendingReply) msg.replyTo = pendingReply;
+
+  await push(ref(db, 'friendChats/' + roomId), msg);
   input.value = '';
+  pendingImage = null;
+  pendingReply = null;
+  $('#imagePreviewBox').classList.remove('show');
+  $('#replyPreview').classList.remove('show');
 }
-$('#sendFriendMsgBtn').addEventListener('click', sendFriendMsg);
-$('#friendChatInput').addEventListener('keydown', e => e.key === 'Enter' && sendFriendMsg());
+
+if ($('#sendFriendMsgBtn')) $('#sendFriendMsgBtn').addEventListener('click', sendFriendMsg);
+if ($('#friendChatInput')) $('#friendChatInput').addEventListener('keydown', e => e.key === 'Enter' && sendFriendMsg());
+
+// Reply close
+if ($('#replyClose')) $('#replyClose').addEventListener('click', () => {
+  pendingReply = null;
+  $('#replyPreview').classList.remove('show');
+});
+
+// Image upload
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    if (file.size > 700 * 1024) { reject(new Error('Image 700KB se badi hai. Chhoti image use kar.')); return; }
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+if ($('#imgBtn')) $('#imgBtn').addEventListener('click', () => $('#imgFileInput').click());
+
+if ($('#imgFileInput')) $('#imgFileInput').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const b64 = await fileToBase64(file);
+    pendingImage = b64;
+    $('#imgPreviewEl').src = b64;
+    $('#imgPreviewInfo').textContent = file.name + ' (' + Math.round(file.size/1024) + 'KB)';
+    $('#imagePreviewBox').classList.add('show');
+  } catch (err) { alert(err.message); }
+  e.target.value = '';
+});
+
+if ($('#imgPreviewClose')) $('#imgPreviewClose').addEventListener('click', () => {
+  pendingImage = null;
+  $('#imagePreviewBox').classList.remove('show');
+});
+
+// Drag-drop on chat
+const chatMainEl = document.querySelector('.chat-main');
+if (chatMainEl) {
+  chatMainEl.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    if (activeChatFriend) $('#dragOverlay').classList.add('show');
+  });
+  chatMainEl.addEventListener('dragleave', (e) => {
+    if (e.target === chatMainEl) $('#dragOverlay').classList.remove('show');
+  });
+  chatMainEl.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    $('#dragOverlay').classList.remove('show');
+    if (!activeChatFriend) return;
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    try {
+      const b64 = await fileToBase64(file);
+      pendingImage = b64;
+      $('#imgPreviewEl').src = b64;
+      $('#imgPreviewInfo').textContent = file.name + ' (' + Math.round(file.size/1024) + 'KB)';
+      $('#imagePreviewBox').classList.add('show');
+    } catch (err) { alert(err.message); }
+  });
+}
 
 // Emoji tray
 const EMOJIS = ['😀','😂','😍','🔥','👍','❤️','💯','🎯','📚','✏️','😎','🤔','😅','🎉','💪','🚀','⭐','✨','🙏','👏','😭','😴','🤯','🥳','😤','👀','🎓','📝','🧠','💡'];
-$('#emojiBtn').addEventListener('click', (e) => {
+if ($('#emojiBtn')) $('#emojiBtn').addEventListener('click', (e) => {
   e.stopPropagation();
   const tray = $('#emojiTray');
   if (!tray.dataset.built) {
-    tray.innerHTML = EMOJIS.map(e => `<span>${e}</span>`).join('');
+    tray.innerHTML = EMOJIS.map(em => `<span>${em}</span>`).join('');
     tray.dataset.built = '1';
     tray.querySelectorAll('span').forEach(sp => sp.addEventListener('click', () => {
       $('#friendChatInput').value += sp.textContent;
@@ -1828,6 +2066,11 @@ $('#emojiBtn').addEventListener('click', (e) => {
 document.addEventListener('click', (e) => {
   const tray = $('#emojiTray');
   if (tray && !tray.contains(e.target) && e.target.id !== 'emojiBtn') tray.classList.remove('show');
+});
+
+// Lightbox close
+if ($('#imgLightbox')) $('#imgLightbox').addEventListener('click', () => {
+  $('#imgLightbox').classList.remove('show');
 });
 
 // ============ FRIEND PROGRESS ============
@@ -1855,13 +2098,345 @@ function renderFriendProgress() {
       <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:0.6rem; margin:0;">
         <div class="card" style="padding:0.7rem;"><div class="stat-label">Total Time</div><div class="stat-value" style="font-size:1.2rem;">${(totalMin/60).toFixed(1)}h</div></div>
         <div class="card" style="padding:0.7rem;"><div class="stat-label">Today</div><div class="stat-value blue" style="font-size:1.2rem;">${todayMin}m</div></div>
-        <div class="card" style="padding:0.7rem;"><div class="stat-label">Chapters Done</div><div class="stat-value purple" style="font-size:1.2rem;">${sylDone}</div></div>
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Chapters</div><div class="stat-value purple" style="font-size:1.2rem;">${sylDone}</div></div>
         <div class="card" style="padding:0.7rem;"><div class="stat-label">Mocks</div><div class="stat-value warn" style="font-size:1.2rem;">${mocksCount}</div></div>
         <div class="card" style="padding:0.7rem;"><div class="stat-label">Mistakes</div><div class="stat-value" style="font-size:1.2rem; color:var(--danger);">${mistakes}</div></div>
       </div>
     </div>`;
   }).join('');
 }
+  // ============ FLASHCARDS ============
+let fcIndex = 0;
+let fcRevealed = false;
+
+function renderFlashcards() {
+  const list = $('#fcList');
+  const display = $('#fcDisplay');
+  const empty = $('#fcEmpty');
+  if (!list) return;
+
+  if ($('#fcCount')) $('#fcCount').textContent = `(${store.flashcards.length})`;
+
+  if (!store.flashcards.length) {
+    if (display) display.style.display = 'none';
+    if (empty) empty.style.display = 'block';
+    list.innerHTML = '';
+    return;
+  }
+  if (display) display.style.display = 'flex';
+  if (empty) empty.style.display = 'none';
+  if (fcIndex >= store.flashcards.length) fcIndex = 0;
+
+  const fc = store.flashcards[fcIndex];
+  if ($('#fcSubjectLabel')) $('#fcSubjectLabel').textContent = fc.subject;
+  if ($('#fcQuestionShow')) $('#fcQuestionShow').textContent = fc.question;
+  if ($('#fcAnswerShow')) $('#fcAnswerShow').textContent = fc.answer;
+  const fcEl = $('#fcDisplay');
+  if (fcEl) {
+    if (fcRevealed) fcEl.classList.add('revealed');
+    else fcEl.classList.remove('revealed');
+  }
+
+  list.innerHTML = store.flashcards.map((f, i) => `
+    <div class="log-item">
+      <div class="score" style="font-size:0.65rem; width:70px;">${esc(f.subject)}</div>
+      <div class="info"><div class="t">${esc(f.question)}</div><div class="d">${esc(f.answer)}</div></div>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`).join('');
+  list.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => {
+    store.flashcards.splice(e.target.dataset.idx, 1);
+    if (fcIndex >= store.flashcards.length) fcIndex = 0;
+    saveAll(); renderFlashcards();
+  }));
+}
+
+if ($('#addFc')) $('#addFc').addEventListener('click', () => {
+  const q = $('#fcQuestion').value.trim();
+  const a = $('#fcAnswer').value.trim();
+  const s = $('#fcSubject').value;
+  if (!q || !a) return;
+  store.flashcards.push({ question: q, answer: a, subject: s });
+  $('#fcQuestion').value = ''; $('#fcAnswer').value = '';
+  saveAll(); renderFlashcards();
+});
+
+if ($('#fcDisplay')) $('#fcDisplay').addEventListener('click', () => {
+  fcRevealed = !fcRevealed;
+  renderFlashcards();
+});
+if ($('#fcReveal')) $('#fcReveal').addEventListener('click', (e) => {
+  e.stopPropagation();
+  fcRevealed = !fcRevealed;
+  renderFlashcards();
+});
+if ($('#fcNext')) $('#fcNext').addEventListener('click', () => {
+  fcIndex = (fcIndex + 1) % store.flashcards.length;
+  fcRevealed = false;
+  renderFlashcards();
+});
+if ($('#fcPrev')) $('#fcPrev').addEventListener('click', () => {
+  fcIndex = (fcIndex - 1 + store.flashcards.length) % store.flashcards.length;
+  fcRevealed = false;
+  renderFlashcards();
+});
+if ($('#fcShuffle')) $('#fcShuffle').addEventListener('click', () => {
+  for (let i = store.flashcards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [store.flashcards[i], store.flashcards[j]] = [store.flashcards[j], store.flashcards[i]];
+  }
+  fcIndex = 0; fcRevealed = false;
+  saveAll(); renderFlashcards();
+});
+
+// ============ STUDY LOG ============
+function renderStudyLog() {
+  const list = $('#slList'); if (!list) return;
+  if (!store.studyLog.length) { list.innerHTML = '<div class="empty">Koi entry nahi.</div>'; return; }
+  const sorted = [...store.studyLog].reverse();
+  list.innerHTML = sorted.map((e, i) => {
+    const origIdx = store.studyLog.length - 1 - i;
+    return `<div class="study-log-entry">
+      <div class="sl-time">${e.mins}m</div>
+      <div class="sl-content">${esc(e.content)}</div>
+      <div class="sl-subject">${e.subject}</div>
+      <button class="task-del" data-idx="${origIdx}">×</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => {
+    store.studyLog.splice(e.target.dataset.idx, 1);
+    saveAll(); renderStudyLog();
+  }));
+}
+
+if ($('#addSl')) $('#addSl').addEventListener('click', () => {
+  const c = $('#slContent').value.trim();
+  const m = parseInt($('#slMinutes').value);
+  const s = $('#slSubject').value;
+  if (!c) return;
+  store.studyLog.push({ content: c, subject: s, mins: isNaN(m) ? 0 : m, date: Date.now() });
+  $('#slContent').value = ''; $('#slMinutes').value = '';
+  // Also update calendar
+  const d = new Date().toISOString().slice(0, 10);
+  store.studyCalendar[d] = (store.studyCalendar[d] || 0) + (isNaN(m) ? 0 : m);
+  saveAll(); renderStudyLog(); renderCalendar();
+});
+
+// ============ REVISION ============
+function renderRevision() {
+  const list = $('#revList'); if (!list) return;
+  if (!store.revision.length) { list.innerHTML = '<div class="empty">Koi topic nahi.</div>'; return; }
+  const now = Date.now();
+  list.innerHTML = store.revision.map((r, i) => {
+    const due = r.nextDate && r.nextDate <= now;
+    const daysAgo = Math.floor((now - r.createdAt) / 86400000);
+    const nextIn = r.nextDate ? Math.ceil((r.nextDate - now) / 86400000) : 0;
+    return `<div class="revision-item ${due?'due':''}">
+      <div class="rev-date">${due ? '⚠ Due now' : (nextIn > 0 ? nextIn + ' din mein' : 'Today')}</div>
+      <div class="rev-name">${esc(r.topic)}</div>
+      <div class="rev-stage">Stage ${r.stage} · ${esc(r.subject)}</div>
+      <button class="task-del" data-done="${i}" title="Revised">✓</button>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('[data-idx]').forEach(b => b.addEventListener('click', e => {
+    store.revision.splice(e.target.dataset.idx, 1);
+    saveAll(); renderRevision();
+  }));
+  list.querySelectorAll('[data-done]').forEach(b => b.addEventListener('click', e => {
+    const i = parseInt(e.target.dataset.done);
+    const r = store.revision[i];
+    const intervals = [1, 3, 7, 30, 90];
+    r.stage = (r.stage || 1) + 1;
+    const days = intervals[Math.min(r.stage - 1, intervals.length - 1)];
+    r.nextDate = Date.now() + days * 86400000;
+    saveAll(); renderRevision(); renderDashboard();
+  }));
+}
+
+if ($('#addRev')) $('#addRev').addEventListener('click', () => {
+  const t = $('#revTopic').value.trim();
+  const s = $('#revSubject').value;
+  if (!t) return;
+  store.revision.push({ topic: t, subject: s, stage: 1, createdAt: Date.now(), nextDate: Date.now() + 86400000 });
+  $('#revTopic').value = '';
+  saveAll(); renderRevision(); renderDashboard();
+});
+
+// ============ CALENDAR ============
+let calMonth = new Date().getMonth();
+let calYear = new Date().getFullYear();
+
+function renderCalendar() {
+  const grid = $('#calGrid'); if (!grid) return;
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  if ($('#calMonth')) $('#calMonth').textContent = `${monthNames[calMonth]} ${calYear}`;
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10);
+
+  let html = '';
+  for (let i = 0; i < firstDay; i++) html += `<div></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const mins = store.studyCalendar[dateStr] || 0;
+    const hrs = (mins/60).toFixed(1);
+    let cls = 'cal-day';
+    if (mins > 360) cls += ' studied-high';
+    else if (mins > 0) cls += ' studied';
+    if (dateStr === todayStr) cls += ' today';
+    html += `<div class="${cls}" title="${hrs}h studied">
+      <div class="cal-num">${d}</div>
+      ${mins > 0 ? `<div class="cal-hrs">${hrs}h</div>` : ''}
+    </div>`;
+  }
+  grid.innerHTML = html;
+}
+
+if ($('#calPrev')) $('#calPrev').addEventListener('click', () => {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+});
+if ($('#calNext')) $('#calNext').addEventListener('click', () => {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+});
+
+// ============ WEAK TOPICS ============
+function renderWeakTopics() {
+  const list = $('#wtList'); if (!list) return;
+  if (!store.weakTopics.length) { list.innerHTML = '<div class="empty">Koi weak topic nahi.</div>'; return; }
+  const sorted = [...store.weakTopics].sort((a,b) => b.count - a.count);
+  list.innerHTML = sorted.map((w, i) => `
+    <div class="weak-topic">
+      <div class="wt-count">${w.count}×</div>
+      <div class="wt-name">${esc(w.name)}</div>
+      <button class="task-del" data-idx="${store.weakTopics.indexOf(w)}">×</button>
+    </div>
+  `).join('');
+  list.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => {
+    store.weakTopics.splice(e.target.dataset.idx, 1);
+    saveAll(); renderWeakTopics(); renderDashboard();
+  }));
+}
+
+if ($('#addWt')) $('#addWt').addEventListener('click', () => {
+  const n = $('#wtName').value.trim();
+  const c = parseInt($('#wtCount').value) || 1;
+  if (!n) return;
+  store.weakTopics.push({ name: n, count: c });
+  $('#wtName').value = ''; $('#wtCount').value = '1';
+  saveAll(); renderWeakTopics(); renderDashboard();
+});
+
+// ============ BOOKMARKS ============
+function renderBookmarks() {
+  const list = $('#bmList'); if (!list) return;
+  if (!store.bookmarks.length) { list.innerHTML = '<div class="empty">Koi bookmark nahi.</div>'; return; }
+  list.innerHTML = store.bookmarks.map((b, i) => {
+    const icons = { PDF: '📄', YouTube: '▶️', Link: '🔗', Notes: '✏️' };
+    return `<div class="bookmark-item">
+      <div class="bm-icon">${icons[b.type] || '🔗'}</div>
+      <div class="bm-info">
+        <div class="bm-title">${esc(b.title)}</div>
+        <div class="bm-type">${b.type}</div>
+      </div>
+      <a href="${esc(b.url)}" target="_blank" rel="noopener" class="btn sm primary">Open</a>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => {
+    store.bookmarks.splice(e.target.dataset.idx, 1);
+    saveAll(); renderBookmarks(); renderDashboard();
+  }));
+}
+
+if ($('#addBm')) $('#addBm').addEventListener('click', () => {
+  const t = $('#bmTitle').value.trim();
+  const u = $('#bmUrl').value.trim();
+  const ty = $('#bmType').value;
+  if (!t || !u) return;
+  store.bookmarks.push({ title: t, url: u, type: ty });
+  $('#bmTitle').value = ''; $('#bmUrl').value = '';
+  saveAll(); renderBookmarks(); renderDashboard();
+});
+
+// ============ AI COACH ============
+function getSyllabusProgress() {
+  const out = { phy:{done:0,total:0}, chem:{done:0,total:0}, math:{done:0,total:0} };
+  ['phy','chem','math'].forEach(sub => {
+    out[sub].total = SYLLABUS[sub].length;
+    for (let i = 0; i < SYLLABUS[sub].length; i++) if (store.syllabus[`${sub}_${i}`]) out[sub].done++;
+  });
+  return out;
+}
+
+function generateInsights() {
+  const insights = [];
+  const syl = getSyllabusProgress();
+  const todayPct = Math.min(100, (store.todayMinutes/(8*60))*100);
+  if (todayPct === 0) insights.push({ icon:'◉', color:'warn', title:'Aaj 0 minute', body:'Timer start kar.' });
+  else if (todayPct < 50) insights.push({ icon:'◉', color:'warn', title:`${store.todayMinutes} min aaj`, body:`Goal ka ${todayPct.toFixed(0)}% bhara.` });
+  else insights.push({ icon:'✓', color:'accent', title:`${store.todayMinutes} min aaj`, body:`Goal ka ${todayPct.toFixed(0)}% bhara.` });
+
+  const subPct = { phy:(syl.phy.done/syl.phy.total)*100, chem:(syl.chem.done/syl.chem.total)*100, math:(syl.math.done/syl.math.total)*100 };
+  const weakest = Object.entries(subPct).sort((a,b) => a[1]-b[1])[0];
+  const weakLabel = { phy:'Physics', chem:'Chemistry', math:'Math' }[weakest[0]];
+  if (weakest[1] < 60) insights.push({ icon:'⚠', color:'warn', title:`${weakLabel} peeche (${weakest[1].toFixed(0)}%)`, body:`${syl[weakest[0]].done}/${syl[weakest[0]].total} chapters done.` });
+
+  if (store.streak >= 7) insights.push({ icon:'◆', color:'accent', title:`${store.streak} din streak`, body:'Consistency hi topper ka raaz hai.' });
+
+  const pending = store.tasks.filter(t => !t.done);
+  if (pending.length) insights.push({ icon:'◷', color:'purple', title:`Pending: ${pending[0].text}`, body:`${pending[0].subject} ka task.` });
+
+  const revDue = store.revision.filter(r => r.nextDate && r.nextDate <= Date.now());
+  if (revDue.length) insights.push({ icon:'🔄', color:'warn', title:`${revDue.length} revision due`, body:'Revision section check kar.' });
+
+  return insights.slice(0, 6);
+}
+
+function renderInsights() {
+  const grid = $('#aiInsights'); if (!grid) return;
+  grid.innerHTML = generateInsights().map(i => {
+    const cls = i.color === 'accent' ? '' : i.color === 'warn' ? 'warn' : 'purple';
+    return `<div class="card"><div class="stat-label">${i.icon} Insight</div><div style="font-size:0.9rem; font-weight:700; margin:0.3rem 0;" class="stat-value ${cls}">${esc(i.title)}</div><div class="stat-sub">${esc(i.body)}</div></div>`;
+  }).join('');
+}
+
+function aiAnswer(q) {
+  const query = q.toLowerCase();
+  const syl = getSyllabusProgress();
+  if (/aaj|today|kya karu|plan/.test(query)) return `Aaj: ${store.todayMinutes} min ho gaye. Goal 480 min. Weak subject pe 2h de.`;
+  if (/weak|peeche/.test(query)) {
+    const weak = Object.entries({ Physics:(syl.phy.done/syl.phy.total)*100, Chemistry:(syl.chem.done/syl.chem.total)*100, Math:(syl.math.done/syl.math.total)*100 }).sort((a,b) => a[1]-b[1])[0];
+    return `${weak[0]} weak hai (${weak[1].toFixed(0)}% done).`;
+  }
+  if (/progress|kitna/.test(query)) {
+    const total = syl.phy.total + syl.chem.total + syl.math.total;
+    const done = syl.phy.done + syl.chem.done + syl.math.done;
+    return `Syllabus: ${done}/${total} (${((done/total)*100).toFixed(0)}%).`;
+  }
+  if (/streak/.test(query)) return `Streak: ${store.streak} din.`;
+  if (/time|hours|ghante/.test(query)) return `Total: ${(store.totalMinutes/60).toFixed(1)}h. Today: ${store.todayMinutes}m.`;
+  return `Try: "aaj kya karu", "weak", "progress", "streak"`;
+}
+
+if ($('#aiSend')) $('#aiSend').addEventListener('click', () => {
+  const q = $('#aiInput').value.trim(); if (!q) return;
+  const reply = aiAnswer(q);
+  $('#aiChat').insertAdjacentHTML('afterbegin', `<div class="card" style="border-left:3px solid var(--accent-2);"><div class="stat-label">Tune poocha</div><div style="font-size:0.85rem; margin:0.3rem 0 0.7rem;">${esc(q)}</div><div class="stat-label">Axiom Coach</div><div style="font-size:0.85rem; white-space:pre-wrap; color:var(--accent);">${esc(reply)}</div></div>`);
+  $('#aiInput').value = '';
+});
+if ($('#aiInput')) $('#aiInput').addEventListener('keydown', e => e.key === 'Enter' && $('#aiSend').click());
+
+if ($('#aiGoogleSearch')) $('#aiGoogleSearch').addEventListener('click', () => {
+  const q = $('#aiInput').value.trim();
+  if (!q) return alert('Search query daal, boss man.');
+  window.open('https://www.google.com/search?q=' + encodeURIComponent(q + ' PDF'), '_blank', 'noopener');
+});
 
 // ============ STUDY ROOMS ============
 let roomChannel = null;
@@ -1929,20 +2504,20 @@ function appendRoomSys(text) {
   div.textContent = text; box.appendChild(div); box.scrollTop = box.scrollHeight;
 }
 
-$('#createRoomBtn').addEventListener('click', () => { const name = $('#roomNameInput').value.trim() || 'Study Room'; enterRoom(genRoomCode(), name, currentUser.username); });
-$('#joinRoomBtn').addEventListener('click', () => { const code = $('#roomCodeInput').value.trim().toUpperCase(); if (!code) return alert('Room code daal.'); enterRoom(code, 'Room ' + code, currentUser.username); });
-$('#leaveRoomBtn').addEventListener('click', leaveRoom);
-$('#sendMsgBtn').addEventListener('click', sendRoomMsg);
-$('#chatInput').addEventListener('keydown', e => e.key === 'Enter' && sendRoomMsg());
-$('#copyCodeBtn').addEventListener('click', () => { if (!currentRoom) return; navigator.clipboard.writeText(currentRoom).then(() => { const b = $('#copyCodeBtn'); b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy Code', 1500); }); });
+if ($('#createRoomBtn')) $('#createRoomBtn').addEventListener('click', () => { const name = $('#roomNameInput').value.trim() || 'Study Room'; enterRoom(genRoomCode(), name, currentUser.username); });
+if ($('#joinRoomBtn')) $('#joinRoomBtn').addEventListener('click', () => { const code = $('#roomCodeInput').value.trim().toUpperCase(); if (!code) return alert('Room code daal.'); enterRoom(code, 'Room ' + code, currentUser.username); });
+if ($('#leaveRoomBtn')) $('#leaveRoomBtn').addEventListener('click', leaveRoom);
+if ($('#sendMsgBtn')) $('#sendMsgBtn').addEventListener('click', sendRoomMsg);
+if ($('#chatInput')) $('#chatInput').addEventListener('keydown', e => e.key === 'Enter' && sendRoomMsg());
+if ($('#copyCodeBtn')) $('#copyCodeBtn').addEventListener('click', () => { if (!currentRoom) return; navigator.clipboard.writeText(currentRoom).then(() => { const b = $('#copyCodeBtn'); b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy Code', 1500); }); });
 
 // ============ ADMIN ============
-$('#adminEnterBtn').addEventListener('click', () => {
+if ($('#adminEnterBtn')) $('#adminEnterBtn').addEventListener('click', () => {
   const p = $('#adminPassword').value;
   if (p === ADMIN_PASSWORD) { $('#adminGate').style.display = 'none'; $('#adminContent').style.display = 'block'; renderAdminUsers(); }
   else { const e = $('#adminError'); e.textContent = 'Galat password.'; e.classList.add('show'); }
 });
-$('#adminExitBtn').addEventListener('click', () => { $('#adminGate').style.display = 'block'; $('#adminContent').style.display = 'none'; $('#adminPassword').value = ''; $('#adminError').classList.remove('show'); });
+if ($('#adminExitBtn')) $('#adminExitBtn').addEventListener('click', () => { $('#adminGate').style.display = 'block'; $('#adminContent').style.display = 'none'; $('#adminPassword').value = ''; $('#adminError').classList.remove('show'); });
 
 function renderAdminUsers() {
   const list = $('#adminUserList'); if (!list) return;
@@ -1972,7 +2547,7 @@ function renderAdminUsers() {
 }
 
 // ============ BACKUP ============
-$('#exportBtn').addEventListener('click', () => {
+if ($('#exportBtn')) $('#exportBtn').addEventListener('click', () => {
   const data = {};
   for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('jee_')) data[k] = localStorage.getItem(k); }
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1981,8 +2556,8 @@ $('#exportBtn').addEventListener('click', () => {
   a.href = url; a.download = `jee-backup-${currentUser.username}-${new Date().toISOString().slice(0,10)}.json`; a.click();
   URL.revokeObjectURL(url);
 });
-$('#importBtn').addEventListener('click', () => $('#importFile').click());
-$('#importFile').addEventListener('change', e => {
+if ($('#importBtn')) $('#importBtn').addEventListener('click', () => $('#importFile').click());
+if ($('#importFile')) $('#importFile').addEventListener('change', e => {
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => {
@@ -1991,16 +2566,141 @@ $('#importFile').addEventListener('change', e => {
   };
   reader.readAsText(file);
 });
-$('#wipeBtn').addEventListener('click', () => {
+if ($('#wipeBtn')) $('#wipeBtn').addEventListener('click', () => {
   if (!confirm('Pakka? Sab data delete.')) return;
   if (!confirm('Last warning.')) return;
   const keys = []; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('jee_')) keys.push(k); }
   keys.forEach(k => localStorage.removeItem(k)); localStorage.removeItem('jee_session'); location.reload();
 });
 
-// ============ BG ============
+// ============ EVENT LISTENERS (data entry) ============
+if ($('#addTask')) $('#addTask').addEventListener('click', () => {
+  const t = $('#taskInput').value.trim(); if (!t) return;
+  store.tasks.push({ text: t, subject: $('#taskSubject').value, done: false });
+  $('#taskInput').value = ''; saveAll(); renderTasks();
+});
+if ($('#taskInput')) $('#taskInput').addEventListener('keydown', e => e.key === 'Enter' && $('#addTask').click());
+
+if ($('#addNote')) $('#addNote').addEventListener('click', () => {
+  const t = $('#noteTitle').value.trim(), b = $('#noteBody').value.trim();
+  if (!t && !b) return;
+  store.notes.push({ title: t || 'Untitled', body: b });
+  $('#noteTitle').value = ''; $('#noteBody').value = ''; saveAll(); renderNotes();
+});
+
+if ($('#addFormula')) $('#addFormula').addEventListener('click', () => {
+  const t = $('#fTitle').value.trim(), b = $('#fBody').value.trim();
+  if (!t || !b) return;
+  store.formulas.push({ title: t, body: b });
+  $('#fTitle').value = ''; $('#fBody').value = ''; saveAll(); renderFormulas();
+});
+
+if ($('#addPyq')) $('#addPyq').addEventListener('click', () => {
+  const t = $('#pyqTopic').value.trim(), s = parseInt($('#pyqSolved').value), tot = parseInt($('#pyqTotal').value);
+  if (!t || isNaN(s) || isNaN(tot)) return;
+  store.pyq.push({ topic: t, solved: s, total: tot });
+  $('#pyqTopic').value = ''; $('#pyqSolved').value = ''; $('#pyqTotal').value = ''; saveAll(); renderPyq();
+});
+
+if ($('#addMock')) $('#addMock').addEventListener('click', () => {
+  const n = $('#mockName').value.trim(), s = parseFloat($('#mockScore').value), tot = parseFloat($('#mockTotal').value);
+  if (!n || isNaN(s) || isNaN(tot) || tot <= 0) return;
+  store.mocks.push({ name: n, score: s, total: tot });
+  $('#mockName').value = ''; $('#mockScore').value = ''; $('#mockTotal').value = ''; saveAll(); renderMocks();
+});
+
+if ($('#addMis')) $('#addMis').addEventListener('click', () => {
+  const s = $('#misSubject').value.trim(), d = $('#misDesc').value.trim();
+  if (!s || !d) return;
+  store.mistakes.push({ subject: s, desc: d });
+  $('#misSubject').value = ''; $('#misDesc').value = ''; saveAll(); renderMistakes();
+});
+
+if ($('#addMk')) $('#addMk').addEventListener('click', () => {
+  const c = $('#mkChapter').value.trim(), s = parseFloat($('#mkScore').value), tot = parseFloat($('#mkTotal').value);
+  if (!c || isNaN(s) || isNaN(tot) || tot <= 0) return;
+  store.marks.push({ chapter: c, score: s, total: tot });
+  $('#mkChapter').value = ''; $('#mkScore').value = ''; $('#mkTotal').value = ''; saveAll(); renderMarks();
+});
+
+if ($('#addTt')) $('#addTt').addEventListener('click', () => {
+  const d = $('#ttDay').value, t = $('#ttTime').value.trim(), tk = $('#ttTask').value.trim();
+  if (!t || !tk) return;
+  store.timetable.push({ day: d, time: t, task: tk });
+  $('#ttTime').value = ''; $('#ttTask').value = ''; saveAll(); renderTimetable();
+});
+
+if ($('#addPdf')) $('#addPdf').addEventListener('click', () => {
+  const t = $('#pdfTitle').value.trim(), u = $('#pdfUrl').value.trim();
+  if (!t || !u) return;
+  store.pdfs.push({ title: t, url: u });
+  $('#pdfTitle').value = ''; $('#pdfUrl').value = ''; saveAll(); renderPdfs();
+});
+
+if ($('#addPw')) $('#addPw').addEventListener('click', () => {
+  const n = $('#pwName').value.trim(), u = $('#pwUrl').value.trim();
+  if (!n || !u) return;
+  store.pwLinks.push({ name: n, url: u });
+  $('#pwName').value = ''; $('#pwUrl').value = ''; saveAll(); renderPw();
+});
+
+$$('.subject-add').forEach(b => b.addEventListener('click', () => { store.subjects[b.dataset.subject] += 1; saveAll(); renderSubjects(); }));
+
+// ============ TIMER ============
+let timerTotal = 25*60, timerLeft = timerTotal, timerId = null, timerRunning = false, sessionStart = null;
+function fmt(s){ const m = Math.floor(s/60), sec = s%60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
+function renderTimer(){ if ($('#timerDisplay')) $('#timerDisplay').textContent = fmt(timerLeft); }
+if ($('#timerStart')) $('#timerStart').addEventListener('click', () => {
+  if (timerRunning) return; timerRunning = true; sessionStart = Date.now();
+  timerId = setInterval(() => {
+    timerLeft--; renderTimer();
+    if (timerLeft <= 0) {
+      clearInterval(timerId); timerRunning = false; logSession();
+      try { const ac = new (window.AudioContext||window.webkitAudioContext)(); const osc = ac.createOscillator(), g = ac.createGain(); osc.connect(g); g.connect(ac.destination); osc.frequency.value = 880; g.gain.setValueAtTime(0.2, ac.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+0.6); osc.start(); osc.stop(ac.currentTime+0.6); } catch(e){}
+      alert('Time up, boss man.'); timerLeft = timerTotal; renderTimer();
+    }
+  }, 1000);
+});
+if ($('#timerPause')) $('#timerPause').addEventListener('click', () => { if (!timerRunning) return; clearInterval(timerId); timerRunning = false; logSession(); });
+if ($('#timerReset')) $('#timerReset').addEventListener('click', () => { clearInterval(timerId); timerRunning = false; logSession(); timerLeft = timerTotal; renderTimer(); });
+$$('[data-preset]').forEach(b => b.addEventListener('click', () => {
+  clearInterval(timerId); timerRunning = false; logSession();
+  timerTotal = parseInt(b.dataset.preset) * 60; timerLeft = timerTotal;
+  $('#timerMode').textContent = b.dataset.mode || 'Focus'; renderTimer();
+}));
+function logSession() {
+  if (!sessionStart) return;
+  const mins = Math.floor((Date.now()-sessionStart)/60000);
+  if (mins > 0) {
+    store.todayMinutes += mins;
+    store.totalMinutes += mins;
+    const d = new Date().toISOString().slice(0, 10);
+    store.studyCalendar[d] = (store.studyCalendar[d] || 0) + mins;
+    saveAll();
+  }
+  sessionStart = null;
+}
+
+// ============ EXAM ============
+let examTotal = 180*60, examLeft = examTotal, examId = null, examRunning = false;
+function fmtExam(s){ const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60; return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
+function renderExam(){ if ($('#examDisplay')) $('#examDisplay').textContent = fmtExam(examLeft); }
+if ($('#examStart')) $('#examStart').addEventListener('click', () => {
+  if (examRunning) return; examRunning = true;
+  examId = setInterval(() => {
+    examLeft--; renderExam();
+    if (examLeft <= 0) { clearInterval(examId); examRunning = false; alert('Exam over!'); examLeft = examTotal; renderExam(); }
+  }, 1000);
+});
+if ($('#examPause')) $('#examPause').addEventListener('click', () => { clearInterval(examId); examRunning = false; });
+if ($('#examReset')) $('#examReset').addEventListener('click', () => { clearInterval(examId); examRunning = false; examLeft = examTotal; renderExam(); });
+$$('[data-exam]').forEach(b => b.addEventListener('click', () => { clearInterval(examId); examRunning = false; examTotal = parseInt(b.dataset.exam)*60; examLeft = examTotal; renderExam(); }));
+
+// ============ BG PARTICLES ============
 (function bg() {
-  const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d');
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
   let W, H, particles = []; const COUNT = 70;
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   resize(); window.addEventListener('resize', resize);
@@ -2025,9 +2725,11 @@ function initAll() {
   updateUserBox(); renderStreak(); renderDashboard(); renderTasks(); renderNotes(); renderFormulas();
   renderPyq(); renderMocks(); renderMistakes(); renderMarks(); renderTimetable(); renderPdfs();
   renderPw(); renderSubjects(); renderSyllabus(); renderTimer(); renderExam(); renderInsights(); rotateQuote();
+  renderFlashcards(); renderStudyLog(); renderRevision(); renderCalendar(); renderWeakTopics(); renderBookmarks();
   listenUsers(); listenFriendRequests();
   setInterval(rotateQuote, 30000);
   setInterval(() => { if (document.getElementById('assistant').classList.contains('active')) renderInsights(); }, 30000);
+  setInterval(() => { if (document.getElementById('calendar').classList.contains('active')) renderCalendar(); }, 60000);
 }
 
 if (!checkSession()) { console.log('No session, showing auth'); }
