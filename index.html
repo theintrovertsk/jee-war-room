@@ -172,7 +172,7 @@
   input:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,229,160,0.1); }
   textarea { resize: vertical; min-height: 90px; }
   .input-row { display: flex; gap: 0.6rem; margin-bottom: 1rem; flex-wrap: wrap; }
-  .input-row input, .input-row select { flex: 1; min-width: 140px; }
+  .input-row input { flex: 1; min-width: 140px; }
   .task {
     background: var(--surface); border: 1px solid var(--border);
     border-left: 3px solid var(--accent); border-radius: 8px;
@@ -355,7 +355,7 @@
   .class-badge.cls-12 { background: rgba(255,107,107,0.15); color: #ff6b6b; }
   .class-badge.cls-drop { background: rgba(179,102,255,0.15); color: #b366ff; }
 
-  /* FRIEND + CHAT (same as original + polish) */
+  /* FRIEND */
   .friend-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 0.55rem; display: flex; align-items: center; gap: 1rem; transition: 0.15s; }
   .friend-item:hover { border-color: var(--accent); }
   .friend-avatar { width: 42px; height: 42px; background: linear-gradient(135deg, var(--accent-2), var(--accent-3)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #06060a; font-size: 1rem; flex-shrink: 0; position: relative; }
@@ -377,6 +377,7 @@
   .friend-tab-content { display: none; }
   .friend-tab-content.active { display: block; }
 
+  /* CHAT */
   .chat-container { display: grid; grid-template-columns: 260px 1fr; gap: 1rem; height: 600px; }
   .chat-list { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow-y: auto; }
   .chat-list-item { padding: 0.8rem 1rem; cursor: pointer; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.7rem; transition: 0.15s; }
@@ -407,6 +408,7 @@
   .emoji-tray span:hover { background: var(--surface-2); transform: scale(1.15); }
   .typing-indicator { font-size: 0.7rem; color: var(--accent-2); font-style: italic; height: 16px; padding: 0 1rem; }
 
+  /* REPLY SYSTEM */
   .reply-preview { display: none; background: var(--surface-2); border-left: 3px solid var(--accent-2); border-radius: 6px; padding: 0.4rem 0.6rem; margin: 0.3rem 0; font-size: 0.72rem; color: var(--muted); position: relative; }
   .reply-preview.show { display: block; }
   .reply-preview .rp-name { color: var(--accent-2); font-weight: 700; font-size: 0.68rem; margin-bottom: 0.15rem; }
@@ -419,6 +421,7 @@
   .msg-reply-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 99px; padding: 0.05rem 0.4rem; font-size: 0.65rem; cursor: pointer; font-family: inherit; transition: 0.15s; }
   .msg-reply-btn:hover { color: var(--accent-2); border-color: var(--accent-2); }
 
+  /* IMAGES + DRAG DROP */
   .chat-image { max-width: 240px; max-height: 240px; border-radius: 10px; cursor: pointer; display: block; margin-bottom: 0.3rem; border: 1px solid var(--border); transition: 0.15s; }
   .chat-image:hover { border-color: var(--accent); transform: scale(1.02); }
   .image-preview-box { display: none; position: relative; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem; margin-bottom: 0.5rem; }
@@ -435,30 +438,11 @@
   .img-lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; box-shadow: 0 0 80px rgba(0,229,160,0.3); }
   .img-lightbox .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--danger); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; }
 
-  /* CHAPTER NOTES */
-  .chapter-notes-viewer {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem;
-    margin-top: 1rem;
-    line-height: 1.65;
-  }
-  .chapter-notes-viewer h3 { color: var(--accent); margin-bottom: 0.8rem; font-size: 1.15rem; }
-  .chapter-notes-viewer .formula-box {
-    background: var(--surface-2);
-    border-left: 3px solid var(--accent-3);
-    padding: 0.9rem 1rem;
-    margin: 1rem 0;
-    border-radius: 8px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.85rem;
-    white-space: pre-wrap;
-  }
-  .chapter-notes-viewer .key-points { margin: 0.8rem 0; }
-  .chapter-notes-viewer ul { padding-left: 1.3rem; color: var(--muted); }
-  .chapter-notes-viewer li { margin-bottom: 0.35rem; }
+  /* AI SEARCH */
+  .ai-search-btn { background: linear-gradient(135deg, rgba(102,170,255,0.2), rgba(179,102,255,0.2)); border: 1px solid var(--accent-2); color: var(--accent-2); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-family: inherit; margin-left: 0.5rem; transition: 0.15s; }
+  .ai-search-btn:hover { background: var(--accent-2); color: #06060a; }
 
+  /* FLASHCARDS */
   .flashcard {
     background: linear-gradient(135deg, rgba(0,229,160,0.08), rgba(179,102,255,0.08));
     border: 1px solid var(--border);
@@ -481,6 +465,7 @@
   .flashcard.revealed .fc-answer { display: block; }
   .flashcard-nav { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
 
+  /* STUDY LOG */
   .study-log-entry {
     background: var(--surface); border: 1px solid var(--border);
     border-left: 3px solid var(--accent-2); border-radius: 8px;
@@ -491,6 +476,7 @@
   .study-log-entry .sl-content { flex: 1; font-size: 0.85rem; }
   .study-log-entry .sl-subject { font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 4px; background: var(--surface-2); color: var(--accent-2); text-transform: uppercase; }
 
+  /* WEAK TOPICS */
   .weak-topic {
     background: rgba(255,85,102,0.1); border: 1px solid rgba(255,85,102,0.3);
     border-radius: 8px; padding: 0.6rem 0.9rem; margin-bottom: 0.5rem;
@@ -499,6 +485,7 @@
   .weak-topic .wt-count { font-size: 1rem; font-weight: 800; color: var(--danger); width: 40px; }
   .weak-topic .wt-name { flex: 1; font-size: 0.85rem; }
 
+  /* REVISION SCHEDULE */
   .revision-item {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 8px; padding: 0.7rem 1rem; margin-bottom: 0.5rem;
@@ -509,6 +496,7 @@
   .revision-item .rev-name { flex: 1; font-size: 0.85rem; font-weight: 600; }
   .revision-item .rev-stage { font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 4px; background: var(--surface-2); color: var(--accent-2); }
 
+  /* STREAK CALENDAR */
   .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -547,6 +535,7 @@
   .cal-day .cal-num { font-size: 0.75rem; }
   .cal-day .cal-hrs { font-size: 0.55rem; }
 
+  /* BOOKMARKS */
   .bookmark-item {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 0.6rem;
@@ -557,6 +546,7 @@
   .bookmark-item .bm-title { font-size: 0.88rem; font-weight: 600; }
   .bookmark-item .bm-type { font-size: 0.65rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.05em; }
 
+  /* DAILY REMINDER */
   .reminder-banner {
     background: linear-gradient(135deg, rgba(255,170,68,0.15), rgba(255,85,102,0.1));
     border: 1px solid rgba(255,170,68,0.4);
@@ -592,9 +582,7 @@
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
-<div class="bg-glow"></div>
 
-<!-- AUTH MODAL (same as original) -->
 <div class="auth-modal" id="authModal">
   <div class="auth-box">
     <div class="brand">
@@ -637,7 +625,6 @@
   </div>
 </div>
 
-<!-- CLASS MODAL -->
 <div class="class-modal" id="classModal">
   <div class="class-box">
     <div class="welcome">Welcome to</div>
@@ -660,6 +647,8 @@
   </div>
 </div>
 
+<div class="bg-glow"></div>
+
 <div class="img-lightbox" id="imgLightbox">
   <button class="lb-close" onclick="document.getElementById('imgLightbox').classList.remove('show')">×</button>
   <img id="lightboxImg" src="" alt="preview">
@@ -668,6 +657,7 @@
 <div class="app" id="app" style="display:none;">
   <aside class="sidebar">
     <div class="logo">JEE<span>WAR ROOM <span class="class-badge" id="classBadge" style="display:none;"></span></span></div>
+
     <div class="user-box">
       <div class="user-avatar" id="userAvatar">?</div>
       <div class="user-info">
@@ -675,13 +665,13 @@
         <div class="user-sub" id="userSubDisplay">—</div>
       </div>
     </div>
+
     <div class="streak-box">
       <div class="num" id="streakNum">0</div>
       <div class="lbl">day streak</div>
     </div>
 
     <button class="nav-btn active" data-page="dashboard"><span class="icon">◈</span> Dashboard</button>
-    <button class="nav-btn" data-page="chapternotes"><span class="icon">📖</span> Chapter Notes</button>
     <button class="nav-btn" data-page="friends"><span class="icon">👥</span> Friends <span class="nav-badge" id="friendBadge" style="display:none;">0</span></button>
     <button class="nav-btn" data-page="friendchat"><span class="icon">💬</span> Friend Chat</button>
     <button class="nav-btn" data-page="friendprogress"><span class="icon">📊</span> Friend Progress</button>
@@ -710,11 +700,10 @@
     <button class="nav-btn" data-page="admin"><span class="icon">🔒</span> Admin</button>
     <button class="nav-btn" data-page="backup"><span class="icon">⬇</span> Backup</button>
     <button class="logout-btn" id="logoutBtn">Logout</button>
-    <div class="sidebar-footer">localStorage + Firebase · Chapter Notes added</div>
+    <div class="sidebar-footer">localStorage + Firebase</div>
   </aside>
 
   <main class="main">
-    <!-- DASHBOARD (same structure) -->
     <section class="page active" id="dashboard">
       <h1>Dashboard <span class="accent">//</span></h1>
       <p class="subtitle">Aaj ka scene, boss man.</p>
@@ -757,246 +746,1993 @@
         <div class="card"><div class="stat-label">Bookmarks</div><div class="stat-value blue" id="statBm" style="font-size:1.3rem;">0</div></div>
       </div>
     </section>
-
-    <!-- NEW: CHAPTER NOTES PAGE -->
-    <section class="page" id="chapternotes">
-      <h1>Chapter Notes <span class="accent">//</span></h1>
-      <p class="subtitle">High-yield notes + formulas for every JEE chapter. Select subject → chapter.</p>
-      <div class="input-row">
-        <select id="cnSubject" style="max-width:160px;">
-          <option value="phy">Physics</option>
-          <option value="chem">Chemistry</option>
-          <option value="math">Math</option>
-        </select>
-        <select id="cnChapter" style="flex:2;"></select>
-        <button class="btn primary" id="cnLoad">Load Notes</button>
+        <section class="page" id="friends">
+      <h1>Friends <span class="accent">//</span></h1>
+      <p class="subtitle">Dost banao, saath padho.</p>
+      <div class="friend-tabs">
+        <button class="friend-tab active" data-ftab="add">Add Friend</button>
+        <button class="friend-tab" data-ftab="requests">Requests <span id="reqCount" style="color:var(--danger);">0</span></button>
+        <button class="friend-tab" data-ftab="list">My Friends <span id="friendCount">0</span></button>
       </div>
-      <div id="cnViewer" class="chapter-notes-viewer">
-        <div class="empty">Subject + chapter select karke Load Notes daba.</div>
+      <div class="friend-tab-content active" id="ftab-add">
+        <div class="input-row">
+          <input type="text" id="friendUsernameInput" placeholder="Friend ka username daal...">
+          <button class="btn primary" id="sendFriendReqBtn">Send Request</button>
+        </div>
+        <div id="searchResult"></div>
       </div>
-      <div style="margin-top:1rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
-        <button class="btn sm" id="cnToFlash">＋ Add key points to Flashcards</button>
-        <button class="btn sm" id="cnToRev">＋ Add to Revision</button>
+      <div class="friend-tab-content" id="ftab-requests">
+        <h2>Incoming Requests</h2>
+        <div id="incomingReqs"></div>
+        <h2>Sent Requests</h2>
+        <div id="outgoingReqs"></div>
+      </div>
+      <div class="friend-tab-content" id="ftab-list">
+        <div id="friendsList"></div>
       </div>
     </section>
 
-    <!-- Rest of the pages remain the same as your original (Friends, Chat, Routine, Timer, etc.) -->
-    <!-- For brevity in this response I am showing the critical new parts. 
-         The full file you download/use should contain ALL original pages + the new Chapter Notes page. -->
+    <section class="page" id="friendchat">
+      <h1>Friend Chat <span class="accent">//</span></h1>
+      <p class="subtitle">Real-time chat — image, reply, emoji, reactions, sab.</p>
+      <div class="chat-container">
+        <div class="chat-list" id="chatFriendList"></div>
+        <div class="chat-main">
+          <div class="chat-header" id="chatHeader">
+            <div class="friend-avatar" id="chatHeaderAvatar">?</div>
+            <div>
+              <div class="friend-name" id="chatHeaderName">Select a friend</div>
+              <div class="friend-sub" id="chatHeaderSub">Koi friend choose kar</div>
+            </div>
+          </div>
+          <div class="chat-messages" id="chatMessages"></div>
+          <div class="typing-indicator" id="typingIndicator"></div>
+          <div class="drag-overlay" id="dragOverlay">📎 Image chhod de yahan</div>
+          <div class="image-preview-box" id="imagePreviewBox">
+            <button class="ip-close" id="imgPreviewClose">×</button>
+            <img id="imgPreviewEl" src="" alt="preview">
+            <div class="ip-info" id="imgPreviewInfo">Ready to send</div>
+          </div>
+          <div class="reply-preview" id="replyPreview">
+            <button class="rp-close" id="replyClose">×</button>
+            <div class="rp-name" id="replyName"></div>
+            <div class="rp-text" id="replyText"></div>
+          </div>
+          <div class="emoji-tray" id="emojiTray"></div>
+          <div class="chat-input-row">
+            <button class="btn" id="imgBtn" style="padding:0.6rem 0.85rem; font-size:1.1rem;">📎</button>
+            <button class="btn" id="emojiBtn" style="padding:0.6rem 0.85rem; font-size:1.1rem;">😀</button>
+            <input type="text" id="friendChatInput" placeholder="Message likho... (@ se tag kar)" disabled>
+            <button class="btn primary" id="sendFriendMsgBtn" disabled>Send</button>
+          </div>
+          <input type="file" id="imgFileInput" accept="image/*" style="display:none;">
+        </div>
+      </div>
+    </section>
 
-    <!-- To keep response size reasonable, the remaining pages (friends, chat, routine, timer, subjects, syllabus, flashcards, studylog, revision, calendar, weaktopics, bookmarks, timetable, notes, formulas, pyq, mocks, mistakes, marks, exammode, pdfs, pw, rooms, assistant, admin, backup) are identical to your original file. -->
-    <!-- Just insert the new Chapter Notes section and the CHAPTER_NOTES data + render logic below. -->
+    <section class="page" id="friendprogress">
+      <h1>Friend Progress <span class="accent">//</span></h1>
+      <p class="subtitle">Dekh boss man, tere dost kaise grind kar rahe hain.</p>
+      <div id="friendProgressList"></div>
+    </section>
 
+    <section class="page" id="routine">
+      <h1>Daily Routine</h1>
+      <p class="subtitle">Aaj ka plan. Ek ek karke tick karo.</p>
+      <div class="input-row">
+        <input type="text" id="taskInput" placeholder="Task likho...">
+        <select id="taskSubject" style="max-width:130px;">
+          <option value="PHY">Physics</option>
+          <option value="CHEM">Chemistry</option>
+          <option value="MATH">Math</option>
+          <option value="GEN">General</option>
+        </select>
+        <button class="btn primary" id="addTask">+ Add</button>
+      </div>
+      <div id="taskList"></div>
+    </section>
+
+    <section class="page" id="timer">
+      <h1>Study Timer</h1>
+      <p class="subtitle">Pomodoro. Focus karo, break lo.</p>
+      <div class="timer-box">
+        <div class="timer-mode" id="timerMode">Focus</div>
+        <div class="timer-display" id="timerDisplay">25:00</div>
+        <div class="timer-btns">
+          <button class="btn primary" id="timerStart">Start</button>
+          <button class="btn" id="timerPause">Pause</button>
+          <button class="btn danger" id="timerReset">Reset</button>
+        </div>
+        <div style="margin-top:1.5rem; display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
+          <button class="btn sm" data-preset="25" data-mode="Focus">25 focus</button>
+          <button class="btn sm" data-preset="45" data-mode="Focus">45 focus</button>
+          <button class="btn sm" data-preset="60" data-mode="Focus">60 focus</button>
+          <button class="btn sm" data-preset="5" data-mode="Break">5 break</button>
+          <button class="btn sm" data-preset="10" data-mode="Break">10 break</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="subjects">
+      <h1>Subjects</h1>
+      <p class="subtitle">Har subject pe kitna time diya.</p>
+      <div class="subject-row">
+        <div class="subject-name phy">Physics</div>
+        <div class="subject-bar-wrap"><div class="subject-bar phy" id="barPhy" style="width:0%"></div></div>
+        <div class="subject-hours" id="hrsPhy">0h</div>
+        <button class="subject-add" data-subject="phy">+1h</button>
+      </div>
+      <div class="subject-row">
+        <div class="subject-name chem">Chemistry</div>
+        <div class="subject-bar-wrap"><div class="subject-bar chem" id="barChem" style="width:0%"></div></div>
+        <div class="subject-hours" id="hrsChem">0h</div>
+        <button class="subject-add" data-subject="chem">+1h</button>
+      </div>
+      <div class="subject-row">
+        <div class="subject-name math">Math</div>
+        <div class="subject-bar-wrap"><div class="subject-bar math" id="barMath" style="width:0%"></div></div>
+        <div class="subject-hours" id="hrsMath">0h</div>
+        <button class="subject-add" data-subject="math">+1h</button>
+      </div>
+    </section>
+
+    <section class="page" id="syllabus">
+      <h1>JEE Syllabus Tracker</h1>
+      <p class="subtitle">Chapter complete hue toh tick karo.</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+        <div class="card"><div class="stat-label">Physics</div><div class="stat-value" id="sylPhyPct">0%</div></div>
+        <div class="card"><div class="stat-label">Chemistry</div><div class="stat-value blue" id="sylChemPct">0%</div></div>
+        <div class="card"><div class="stat-label">Math</div><div class="stat-value purple" id="sylMathPct">0%</div></div>
+        <div class="card"><div class="stat-label">Overall</div><div class="stat-value warn" id="sylTotalPct">0%</div></div>
+      </div>
+      <h2>Physics</h2><div class="chapter-list" id="sylPhy"></div>
+      <h2>Chemistry</h2><div class="chapter-list" id="sylChem"></div>
+      <h2>Math</h2><div class="chapter-list" id="sylMath"></div>
+    </section>
+
+    <section class="page" id="flashcards">
+      <h1>Flashcards <span class="accent">//</span></h1>
+      <p class="subtitle">Revision ke liye flashcard. Click karke answer dekho.</p>
+      <div class="input-row">
+        <input type="text" id="fcQuestion" placeholder="Question / Term">
+        <input type="text" id="fcAnswer" placeholder="Answer / Definition">
+        <select id="fcSubject" style="max-width:120px;">
+          <option value="PHY">Physics</option>
+          <option value="CHEM">Chemistry</option>
+          <option value="MATH">Math</option>
+          <option value="GEN">General</option>
+        </select>
+        <button class="btn primary" id="addFc">+ Add</button>
+      </div>
+      <div style="max-width:600px; margin:1rem auto;">
+        <div class="flashcard" id="fcDisplay" style="display:none;">
+          <div class="fc-label" id="fcSubjectLabel">PHYSICS</div>
+          <div class="fc-question" id="fcQuestionShow">—</div>
+          <div class="fc-answer" id="fcAnswerShow">—</div>
+        </div>
+        <div class="empty" id="fcEmpty">Koi flashcard nahi. Upar se add karo.</div>
+        <div class="flashcard-nav">
+          <button class="btn" id="fcPrev">← Prev</button>
+          <button class="btn primary" id="fcReveal">Reveal</button>
+          <button class="btn" id="fcNext">Next →</button>
+          <button class="btn" id="fcShuffle">🔀 Shuffle</button>
+        </div>
+      </div>
+      <h2>All Flashcards <span id="fcCount" style="color:var(--muted); font-size:0.8rem;">(0)</span></h2>
+      <div id="fcList"></div>
+    </section>
+
+    <section class="page" id="studylog">
+      <h1>Study Log <span class="accent">//</span></h1>
+      <p class="subtitle">Aaj kya padha, kitna time diya — sab note karo.</p>
+      <div class="input-row">
+        <input type="text" id="slContent" placeholder="Kya padha? (e.g. Rotational Motion - 10 numericals)">
+        <select id="slSubject" style="max-width:120px;">
+          <option value="PHY">Physics</option>
+          <option value="CHEM">Chemistry</option>
+          <option value="MATH">Math</option>
+          <option value="GEN">General</option>
+        </select>
+        <input type="number" id="slMinutes" placeholder="Minutes" style="max-width:100px;">
+        <button class="btn primary" id="addSl">+ Log</button>
+      </div>
+      <div id="slList"></div>
+    </section>
+
+    <section class="page" id="revision">
+      <h1>Revision Schedule <span class="accent">//</span></h1>
+      <p class="subtitle">Spaced repetition — 1 din, 3 din, 7 din, 30 din baad revise karo.</p>
+      <div class="input-row">
+        <input type="text" id="revTopic" placeholder="Topic name...">
+        <select id="revSubject" style="max-width:120px;">
+          <option value="PHY">Physics</option>
+          <option value="CHEM">Chemistry</option>
+          <option value="MATH">Math</option>
+          <option value="GEN">General</option>
+        </select>
+        <button class="btn primary" id="addRev">+ Add</button>
+      </div>
+      <div id="revList"></div>
+    </section>
+
+    <section class="page" id="calendar">
+      <h1>Streak Calendar <span class="accent">//</span></h1>
+      <p class="subtitle">Mahine ka calendar — dekho kaunse din padha.</p>
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <button class="btn sm" id="calPrev">← Prev</button>
+          <div style="font-weight:700; color:var(--accent); font-size:1.1rem;" id="calMonth">—</div>
+          <button class="btn sm" id="calNext">Next →</button>
+        </div>
+        <div class="calendar-grid" id="calGrid"></div>
+        <div class="stat-sub" style="margin-top:1rem; text-align:center;">
+          <span style="display:inline-block; width:12px; height:12px; background:rgba(0,229,160,0.3); border:1px solid var(--accent); border-radius:3px; vertical-align:middle;"></span> Padha
+          <span style="display:inline-block; width:12px; height:12px; background:rgba(0,229,160,0.6); border:1px solid var(--accent); border-radius:3px; vertical-align:middle; margin-left:1rem;"></span> 6+ ghante
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="weaktopics">
+      <h1>Weak Topics <span class="accent">//</span></h1>
+      <p class="subtitle">Jahan bar bar galti hoti hai. Extra time do.</p>
+      <div class="input-row">
+        <input type="text" id="wtName" placeholder="Topic name...">
+        <input type="number" id="wtCount" placeholder="Galti count" style="max-width:120px;" value="1">
+        <button class="btn primary" id="addWt">+ Add</button>
+      </div>
+      <div id="wtList"></div>
+    </section>
+
+    <section class="page" id="bookmarks">
+      <h1>Bookmarks <span class="accent">//</span></h1>
+      <p class="subtitle">Important PDF, YouTube lecture, ya link — sab yahan save karo.</p>
+      <div class="input-row">
+        <input type="text" id="bmTitle" placeholder="Title..." style="max-width:220px;">
+        <input type="text" id="bmUrl" placeholder="https://...">
+        <select id="bmType" style="max-width:130px;">
+          <option value="PDF">📄 PDF</option>
+          <option value="YouTube">▶️ YouTube</option>
+          <option value="Link">🔗 Link</option>
+          <option value="Notes">✏️ Notes</option>
+        </select>
+        <button class="btn primary" id="addBm">+ Add</button>
+      </div>
+      <div id="bmList"></div>
+    </section>
+
+    <section class="page" id="timetable">
+      <h1>Weekly Timetable</h1>
+      <p class="subtitle">Fixed schedule. Roz yahi follow karo.</p>
+      <div class="input-row">
+        <select id="ttDay" style="max-width:120px;">
+          <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+          <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+        </select>
+        <input type="text" id="ttTime" placeholder="Time" style="max-width:140px;">
+        <input type="text" id="ttTask" placeholder="What to study...">
+        <button class="btn primary" id="addTt">+ Add</button>
+      </div>
+      <div id="ttList"></div>
+    </section>
+
+    <section class="page" id="notes">
+      <h1>Notes</h1>
+      <p class="subtitle">Quick notes. Formula, concept, mistake — kuch bhi.</p>
+      <div class="input-row">
+        <input type="text" id="noteTitle" placeholder="Title..." style="max-width:220px;">
+        <input type="text" id="noteBody" placeholder="Content...">
+        <button class="btn primary" id="addNote">+ Save</button>
+      </div>
+      <div class="note-grid" id="noteGrid"></div>
+    </section>
+
+    <section class="page" id="formulas">
+      <h1>Formula Sheet</h1>
+      <p class="subtitle">Important formulas ek jagah. Revision fast.</p>
+      <div class="input-row">
+        <input type="text" id="fTitle" placeholder="Formula name..." style="max-width:200px;">
+        <input type="text" id="fBody" placeholder="F = ma">
+        <button class="btn primary" id="addFormula">+ Add</button>
+      </div>
+      <div id="formulaList"></div>
+    </section>
+
+    <section class="page" id="pyq">
+      <h1>PYQ Log</h1>
+      <p class="subtitle">Previous Year Questions practice. Track karo.</p>
+      <div class="input-row">
+        <input type="text" id="pyqTopic" placeholder="Topic">
+        <input type="number" id="pyqSolved" placeholder="Solved" style="max-width:100px;">
+        <input type="number" id="pyqTotal" placeholder="Total" style="max-width:100px;">
+        <button class="btn primary" id="addPyq">+ Log</button>
+      </div>
+      <div id="pyqList"></div>
+    </section>
+
+    <section class="page" id="mocks">
+      <h1>Mock Test Log</h1>
+      <p class="subtitle">Har mock ka score. Progress dikhega.</p>
+      <div class="input-row">
+        <input type="text" id="mockName" placeholder="Mock name" style="max-width:200px;">
+        <input type="number" id="mockScore" placeholder="Score" style="max-width:100px;">
+        <input type="number" id="mockTotal" placeholder="Out of" style="max-width:100px;">
+        <button class="btn primary" id="addMock">+ Log</button>
+      </div>
+      <div id="mockList"></div>
+    </section>
+
+    <section class="page" id="mistakes">
+      <h1>Mistake Log</h1>
+      <p class="subtitle">Har galti yahan likho. Revision ke waqt yahi goldmine hai.</p>
+      <div class="input-row">
+        <input type="text" id="misSubject" placeholder="Subject" style="max-width:140px;">
+        <input type="text" id="misDesc" placeholder="Mistake kya thi?">
+        <button class="btn primary" id="addMis">+ Add</button>
+      </div>
+      <div id="misList"></div>
+    </section>
+
+    <section class="page" id="marks">
+      <h1>Marks Tracker</h1>
+      <p class="subtitle">Chapter-wise test marks. Weak areas dikhenge.</p>
+      <div class="input-row">
+        <input type="text" id="mkChapter" placeholder="Chapter">
+        <input type="number" id="mkScore" placeholder="Score" style="max-width:100px;">
+        <input type="number" id="mkTotal" placeholder="Out of" style="max-width:100px;">
+        <button class="btn primary" id="addMk">+ Add</button>
+      </div>
+      <div id="mkList"></div>
+    </section>
+
+    <section class="page" id="exammode">
+      <h1>Exam Mode</h1>
+      <p class="subtitle">3 ghante, no break. Real JEE simulation.</p>
+      <div class="timer-box">
+        <div class="timer-mode">JEE Main — 180 min</div>
+        <div class="timer-display" id="examDisplay">3:00:00</div>
+        <div class="timer-btns">
+          <button class="btn primary" id="examStart">Start Exam</button>
+          <button class="btn" id="examPause">Pause</button>
+          <button class="btn danger" id="examReset">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="pdfs">
+      <h1>PDF Library</h1>
+      <p class="subtitle">Books, notes, DPPs. Link paste karo.</p>
+      <div class="input-row">
+        <input type="text" id="pdfTitle" placeholder="Book name..." style="max-width:220px;">
+        <input type="text" id="pdfUrl" placeholder="https://...">
+        <button class="btn primary" id="addPdf">+ Add</button>
+      </div>
+      <div id="pdfList"></div>
+    </section>
+
+    <section class="page" id="pw">
+      <h1>PW Course Access</h1>
+      <p class="subtitle">Tera PW subscription, seedha naye tab mein khulega.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="stat-label">PW Official Web</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Paid batch access kar.</div>
+          <button class="btn primary" onclick="window.open('https://www.pw.live', '_blank', 'noopener')">▶ Open PW Live</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">PW App Web</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Batch videos, DPP, notes.</div>
+          <button class="btn primary" onclick="window.open('https://www.pw.live/study-v2/my-courses', '_blank', 'noopener')">▶ My Courses</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">YouTube (Free PW)</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Free lectures.</div>
+          <button class="btn" onclick="window.open('https://www.youtube.com/@PhysicsWallah', '_blank', 'noopener')">▶ PW YouTube</button>
+        </div>
+        <div class="card" style="border-left:3px solid #b366ff;">
+          <div class="stat-label">DOH PW <span style="color:#b366ff;">★</span></div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Custom PW portal.</div>
+          <button class="btn primary" onclick="window.open('https://dohstudy-web-pw.vercel.app/', '_blank', 'noopener')" style="background:#b366ff; border-color:#b366ff;">▶ Open DOH PW</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="rooms">
+      <h1>Study Rooms</h1>
+      <p class="subtitle">Same browser tabs ke beech room chat.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="stat-label">Create Room</div>
+          <div class="input-row" style="margin:0.6rem 0;"><input type="text" id="roomNameInput" placeholder="Room ka naam..."></div>
+          <button class="btn primary" id="createRoomBtn">+ Create</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">Join Room</div>
+          <div class="input-row" style="margin:0.6rem 0;"><input type="text" id="roomCodeInput" placeholder="Code"></div>
+          <button class="btn primary" id="joinRoomBtn">▶ Join</button>
+        </div>
+      </div>
+      <div id="roomActive" style="display:none;">
+        <div class="card" style="border-left:3px solid var(--accent); margin-bottom:1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <div>
+              <div class="stat-label">Active Room</div>
+              <div style="font-size:1.1rem; font-weight:800; color:var(--accent);" id="roomTitle">—</div>
+              <div class="stat-sub">Code: <span id="roomCodeDisplay"></span> · Online: <span id="roomMembers">1</span></div>
+            </div>
+            <div style="display:flex; gap:0.4rem;">
+              <button class="btn sm" id="copyCodeBtn">Copy Code</button>
+              <button class="btn sm danger" id="leaveRoomBtn">Leave</button>
+            </div>
+          </div>
+        </div>
+        <div id="chatBox" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; height: 400px; overflow-y: auto; margin-bottom: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem;"></div>
+        <div class="input-row">
+          <input type="text" id="chatInput" placeholder="Message likho...">
+          <button class="btn primary" id="sendMsgBtn">Send</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="assistant">
+      <h1>AI Coach <span class="accent">//</span></h1>
+      <p class="subtitle">Tera data padhta hai, Google pe bhi search kar sakta hai.</p>
+      <div id="aiInsights" class="grid"></div>
+      <h2>Quick Ask</h2>
+      <div class="input-row">
+        <input type="text" id="aiInput" placeholder="Pooch kuch... (e.g. 'aaj kya karu', 'HC Verma PDF')">
+        <button class="btn primary" id="aiSend">Ask</button>
+        <button class="btn" id="aiGoogleSearch" style="background:linear-gradient(135deg,rgba(102,170,255,0.2),rgba(179,102,255,0.2)); border-color:var(--accent-2); color:var(--accent-2);">🔍 Google</button>
+      </div>
+      <div id="aiChat" style="margin-top:1rem;"></div>
+    </section>
+
+    <section class="page" id="admin">
+      <h1>Admin Panel <span class="accent">🔒</span></h1>
+      <p class="subtitle">Sirf admin ke liye.</p>
+      <div id="adminGate">
+        <div class="admin-pass-box">
+          <h2>🔒 Admin Access</h2>
+          <p>Password daal, boss man.</p>
+          <div class="auth-error" id="adminError"></div>
+          <div class="auth-field">
+            <label>Admin Password</label>
+            <input type="password" id="adminPassword" placeholder="password...">
+          </div>
+          <button class="auth-submit" id="adminEnterBtn">Enter</button>
+        </div>
+      </div>
+      <div id="adminContent" style="display:none;">
+        <div class="grid">
+          <div class="card"><div class="stat-label">Total Users</div><div class="stat-value" id="adminTotalUsers">0</div></div>
+          <div class="card"><div class="stat-label">Friendships</div><div class="stat-value blue" id="adminTotalFriends">0</div></div>
+          <div class="card"><div class="stat-label">Pending Reqs</div><div class="stat-value warn" id="adminPendingReqs">0</div></div>
+        </div>
+        <h2>All Users</h2>
+        <div id="adminUserList"></div>
+        <button class="btn danger" id="adminExitBtn" style="margin-top:1rem;">Exit Admin</button>
+      </div>
+    </section>
+
+    <section class="page" id="backup">
+      <h1>Backup & Restore</h1>
+      <p class="subtitle">Apna poora data export karo.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="stat-label">Export Data</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">JSON file download hogi.</div>
+          <button class="btn primary" id="exportBtn">⬇ Download</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">Import Data</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Backup restore karo.</div>
+          <input type="file" id="importFile" accept=".json" style="display:none;">
+          <button class="btn" id="importBtn">⬆ Restore</button>
+        </div>
+        <div class="card">
+          <div class="stat-label">Danger Zone</div>
+          <div class="stat-sub" style="margin-bottom:0.8rem;">Sab data delete.</div>
+          <button class="btn danger" id="wipeBtn">⚠ Wipe</button>
+        </div>
+      </div>
+    </section>
   </main>
 </div>
-
 <script type="module">
-// ........... ALL YOUR ORIGINAL FIREBASE + STORE + AUTH + FRIENDS + CHAT CODE STAYS EXACTLY THE SAME ...........
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push, onValue, set, remove, onDisconnect, query, limitToLast, get, update }
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-// ========== NEW: CHAPTER NOTES DATA ==========
-const CHAPTER_NOTES = {
-  phy: {
-    "Units & Measurements": {
-      summary: "Dimensional analysis, significant figures, error analysis, and SI base units form the foundation. Always check dimensions before solving.",
-      formulas: `Dimensions of common quantities:
-Force → [MLT⁻²]
-Energy/Work → [ML²T⁻²]
-Power → [ML²T⁻³]
-Pressure → [ML⁻¹T⁻²]
-G → [M⁻¹L³T⁻²]
-h (Planck) → [ML²T⁻¹]
-
-% error in product/quotient = sum of % errors
-% error in Aⁿ = n × % error in A`,
-      points: [
-        "Least count = smallest division / number of divisions",
-        "Absolute error, relative error, percentage error",
-        "Dimensional formula must match on both sides of equation",
-        "Some quantities are dimensionless (angle, strain, refractive index)"
-      ]
-    },
-    "Kinematics": {
-      summary: "Motion in 1D & 2D with constant acceleration. Projectile motion and relative velocity are high-weightage.",
-      formulas: `v = u + at
-s = ut + ½at²
-v² = u² + 2as
-sₙ = u + a(n − ½)
-
-Projectile:
-Range R = u² sin2θ / g
-Max height H = u² sin²θ / 2g
-Time of flight T = 2u sinθ / g
-Equation of trajectory: y = x tanθ − (gx²)/(2u² cos²θ)`,
-      points: [
-        "Area under v-t graph = displacement",
-        "Slope of v-t = acceleration",
-        "Relative velocity: v_AB = v_A − v_B",
-        "For maximum range on horizontal, θ = 45°"
-      ]
-    },
-    "Laws of Motion": {
-      summary: "Newton’s laws + friction + circular motion dynamics. Free body diagrams are non-negotiable.",
-      formulas: `F_net = ma = dp/dt
-Friction: f_s ≤ μ_s N , f_k = μ_k N
-Incline (smooth): a = g sinθ
-Incline (rough): a = g (sinθ − μ cosθ)
-Atwood: a = (m1−m2)g/(m1+m2) , T = 2m1m2g/(m1+m2)
-Centripetal: F = mv²/r = mω²r
-Banking (ideal): tanθ = v²/(rg)`,
-      points: [
-        "Pseudo force in non-inertial frame = −ma",
-        "Direction of friction always opposes relative motion tendency",
-        "Normal force is not always mg",
-        "In lift: apparent weight = m(g±a)"
-      ]
-    },
-    "Work Energy Power": {
-      summary: "Work-energy theorem and conservation of mechanical energy are core. Collisions (elastic/inelastic) appear every year.",
-      formulas: `W = F·s = Fs cosθ = ∫F·ds
-KE = ½mv²
-PE_grav = mgh , PE_spring = ½kx²
-Work-Energy: W_net = ΔKE
-Power P = F·v = W/t
-e = relative speed of separation / approach
-For elastic head-on: velocities exchange if m1=m2`,
-      points: [
-        "Conservative force → work independent of path",
-        "Potential energy defined only for conservative forces",
-        "Inelastic → KE not conserved, momentum is",
-        "Variable force → integrate"
-      ]
-    },
-    "Rotational Motion": {
-      summary: "Translation + rotation analogy is the key. Moment of inertia and rolling without slipping are heavily tested.",
-      formulas: `τ = Iα = rF sinθ
-L = Iω
-KE_rot = ½Iω²
-Parallel axis: I = I_cm + Md²
-Perpendicular axis: I_z = I_x + I_y
-Rolling: v = ωR , a = αR
-I (solid sphere) = 2/5 MR²
-I (disc/cylinder) = ½ MR²
-I (ring/hoop) = MR²`,
-      points: [
-        "Torque and angular momentum about same axis",
-        "Pure rolling → bottom point instantaneously at rest",
-        "Angular momentum conserved when net external torque = 0",
-        "Work-energy also holds for rotation"
-      ]
-    }
-    // ... (remaining Physics chapters follow the same structure – Electrostatics, Current Electricity, Magnetism, Optics, Modern Physics, etc.)
-  },
-  chem: {
-    "Chemical Bonding": {
-      summary: "VSEPR, hybridisation, MO theory and bond parameters decide most questions.",
-      formulas: `Hybridisation = ½ (V + M − C + A)
-Bond order = ½ (Nb − Na)
-Bond length ∝ 1/bond order
-Dipole moment μ = q × d`,
-      points: [
-        "Linear → sp, Trigonal planar → sp², Tetrahedral → sp³",
-        "MO theory explains O₂ paramagnetism",
-        "Hydrogen bonding strongest in F-H···F",
-        "Ionic character increases with electronegativity difference"
-      ]
-    },
-    "Thermodynamics": {
-      summary: "First law, Hess’s law, Gibbs free energy and spontaneity criteria.",
-      formulas: `ΔU = q + w
-w = −PΔV (irreversible)
-ΔH = ΔU + Δn_g RT
-ΔG = ΔH − TΔS
-ΔG° = −RT ln K
-Hess’s law: ΔH is state function`,
-      points: [
-        "Spontaneous if ΔG < 0",
-        "Entropy of universe always increases",
-        "Enthalpy of formation of elements in standard state = 0",
-        "q_p = ΔH , q_v = ΔU"
-      ]
-    }
-    // ... remaining Chemistry chapters
-  },
-  math: {
-    "Limits": {
-      summary: "Standard limits + L’Hôpital + expansions form the base.",
-      formulas: `lim x→0 (sin x)/x = 1
-lim x→0 (1−cos x)/x² = ½
-lim x→0 (eˣ − 1)/x = 1
-lim x→∞ (1 + 1/x)ˣ = e`,
-      points: [
-        "0/0 or ∞/∞ → L’Hôpital",
-        "Rationalise or use expansions for 1^∞ forms",
-        "Squeeze theorem for sandwich cases"
-      ]
-    }
-    // ... remaining Math chapters
-  }
+const firebaseConfig = {
+  apiKey: "AIzaSyCbRyG9x_dc2RxJ902KWF55IFigX_PcHX4",
+  authDomain: "jeewar-90553.firebaseapp.com",
+  databaseURL: "https://jeewar-90553-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "jeewar-90553",
+  storageBucket: "jeewar-90553.firebasestorage.app",
+  messagingSenderId: "369414033029",
+  appId: "1:369414033029:web:9179275034ed05910be3ec"
 };
 
-// Fill remaining chapters with solid high-yield content (in real file all 80+ chapters are filled)
-// For this response I showed the pattern. Full file contains complete data.
+let db = null;
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getDatabase(app);
+  console.log('Firebase ready');
+} catch (err) {
+  console.error('Firebase error:', err);
+}
 
-// ========== CHAPTER NOTES RENDER ==========
-function populateChapterSelect() {
-  const sub = document.getElementById('cnSubject')?.value || 'phy';
-  const sel = document.getElementById('cnChapter');
-  if (!sel) return;
-  sel.innerHTML = '';
-  const chapters = Object.keys(CHAPTER_NOTES[sub] || {});
-  chapters.forEach(ch => {
-    const opt = document.createElement('option');
-    opt.value = ch;
-    opt.textContent = ch;
-    sel.appendChild(opt);
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const ADMIN_PASSWORD = 'ankush11';
+
+const SYLLABUS = {
+  phy: ['Units & Measurements','Kinematics','Laws of Motion','Work Energy Power','Rotational Motion','Gravitation','Mechanical Properties of Solids','Mechanical Properties of Fluids','Thermal Properties','Thermodynamics','Kinetic Theory','Oscillations','Waves','Electrostatics','Current Electricity','Moving Charges & Magnetism','Magnetism & Matter','EMI','AC','EM Waves','Ray Optics','Wave Optics','Dual Nature','Atoms','Nuclei','Semiconductors'],
+  chem: ['Some Basic Concepts','Structure of Atom','Classification of Elements','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','s-Block','p-Block','Organic Basics','Hydrocarbons','Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','Metallurgy','p-Block (Gr 13-14)','d & f Block','Coordination Compounds','Haloalkanes','Alcohols Phenols Ethers','Aldehydes Ketones Acids','Amines','Biomolecules','Polymers','Chemistry in Everyday Life'],
+  math: ['Sets Relations Functions','Complex Numbers','Quadratic Equations','Matrices','Determinants','Permutations Combinations','Binomial Theorem','Sequences & Series','Limits','Continuity & Differentiability','Differentiation','Application of Derivatives','Integrals','Application of Integrals','Differential Equations','Straight Lines','Circles','Conic Sections','3D Geometry','Vectors','Statistics','Probability','Trigonometry','Inverse Trigonometry','Mathematical Reasoning']
+};
+
+let currentUser = null;
+const store = {
+  tasks: [], notes: [], pdfs: [], formulas: [], pyq: [], mocks: [], mistakes: [], marks: [],
+  timetable: [], pwLinks: [], flashcards: [], studyLog: [], revision: [], weakTopics: [],
+  bookmarks: [], studyCalendar: {},
+  subjects: {phy:0,chem:0,math:0}, syllabus: {},
+  totalMinutes: 0, todayMinutes: 0, todayDate: '', streak: 0, lastActive: ''
+};
+
+function userPrefix() { return `jee_${currentUser.username.toLowerCase()}_`; }
+
+function loadUserData() {
+  if (!currentUser) return;
+  const p = userPrefix();
+  store.tasks = JSON.parse(localStorage.getItem(p+'tasks') || '[]');
+  store.notes = JSON.parse(localStorage.getItem(p+'notes') || '[]');
+  store.pdfs = JSON.parse(localStorage.getItem(p+'pdfs') || '[]');
+  store.formulas = JSON.parse(localStorage.getItem(p+'formulas') || '[]');
+  store.pyq = JSON.parse(localStorage.getItem(p+'pyq') || '[]');
+  store.mocks = JSON.parse(localStorage.getItem(p+'mocks') || '[]');
+  store.mistakes = JSON.parse(localStorage.getItem(p+'mistakes') || '[]');
+  store.marks = JSON.parse(localStorage.getItem(p+'marks') || '[]');
+  store.timetable = JSON.parse(localStorage.getItem(p+'timetable') || '[]');
+  store.pwLinks = JSON.parse(localStorage.getItem(p+'pwLinks') || '[]');
+  store.flashcards = JSON.parse(localStorage.getItem(p+'flashcards') || '[]');
+  store.studyLog = JSON.parse(localStorage.getItem(p+'studyLog') || '[]');
+  store.revision = JSON.parse(localStorage.getItem(p+'revision') || '[]');
+  store.weakTopics = JSON.parse(localStorage.getItem(p+'weakTopics') || '[]');
+  store.bookmarks = JSON.parse(localStorage.getItem(p+'bookmarks') || '[]');
+  store.studyCalendar = JSON.parse(localStorage.getItem(p+'studyCalendar') || '{}');
+  store.subjects = JSON.parse(localStorage.getItem(p+'subjects') || '{"phy":0,"chem":0,"math":0}');
+  store.syllabus = JSON.parse(localStorage.getItem(p+'syllabus') || '{}');
+  store.totalMinutes = parseInt(localStorage.getItem(p+'totalMin') || '0');
+  store.todayMinutes = parseInt(localStorage.getItem(p+'todayMin') || '0');
+  store.todayDate = localStorage.getItem(p+'todayDate') || new Date().toDateString();
+  store.streak = parseInt(localStorage.getItem(p+'streak') || '0');
+  store.lastActive = localStorage.getItem(p+'lastActive') || '';
+  const today = new Date().toDateString();
+  if (store.todayDate !== today) {
+    const yest = new Date(Date.now() - 86400000).toDateString();
+    if (store.lastActive === yest) store.streak += 1;
+    else if (store.lastActive !== today) store.streak = 1;
+    store.lastActive = today; store.todayDate = today; store.todayMinutes = 0;
+  }
+  if (!store.streak) store.streak = 1;
+}
+
+function saveAll() {
+  if (!currentUser) return;
+  const p = userPrefix();
+  ['tasks','notes','pdfs','formulas','pyq','mocks','mistakes','marks','timetable','pwLinks','flashcards','studyLog','revision','weakTopics','bookmarks'].forEach(k => {
+    localStorage.setItem(p+k, JSON.stringify(store[k]));
+  });
+  localStorage.setItem(p+'studyCalendar', JSON.stringify(store.studyCalendar));
+  localStorage.setItem(p+'subjects', JSON.stringify(store.subjects));
+  localStorage.setItem(p+'syllabus', JSON.stringify(store.syllabus));
+  localStorage.setItem(p+'totalMin', store.totalMinutes);
+  localStorage.setItem(p+'todayMin', store.todayMinutes);
+  localStorage.setItem(p+'todayDate', store.todayDate);
+  localStorage.setItem(p+'streak', store.streak);
+  localStorage.setItem(p+'lastActive', store.lastActive);
+  if (db) {
+    set(ref(db, 'users/' + currentUser.username.toLowerCase() + '/progress'), {
+      totalMinutes: store.totalMinutes, todayMinutes: store.todayMinutes, streak: store.streak,
+      syllabusDone: Object.keys(store.syllabus).filter(k => store.syllabus[k]).length,
+      mocksCount: store.mocks.length, mistakesCount: store.mistakes.length,
+      tasksDone: store.tasks.filter(t => t.done).length, tasksTotal: store.tasks.length,
+      subjects: store.subjects, updatedAt: Date.now()
+    });
+  }
+  renderDashboard(); renderStreak();
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+// ============ AUTH ============
+function showAuthError(m){ const e=$('#authError'); e.textContent=m; e.classList.add('show'); }
+function hideAuthError(){ $('#authError').classList.remove('show'); }
+
+$$('.auth-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    $$('.auth-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active'); hideAuthError();
+    if (tab.dataset.tab === 'login') { $('#loginForm').style.display='block'; $('#signupForm').style.display='none'; }
+    else { $('#loginForm').style.display='none'; $('#signupForm').style.display='block'; }
+  });
+});
+
+$('#signupBtn').addEventListener('click', async () => {
+  const u = $('#signupUsername').value.trim();
+  const p = $('#signupPassword').value;
+  const p2 = $('#signupPassword2').value;
+  hideAuthError();
+  if (!u || u.length < 3) return showAuthError('Username min 3 char.');
+  if (!/^[a-zA-Z0-9_]+$/.test(u)) return showAuthError('Sirf letters, numbers, underscore.');
+  if (!p || p.length < 4) return showAuthError('Password min 4 char.');
+  if (p !== p2) return showAuthError('Passwords match nahi.');
+  $('#signupBtn').disabled = true; $('#signupBtn').textContent = 'Creating...';
+  try {
+    const snap = await get(ref(db, 'users/' + u.toLowerCase()));
+    if (snap.exists()) { showAuthError('Username taken.'); $('#signupBtn').disabled=false; $('#signupBtn').textContent='Create Account'; return; }
+    await set(ref(db, 'users/' + u.toLowerCase()), {
+      username: u, usernameLower: u.toLowerCase(), password: p, class: null, createdAt: Date.now(),
+      presence: { online: true, lastSeen: Date.now() },
+      progress: { totalMinutes:0, todayMinutes:0, streak:0, syllabusDone:0, mocksCount:0, mistakesCount:0, tasksDone:0, tasksTotal:0, subjects:{phy:0,chem:0,math:0}, updatedAt: Date.now() }
+    });
+    currentUser = { username: u, class: null };
+    localStorage.setItem('jee_session', JSON.stringify(currentUser));
+    $('#authModal').classList.add('hide'); $('#app').style.display = 'grid';
+    loadUserData(); initAll(); startPresence();
+    setTimeout(() => $('#classModal').classList.add('show'), 200);
+  } catch (err) { showAuthError('Error: ' + err.message); $('#signupBtn').disabled=false; $('#signupBtn').textContent='Create Account'; }
+});
+
+$('#loginBtn').addEventListener('click', async () => {
+  const u = $('#loginUsername').value.trim();
+  const p = $('#loginPassword').value;
+  hideAuthError();
+  if (!u) return showAuthError('Username daal.');
+  if (!p) return showAuthError('Password daal.');
+  $('#loginBtn').disabled=true; $('#loginBtn').textContent='Logging in...';
+  try {
+    const snap = await get(ref(db, 'users/' + u.toLowerCase()));
+    if (!snap.exists()) { showAuthError('User nahi mila.'); $('#loginBtn').disabled=false; $('#loginBtn').textContent='Login'; return; }
+    const ud = snap.val();
+    if (ud.password !== p) { showAuthError('Password galat.'); $('#loginBtn').disabled=false; $('#loginBtn').textContent='Login'; return; }
+    currentUser = { username: ud.username, class: ud.class || null };
+    localStorage.setItem('jee_session', JSON.stringify(currentUser));
+    $('#authModal').classList.add('hide'); $('#app').style.display = 'grid';
+    loadUserData(); initAll(); startPresence();
+    if (!currentUser.class) setTimeout(() => $('#classModal').classList.add('show'), 200);
+    else applyClass(currentUser.class);
+  } catch (err) { showAuthError('Error: ' + err.message); $('#loginBtn').disabled=false; $('#loginBtn').textContent='Login'; }
+});
+
+$('#logoutBtn').addEventListener('click', async () => {
+  if (!confirm('Logout?')) return;
+  if (db && currentUser) { try { await set(ref(db, 'users/' + currentUser.username.toLowerCase() + '/presence'), { online: false, lastSeen: Date.now() }); } catch(e){} }
+  localStorage.removeItem('jee_session'); location.reload();
+});
+
+function checkSession() {
+  const s = localStorage.getItem('jee_session');
+  if (s) {
+    try {
+      currentUser = JSON.parse(s);
+      $('#authModal').classList.add('hide'); $('#app').style.display = 'grid';
+      loadUserData(); initAll(); startPresence();
+      if (currentUser.class) applyClass(currentUser.class);
+      else setTimeout(() => $('#classModal').classList.add('show'), 200);
+      return true;
+    } catch(e) { return false; }
+  }
+  return false;
+}
+
+// ============ PRESENCE ============
+function startPresence() {
+  if (!db || !currentUser) return;
+  const pref = ref(db, 'users/' + currentUser.username.toLowerCase() + '/presence');
+  set(pref, { online: true, lastSeen: Date.now() });
+  onDisconnect(pref).set({ online: false, lastSeen: Date.now() });
+  setInterval(() => { set(pref, { online: true, lastSeen: Date.now() }); }, 25000);
+}
+
+function isOnline(userData) {
+  const p = userData.presence || {};
+  return p.online && (Date.now() - (p.lastSeen || 0) < 90000);
+}
+
+// ============ CLASS ============
+const CLASS_CONFIG = {
+  '11': { label: '11th', badge: 'cls-11', examDate: '2028-01-24T09:00:00', examLabel: 'JEE Main 2028' },
+  '12': { label: '12th', badge: 'cls-12', examDate: '2027-01-24T09:00:00', examLabel: 'JEE Main 2027' },
+  'drop': { label: 'Dropper', badge: 'cls-drop', examDate: '2026-01-24T09:00:00', examLabel: 'JEE Main 2026' }
+};
+
+async function setClass(cls) {
+  currentUser.class = cls;
+  localStorage.setItem('jee_session', JSON.stringify(currentUser));
+  if (db) await update(ref(db, 'users/' + currentUser.username.toLowerCase()), { class: cls });
+  applyClass(cls); $('#classModal').classList.remove('show'); updateUserBox();
+}
+function applyClass(cls) {
+  const c = CLASS_CONFIG[cls]; if (!c) return;
+  const b = document.getElementById('classBadge');
+  if (b) { b.textContent = c.label; b.className = 'class-badge ' + c.badge; b.style.display = 'inline-block'; }
+  window.__examDate = c.examDate; window.__examLabel = c.examLabel;
+  initCountdown();
+}
+document.querySelectorAll('.class-opt').forEach(b => b.addEventListener('click', () => setClass(b.dataset.class)));
+$('#classBadge').addEventListener('click', (e) => { e.stopPropagation(); $('#classModal').classList.add('show'); });
+
+function initCountdown() {
+  const es = window.__examDate || '2026-01-24T09:00:00';
+  const el = window.__examLabel || 'JEE Main 2026';
+  const d = new Date(es) - new Date();
+  const labelEl = document.querySelector('.countdown .label');
+  if (labelEl) labelEl.textContent = el + ' Countdown';
+  if (d <= 0) { $('#jeeCountdown').textContent='EXAM TIME'; $('#daysLeft').textContent='0'; $('#jeeDateSub').textContent='Go crush it.'; return; }
+  const days=Math.floor(d/86400000), hrs=Math.floor((d%86400000)/3600000), mins=Math.floor((d%3600000)/60000);
+  $('#jeeCountdown').textContent = `${days}d ${hrs}h ${mins}m`;
+  $('#daysLeft').textContent = days;
+  const dd = new Date(es); const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  $('#jeeDateSub').textContent = `Expected: ${mo[dd.getMonth()]} ${dd.getDate()}, ${dd.getFullYear()}`;
+}
+setInterval(initCountdown, 60000);
+
+$$('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('.nav-btn').forEach(b => b.classList.remove('active'));
+    $$('.page').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active'); $('#' + btn.dataset.page).classList.add('active');
+    if (btn.dataset.page === 'friendchat') renderChatFriendList();
+    if (btn.dataset.page === 'friendprogress') renderFriendProgress();
+    if (btn.dataset.page === 'friends') renderFriendsPage();
+    if (btn.dataset.page === 'calendar') renderCalendar();
+    if (btn.dataset.page === 'revision') renderRevision();
+    if (btn.dataset.page === 'flashcards') renderFlashcards();
+  });
+});
+
+function updateUserBox() {
+  if (!currentUser) return;
+  $('#userAvatar').textContent = currentUser.username[0].toUpperCase();
+  $('#userNameDisplay').textContent = currentUser.username;
+  $('#userSubDisplay').textContent = currentUser.class ? CLASS_CONFIG[currentUser.class].label : 'Class not set';
+}
+
+// ============ QUOTES ============
+const QUOTES = [
+  { q:"Aaj ka grind kal ka rank banayega.", a:"Axiom" },
+  { q:"Toppers koi alag species nahi hai. Bas consistent hote hai.", a:"War Room" },
+  { q:"Ek din ka gap bhi rank girada hai. Roz baitho.", a:"Reality Check" },
+  { q:"Formula bhool gaya? 10 min revision. Abhi.", a:"Axiom" },
+  { q:"PYQ is the cheat code.", a:"War Room" },
+  { q:"Mock mein low score aya? Good. Galti yahi pakdi.", a:"Axiom" },
+  { q:"Neend puri kar. Burnout topper ko bhi todta hai.", a:"Coach" },
+  { q:"8 ghante focus > 14 ghante distracted.", a:"Rule" },
+  { q:"Revise, revise, revise.", a:"Axiom" },
+  { q:"Tera competition bhi thak gaya hai. Tu mat thak.", a:"War Room" }
+];
+function rotateQuote() {
+  const x = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  $('#motivationQuote').textContent = `"${x.q}"`;
+  $('#motivationAuthor').textContent = `— ${x.a}`;
+}
+
+// ============ RENDER ============
+function renderStreak(){ $('#streakNum').textContent = store.streak; }
+function formatMin(m){ return m < 60 ? m + 'm' : (m/60).toFixed(1) + 'h'; }
+function cap(s){ return s[0].toUpperCase() + s.slice(1); }
+function sylKey(sub, idx){ return `${sub}_${idx}`; }
+
+function renderDashboard() {
+  const p = store.tasks.filter(t => !t.done).length;
+  $('#statTasks').textContent = p;
+  $('#statTasksSub').textContent = p === 0 ? 'sab clear' : 'pending';
+  $('#statTime').textContent = formatMin(store.todayMinutes);
+  $('#statTotal').textContent = (store.totalMinutes/60).toFixed(1) + 'h';
+  $('#statMocks').textContent = store.mocks.length;
+  if (store.mocks.length) {
+    const avg = store.mocks.reduce((a,m) => a + (m.score/m.total)*100, 0) / store.mocks.length;
+    $('#statAvg').textContent = `avg ${avg.toFixed(1)}%`;
+  } else $('#statAvg').textContent = 'avg --';
+  const pct = Math.min(100, (store.todayMinutes/(8*60))*100);
+  $('#dailyProgress').style.width = pct + '%';
+  $('#dailyProgressText').textContent = `${(store.todayMinutes/60).toFixed(1)} / 8 hours`;
+  if ($('#timerToday')) $('#timerToday').textContent = store.todayMinutes;
+  if ($('#statFlash')) $('#statFlash').textContent = store.flashcards.length;
+  if ($('#statRevDue')) $('#statRevDue').textContent = store.revision.filter(r => r.nextDate && r.nextDate <= Date.now()).length;
+  if ($('#statWeak')) $('#statWeak').textContent = store.weakTopics.length;
+  if ($('#statBm')) $('#statBm').textContent = store.bookmarks.length;
+  // Reminder
+  const reminder = $('#reminderBanner');
+  if (reminder) {
+    if (store.todayMinutes < 8*60 && new Date().getHours() >= 18) {
+      reminder.style.display = 'flex';
+      $('#reminderText').innerHTML = `Boss man, aaj ka goal ka <strong>${pct.toFixed(0)}%</strong> hua. Baaki <strong>${((8*60 - store.todayMinutes)/60).toFixed(1)}h</strong> baaki hai. Laga le!`;
+    } else if (store.revision.some(r => r.nextDate && r.nextDate <= Date.now())) {
+      reminder.style.display = 'flex';
+      $('#reminderText').innerHTML = `Aaj <strong>revision due</strong> hai — Revision section check kar.`;
+    } else reminder.style.display = 'none';
+  }
+}
+
+function renderTasks() {
+  const l = $('#taskList');
+  if (!store.tasks.length) { l.innerHTML = '<div class="empty">Koi task nahi.</div>'; return; }
+  l.innerHTML = store.tasks.map((t,i) => `
+    <div class="task ${t.done?'done':''}">
+      <input type="checkbox" data-idx="${i}" ${t.done?'checked':''}>
+      <span class="task-text">${esc(t.text)}</span>
+      <span class="task-subject ${t.subject}">${t.subject}</span>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`).join('');
+  l.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', e => { store.tasks[e.target.dataset.idx].done = e.target.checked; saveAll(); renderTasks(); }));
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.tasks.splice(e.target.dataset.idx,1); saveAll(); renderTasks(); }));
+}
+
+function renderNotes() {
+  const g = $('#noteGrid');
+  if (!store.notes.length) { g.innerHTML = '<div class="empty">Koi note nahi.</div>'; return; }
+  g.innerHTML = store.notes.map((n,i) => `<div class="note"><button class="note-del" data-idx="${i}">×</button><div class="note-title">${esc(n.title)}</div><div class="note-body">${esc(n.body)}</div></div>`).join('');
+  g.querySelectorAll('.note-del').forEach(b => b.addEventListener('click', e => { store.notes.splice(e.target.dataset.idx,1); saveAll(); renderNotes(); }));
+}
+
+function renderFormulas() {
+  const l = $('#formulaList');
+  if (!store.formulas.length) { l.innerHTML = '<div class="empty">Koi formula nahi.</div>'; return; }
+  l.innerHTML = store.formulas.map((f,i) => `<div class="formula-card"><button class="formula-del" data-idx="${i}">×</button><div class="f-title">${esc(f.title)}</div><div class="f-body">${esc(f.body)}</div></div>`).join('');
+  l.querySelectorAll('.formula-del').forEach(b => b.addEventListener('click', e => { store.formulas.splice(e.target.dataset.idx,1); saveAll(); renderFormulas(); }));
+}
+
+function renderPyq() {
+  const l = $('#pyqList');
+  if (!store.pyq.length) { l.innerHTML = '<div class="empty">Koi PYQ nahi.</div>'; return; }
+  l.innerHTML = store.pyq.map((p,i) => {
+    const pc = p.total ? (p.solved/p.total)*100 : 0;
+    const c = pc >= 80 ? '' : pc >= 50 ? 'mid' : 'bad';
+    return `<div class="log-item"><div class="score ${c}">${p.solved}/${p.total}</div><div class="info"><div class="t">${esc(p.topic)}</div><div class="d">${pc.toFixed(0)}% solved</div></div><button class="task-del" data-idx="${i}">×</button></div>`;
+  }).join('');
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.pyq.splice(e.target.dataset.idx,1); saveAll(); renderPyq(); }));
+}
+
+function renderMocks() {
+  const l = $('#mockList');
+  if (!store.mocks.length) { l.innerHTML = '<div class="empty">Koi mock nahi.</div>'; return; }
+  l.innerHTML = store.mocks.map((m,i) => {
+    const pc = (m.score/m.total)*100;
+    const c = pc >= 70 ? '' : pc >= 45 ? 'mid' : 'bad';
+    return `<div class="log-item"><div class="score ${c}">${pc.toFixed(0)}%</div><div class="info"><div class="t">${esc(m.name)}</div><div class="d">${m.score} / ${m.total}</div></div><button class="task-del" data-idx="${i}">×</button></div>`;
+  }).join('');
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.mocks.splice(e.target.dataset.idx,1); saveAll(); renderMocks(); }));
+}
+
+function renderMistakes() {
+  const l = $('#misList');
+  if (!store.mistakes.length) { l.innerHTML = '<div class="empty">Koi mistake nahi.</div>'; return; }
+  l.innerHTML = store.mistakes.map((m,i) => `<div class="log-item"><div class="score" style="font-size:0.75rem; width:80px;">${esc(m.subject)}</div><div class="info"><div class="t">${esc(m.desc)}</div></div><button class="task-del" data-idx="${i}">×</button></div>`).join('');
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.mistakes.splice(e.target.dataset.idx,1); saveAll(); renderMistakes(); }));
+}
+
+function renderMarks() {
+  const l = $('#mkList');
+  if (!store.marks.length) { l.innerHTML = '<div class="empty">Koi marks nahi.</div>'; return; }
+  l.innerHTML = store.marks.map((m,i) => {
+    const pc = (m.score/m.total)*100;
+    const c = pc >= 70 ? '' : pc >= 45 ? 'mid' : 'bad';
+    return `<div class="log-item"><div class="score ${c}">${pc.toFixed(0)}%</div><div class="info"><div class="t">${esc(m.chapter)}</div><div class="d">${m.score} / ${m.total}</div></div><button class="task-del" data-idx="${i}">×</button></div>`;
+  }).join('');
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.marks.splice(e.target.dataset.idx,1); saveAll(); renderMarks(); }));
+}
+
+function renderTimetable() {
+  const l = $('#ttList');
+  if (!store.timetable.length) { l.innerHTML = '<div class="empty">Koi schedule nahi.</div>'; return; }
+  const o = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const s = [...store.timetable].sort((a,b) => o.indexOf(a.day) - o.indexOf(b.day));
+  l.innerHTML = s.map(t => `<div class="log-item"><div class="score" style="font-size:0.85rem; width:90px;">${esc(t.day)}</div><div class="info"><div class="t">${esc(t.task)}</div><div class="d">${esc(t.time)}</div></div><button class="task-del" data-idx="${store.timetable.indexOf(t)}">×</button></div>`).join('');
+  l.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => { store.timetable.splice(e.target.dataset.idx,1); saveAll(); renderTimetable(); }));
+}
+
+function renderPdfs() {
+  const l = $('#pdfList');
+  if (!store.pdfs.length) { l.innerHTML = '<div class="empty">Koi PDF nahi.</div>'; return; }
+  l.innerHTML = store.pdfs.map((p,i) => `<div class="pdf-item"><div class="pdf-icon">▤</div><div class="pdf-info"><div class="pdf-title">${esc(p.title)}</div><div class="pdf-meta">${esc(p.url)}</div></div><div class="pdf-actions"><a href="${esc(p.url)}" target="_blank" rel="noopener">Open</a><button data-idx="${i}">Del</button></div></div>`).join('');
+  l.querySelectorAll('.pdf-actions button').forEach(b => b.addEventListener('click', e => { store.pdfs.splice(e.target.dataset.idx,1); saveAll(); renderPdfs(); }));
+}
+
+function renderPw() {
+  const l = $('#pwList');
+  if (!l) return;
+  if (!store.pwLinks.length) { l.innerHTML = '<div class="empty">Koi custom link nahi.</div>'; return; }
+  l.innerHTML = store.pwLinks.map((p,i) => `<div class="pdf-item"><div class="pdf-icon">▶</div><div class="pdf-info"><div class="pdf-title">${esc(p.name)}</div><div class="pdf-meta">${esc(p.url)}</div></div><div class="pdf-actions"><a href="${esc(p.url)}" target="_blank" rel="noopener">Open</a><button data-idx="${i}">Del</button></div></div>`).join('');
+  l.querySelectorAll('.pdf-actions button').forEach(b => b.addEventListener('click', e => { store.pwLinks.splice(e.target.dataset.idx,1); saveAll(); renderPw(); }));
+}
+
+function renderSubjects() {
+  const mx = Math.max(1, store.subjects.phy, store.subjects.chem, store.subjects.math);
+  ['phy','chem','math'].forEach(s => {
+    const pct = (store.subjects[s]/mx)*100;
+    if ($(`#bar${cap(s)}`)) $(`#bar${cap(s)}`).style.width = pct + '%';
+    if ($(`#hrs${cap(s)}`)) $(`#hrs${cap(s)}`).textContent = store.subjects[s] + 'h';
   });
 }
 
-function loadChapterNotes() {
-  const sub = document.getElementById('cnSubject').value;
-  const ch = document.getElementById('cnChapter').value;
-  const data = CHAPTER_NOTES[sub]?.[ch];
-  const viewer = document.getElementById('cnViewer');
-  if (!data) {
-    viewer.innerHTML = '<div class="empty">Notes not available for this chapter yet.</div>';
+function renderSyllabus() {
+  ['phy','chem','math'].forEach(sub => {
+    const el = $(`#syl${cap(sub)}`); if (!el) return;
+    el.innerHTML = SYLLABUS[sub].map((ch,i) => {
+      const d = !!store.syllabus[sylKey(sub,i)];
+      return `<div class="chapter ${d?'done':''}"><input type="checkbox" data-sub="${sub}" data-idx="${i}" ${d?'checked':''}><span>${ch}</span></div>`;
+    }).join('');
+    el.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', e => {
+      const k = sylKey(e.target.dataset.sub, e.target.dataset.idx);
+      if (e.target.checked) store.syllabus[k] = true; else delete store.syllabus[k];
+      saveAll(); renderSyllabus();
+    }));
+  });
+  ['phy','chem','math'].forEach(sub => {
+    const total = SYLLABUS[sub].length;
+    let done = 0;
+    for (let i = 0; i < total; i++) if (store.syllabus[sylKey(sub,i)]) done++;
+    if ($(`#syl${cap(sub)}Pct`)) $(`#syl${cap(sub)}Pct`).textContent = total ? Math.round(done/total*100)+'%' : '0%';
+  });
+  const tA = SYLLABUS.phy.length + SYLLABUS.chem.length + SYLLABUS.math.length;
+  let dA = 0;
+  for (const k in store.syllabus) if (store.syllabus[k]) dA++;
+  if ($('#sylTotalPct')) $('#sylTotalPct').textContent = tA ? Math.round(dA/tA*100)+'%' : '0%';
+}
+  // ============ FRIENDS ============
+let allUsers = {};
+let myFriends = [];
+let incomingReqs = [];
+let outgoingReqs = [];
+
+function listenUsers() {
+  if (!db) return;
+  onValue(ref(db, 'users'), snap => {
+    allUsers = snap.exists() ? snap.val() : {};
+    renderFriendsPage(); renderChatFriendList(); renderFriendProgress();
+    if ($('#adminContent').style.display !== 'none') renderAdminUsers();
+  });
+}
+
+function listenFriendRequests() {
+  if (!db || !currentUser) return;
+  const myU = currentUser.username.toLowerCase();
+  onValue(ref(db, 'friendRequests'), snap => {
+    const all = snap.exists() ? snap.val() : {};
+    incomingReqs = []; outgoingReqs = []; myFriends = [];
+    Object.entries(all).forEach(([key, r]) => {
+      if (r.to === myU && r.status === 'pending') incomingReqs.push({ key, ...r });
+      if (r.from === myU && r.status === 'pending') outgoingReqs.push({ key, ...r });
+      if (r.status === 'accepted' && (r.from === myU || r.to === myU)) {
+        const friendU = r.from === myU ? r.to : r.from;
+        myFriends.push(friendU);
+      }
+    });
+    myFriends = [...new Set(myFriends)];
+    const badge = $('#friendBadge');
+    if (badge) {
+      if (incomingReqs.length) { badge.textContent = incomingReqs.length; badge.style.display = 'inline-block'; }
+      else badge.style.display = 'none';
+    }
+    renderFriendsPage(); renderChatFriendList(); renderFriendProgress();
+  });
+}
+
+function renderFriendsPage() {
+  if (!$('#reqCount')) return;
+  $('#reqCount').textContent = incomingReqs.length;
+  $('#friendCount').textContent = myFriends.length;
+
+  const inEl = $('#incomingReqs');
+  if (inEl) {
+    if (!incomingReqs.length) inEl.innerHTML = '<div class="empty">Koi incoming request nahi.</div>';
+    else inEl.innerHTML = incomingReqs.map(r => {
+      const ud = allUsers[r.from] || {};
+      const on = isOnline(ud);
+      return `<div class="friend-item">
+        <div class="friend-avatar">${esc(r.from[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+        <div class="friend-info"><div class="friend-name">${esc(r.from)}</div><div class="friend-sub">${on?'● Online':'● Offline'}</div></div>
+        <div class="friend-actions"><button data-accept="${r.key}">Accept</button><button class="danger" data-reject="${r.key}">Reject</button></div>
+      </div>`;
+    }).join('');
+    inEl.querySelectorAll('[data-accept]').forEach(b => b.addEventListener('click', async () => {
+      await update(ref(db, 'friendRequests/' + b.dataset.accept), { status: 'accepted', acceptedAt: Date.now() });
+    }));
+    inEl.querySelectorAll('[data-reject]').forEach(b => b.addEventListener('click', async () => {
+      await remove(ref(db, 'friendRequests/' + b.dataset.reject));
+    }));
+  }
+
+  const outEl = $('#outgoingReqs');
+  if (outEl) {
+    if (!outgoingReqs.length) outEl.innerHTML = '<div class="empty">Koi sent request nahi.</div>';
+    else outEl.innerHTML = outgoingReqs.map(r => `
+      <div class="friend-item">
+        <div class="friend-avatar">${esc(r.to[0].toUpperCase())}</div>
+        <div class="friend-info"><div class="friend-name">${esc(r.to)}</div><div class="friend-sub">Pending...</div></div>
+        <div class="friend-actions"><button class="danger" data-cancel="${r.key}">Cancel</button></div>
+      </div>`).join('');
+    outEl.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', async () => {
+      await remove(ref(db, 'friendRequests/' + b.dataset.cancel));
+    }));
+  }
+
+  const fl = $('#friendsList');
+  if (fl) {
+    if (!myFriends.length) fl.innerHTML = '<div class="empty">Abhi koi friend nahi.</div>';
+    else fl.innerHTML = myFriends.map(u => {
+      const ud = allUsers[u] || {};
+      const cls = ud.class ? CLASS_CONFIG[ud.class].label : 'Class ?';
+      const on = isOnline(ud);
+      return `<div class="friend-item">
+        <div class="friend-avatar">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+        <div class="friend-info"><div class="friend-name">${esc(ud.username || u)}</div><div class="friend-sub">${cls} · ${on?'<span style="color:#00e5a0;">● Online</span>':'● Offline'}</div></div>
+        <div class="friend-actions"><button data-remove-friend="${u}" class="danger">Remove</button></div>
+      </div>`;
+    }).join('');
+    fl.querySelectorAll('[data-remove-friend]').forEach(b => b.addEventListener('click', async () => {
+      if (!confirm('Friend remove karna hai?')) return;
+      const friendU = b.dataset.removeFriend;
+      const snap = await get(ref(db, 'friendRequests'));
+      if (snap.exists()) {
+        const all = snap.val();
+        for (const [key, r] of Object.entries(all)) {
+          if (r.status === 'accepted' && ((r.from === currentUser.username.toLowerCase() && r.to === friendU) || (r.to === currentUser.username.toLowerCase() && r.from === friendU))) {
+            await remove(ref(db, 'friendRequests/' + key));
+          }
+        }
+      }
+    }));
+  }
+}
+
+if ($('#sendFriendReqBtn')) {
+  $('#sendFriendReqBtn').addEventListener('click', async () => {
+    const target = $('#friendUsernameInput').value.trim().toLowerCase();
+    if (!target || !currentUser) return;
+    if (target === currentUser.username.toLowerCase()) return alert('Khud ko friend nahi bana sakta.');
+    if (!allUsers[target]) return alert('Username exist nahi karta.');
+    if (myFriends.includes(target)) return alert('Already friend hai.');
+    const snap = await get(ref(db, 'friendRequests'));
+    if (snap.exists()) {
+      const all = snap.val();
+      for (const r of Object.values(all)) {
+        if (r.status === 'pending' && ((r.from === currentUser.username.toLowerCase() && r.to === target) || (r.to === currentUser.username.toLowerCase() && r.from === target))) return alert('Request already pending.');
+      }
+    }
+    await push(ref(db, 'friendRequests'), { from: currentUser.username.toLowerCase(), to: target, status: 'pending', createdAt: Date.now() });
+    $('#friendUsernameInput').value = '';
+    $('#searchResult').innerHTML = `<div class="card" style="border-left:3px solid var(--accent);">Request bhej diya <b>${esc(target)}</b> ko.</div>`;
+    setTimeout(() => $('#searchResult').innerHTML = '', 3000);
+  });
+}
+
+$$('.friend-tab').forEach(t => t.addEventListener('click', () => {
+  $$('.friend-tab').forEach(x => x.classList.remove('active'));
+  $$('.friend-tab-content').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  $('#ftab-' + t.dataset.ftab).classList.add('active');
+}));
+
+// ============ FRIEND CHAT ============
+let activeChatFriend = null;
+let chatUnsub = null;
+let pendingImage = null;
+let pendingReply = null;
+
+function renderChatFriendList() {
+  const list = $('#chatFriendList'); if (!list) return;
+  if (!myFriends.length) { list.innerHTML = '<div class="empty" style="padding:1rem;">Koi friend nahi.</div>'; return; }
+  list.innerHTML = myFriends.map(u => {
+    const ud = allUsers[u] || {};
+    const active = u === activeChatFriend ? 'active' : '';
+    const on = isOnline(ud);
+    return `<div class="chat-list-item ${active}" data-friend="${u}">
+      <div class="friend-avatar">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+      <div style="flex:1; min-width:0;">
+        <div class="friend-name" style="font-size:0.82rem;">${esc(ud.username || u)}</div>
+        <div class="friend-sub">${on?'<span style="color:#00e5a0;">● Online</span>':'● Offline'}</div>
+      </div>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.chat-list-item').forEach(item => item.addEventListener('click', () => openChat(item.dataset.friend)));
+}
+
+function chatRoomId(u1, u2) { return [u1, u2].sort().join('__'); }
+
+function openChat(friendU) {
+  if (!db || !currentUser) return;
+  activeChatFriend = friendU;
+  pendingImage = null;
+  pendingReply = null;
+  const ud = allUsers[friendU] || {};
+  $('#chatHeaderAvatar').textContent = friendU[0].toUpperCase();
+  $('#chatHeaderName').textContent = ud.username || friendU;
+  const on = isOnline(ud);
+  $('#chatHeaderSub').textContent = (ud.class ? CLASS_CONFIG[ud.class].label : 'Friend') + ' · ' + (on?'● Online':'● Offline');
+  $('#friendChatInput').disabled = false;
+  $('#sendFriendMsgBtn').disabled = false;
+  $('#imagePreviewBox').classList.remove('show');
+  $('#replyPreview').classList.remove('show');
+
+  if (chatUnsub) chatUnsub();
+  const roomId = chatRoomId(currentUser.username.toLowerCase(), friendU);
+  const msgsRef = query(ref(db, 'friendChats/' + roomId), limitToLast(200));
+  chatUnsub = onValue(msgsRef, snap => {
+    const box = $('#chatMessages');
+    box.innerHTML = '';
+    if (!snap.exists()) return;
+    const msgs = snap.val();
+    const myU = currentUser.username.toLowerCase();
+
+    Object.entries(msgs).forEach(([msgKey, m]) => {
+      const isMine = m.from === myU;
+      const div = document.createElement('div');
+      div.className = 'chat-msg ' + (isMine ? 'mine' : 'theirs');
+
+      const isRead = m.readBy && m.readBy[friendU];
+      let tick = '';
+      if (isMine) tick = isRead ? '<span class="tick-read">✓✓</span>' : '<span class="tick-sent">✓</span>';
+
+      let text = esc(m.text || '');
+      text = text.replace(/@(\w+)/g, '<span class="tag">@$1</span>');
+
+      const reactions = m.reactions || {};
+      const reactionCounts = {};
+      Object.values(reactions).forEach(emoji => { reactionCounts[emoji] = (reactionCounts[emoji] || 0) + 1; });
+      const reactionsHtml = Object.entries(reactionCounts).map(([emoji, count]) =>
+        `<span class="reaction-chip" data-msg-key="${msgKey}" data-emoji="${emoji}">${emoji} ${count}</span>`
+      ).join('');
+
+      let quoteHtml = '';
+      if (m.replyTo) {
+        quoteHtml = `<div class="chat-msg-quote"><div class="qm-name">${esc(m.replyTo.user)}</div><div class="qm-text">${esc(m.replyTo.text || '📎 Image')}</div></div>`;
+      }
+
+      let imageHtml = '';
+      if (m.image) imageHtml = `<img class="chat-image" src="${esc(m.image)}" data-lightbox="1" alt="img">`;
+
+      div.innerHTML = `
+        ${quoteHtml}
+        ${imageHtml}
+        ${text ? `<div>${text}</div>` : ''}
+        <div class="msg-time">${esc(m.time)} ${tick}</div>
+        <div style="display:flex;gap:0.3rem;margin-top:0.3rem;flex-wrap:wrap;align-items:center;">
+          ${reactionsHtml}
+          <button class="react-btn" data-msg-key="${msgKey}" title="React">＋</button>
+          <button class="msg-reply-btn" data-msg-key="${msgKey}" data-msg-user="${esc(m.from)}" data-msg-text="${esc(m.text || '📎 Image')}" title="Reply">↩</button>
+        </div>
+        <div class="emoji-picker" data-msg-key="${msgKey}" style="display:none;">
+          <span data-emoji="👍">👍</span><span data-emoji="❤️">❤️</span><span data-emoji="😂">😂</span><span data-emoji="🔥">🔥</span><span data-emoji="😮">😮</span><span data-emoji="😢">😢</span><span data-emoji="💯">💯</span>
+        </div>
+      `;
+      box.appendChild(div);
+
+      if (!isMine && (!m.readBy || !m.readBy[myU])) {
+        set(ref(db, `friendChats/${roomId}/${msgKey}/readBy/${myU}`), true);
+      }
+    });
+
+    box.querySelectorAll('.react-btn').forEach(btn => btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.dataset.msgKey;
+      box.querySelectorAll('.emoji-picker').forEach(p => { if (p.dataset.msgKey !== key) p.style.display = 'none'; });
+      const picker = box.querySelector(`.emoji-picker[data-msg-key="${key}"]`);
+      picker.style.display = picker.style.display === 'none' ? 'flex' : 'none';
+    }));
+    box.querySelectorAll('.emoji-picker span').forEach(sp => sp.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const picker = sp.parentElement;
+      const key = picker.dataset.msgKey;
+      const emoji = sp.dataset.emoji;
+      await set(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`), emoji);
+      picker.style.display = 'none';
+    }));
+    box.querySelectorAll('.reaction-chip').forEach(chip => chip.addEventListener('click', async () => {
+      const key = chip.dataset.msgKey;
+      const emoji = chip.dataset.emoji;
+      const snap2 = await get(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`));
+      if (snap2.exists() && snap2.val() === emoji) await remove(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`));
+      else await set(ref(db, `friendChats/${roomId}/${key}/reactions/${myU}`), emoji);
+    }));
+    box.querySelectorAll('.msg-reply-btn').forEach(btn => btn.addEventListener('click', () => {
+      pendingReply = { user: btn.dataset.msgUser, text: btn.dataset.msgText };
+      $('#replyName').textContent = btn.dataset.msgUser;
+      $('#replyText').textContent = btn.dataset.msgText;
+      $('#replyPreview').classList.add('show');
+      $('#friendChatInput').focus();
+    }));
+    box.querySelectorAll('.chat-image').forEach(img => img.addEventListener('click', () => {
+      $('#lightboxImg').src = img.src;
+      $('#imgLightbox').classList.add('show');
+    }));
+
+    box.scrollTop = box.scrollHeight;
+  });
+
+  renderChatFriendList();
+}
+
+async function sendFriendMsg() {
+  const input = $('#friendChatInput');
+  const text = input.value.trim();
+  if ((!text && !pendingImage) || !activeChatFriend || !db) return;
+  const roomId = chatRoomId(currentUser.username.toLowerCase(), activeChatFriend);
+
+  const msg = {
+    from: currentUser.username.toLowerCase(),
+    text: text,
+    time: new Date().toLocaleTimeString(),
+    readBy: {}
+  };
+
+  if (pendingImage) msg.image = pendingImage;
+  if (pendingReply) msg.replyTo = pendingReply;
+
+  await push(ref(db, 'friendChats/' + roomId), msg);
+  input.value = '';
+  pendingImage = null;
+  pendingReply = null;
+  $('#imagePreviewBox').classList.remove('show');
+  $('#replyPreview').classList.remove('show');
+}
+
+if ($('#sendFriendMsgBtn')) $('#sendFriendMsgBtn').addEventListener('click', sendFriendMsg);
+if ($('#friendChatInput')) $('#friendChatInput').addEventListener('keydown', e => e.key === 'Enter' && sendFriendMsg());
+
+// Reply close
+if ($('#replyClose')) $('#replyClose').addEventListener('click', () => {
+  pendingReply = null;
+  $('#replyPreview').classList.remove('show');
+});
+
+// Image upload
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    if (file.size > 700 * 1024) { reject(new Error('Image 700KB se badi hai. Chhoti image use kar.')); return; }
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+if ($('#imgBtn')) $('#imgBtn').addEventListener('click', () => $('#imgFileInput').click());
+
+if ($('#imgFileInput')) $('#imgFileInput').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const b64 = await fileToBase64(file);
+    pendingImage = b64;
+    $('#imgPreviewEl').src = b64;
+    $('#imgPreviewInfo').textContent = file.name + ' (' + Math.round(file.size/1024) + 'KB)';
+    $('#imagePreviewBox').classList.add('show');
+  } catch (err) { alert(err.message); }
+  e.target.value = '';
+});
+
+if ($('#imgPreviewClose')) $('#imgPreviewClose').addEventListener('click', () => {
+  pendingImage = null;
+  $('#imagePreviewBox').classList.remove('show');
+});
+
+// Drag-drop on chat
+const chatMainEl = document.querySelector('.chat-main');
+if (chatMainEl) {
+  chatMainEl.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    if (activeChatFriend) $('#dragOverlay').classList.add('show');
+  });
+  chatMainEl.addEventListener('dragleave', (e) => {
+    if (e.target === chatMainEl) $('#dragOverlay').classList.remove('show');
+  });
+  chatMainEl.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    $('#dragOverlay').classList.remove('show');
+    if (!activeChatFriend) return;
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    try {
+      const b64 = await fileToBase64(file);
+      pendingImage = b64;
+      $('#imgPreviewEl').src = b64;
+      $('#imgPreviewInfo').textContent = file.name + ' (' + Math.round(file.size/1024) + 'KB)';
+      $('#imagePreviewBox').classList.add('show');
+    } catch (err) { alert(err.message); }
+  });
+}
+
+// Emoji tray
+const EMOJIS = ['😀','😂','😍','🔥','👍','❤️','💯','🎯','📚','✏️','😎','🤔','😅','🎉','💪','🚀','⭐','✨','🙏','👏','😭','😴','🤯','🥳','😤','👀','🎓','📝','🧠','💡'];
+if ($('#emojiBtn')) $('#emojiBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const tray = $('#emojiTray');
+  if (!tray.dataset.built) {
+    tray.innerHTML = EMOJIS.map(em => `<span>${em}</span>`).join('');
+    tray.dataset.built = '1';
+    tray.querySelectorAll('span').forEach(sp => sp.addEventListener('click', () => {
+      $('#friendChatInput').value += sp.textContent;
+      $('#friendChatInput').focus();
+    }));
+  }
+  tray.classList.toggle('show');
+});
+document.addEventListener('click', (e) => {
+  const tray = $('#emojiTray');
+  if (tray && !tray.contains(e.target) && e.target.id !== 'emojiBtn') tray.classList.remove('show');
+});
+
+// Lightbox close
+if ($('#imgLightbox')) $('#imgLightbox').addEventListener('click', () => {
+  $('#imgLightbox').classList.remove('show');
+});
+
+// ============ FRIEND PROGRESS ============
+function renderFriendProgress() {
+  const list = $('#friendProgressList'); if (!list) return;
+  if (!myFriends.length) { list.innerHTML = '<div class="empty">Koi friend nahi. Pehle friend banao.</div>'; return; }
+  list.innerHTML = myFriends.map(u => {
+    const ud = allUsers[u] || {};
+    const p = ud.progress || {};
+    const on = isOnline(ud);
+    const totalMin = p.totalMinutes || 0;
+    const todayMin = p.todayMinutes || 0;
+    const streak = p.streak || 0;
+    const sylDone = p.syllabusDone || 0;
+    const mocksCount = p.mocksCount || 0;
+    const mistakes = p.mistakesCount || 0;
+    return `<div class="card" style="margin-bottom:1rem;">
+      <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
+        <div class="friend-avatar" style="width:48px; height:48px; font-size:1.2rem;">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+        <div>
+          <div style="font-weight:800; font-size:1rem; color:var(--accent);">${esc(ud.username || u)}</div>
+          <div style="font-size:0.72rem; color:var(--muted);">${ud.class ? CLASS_CONFIG[ud.class].label : 'Class ?'} · ${on?'<span style="color:#00e5a0;">● Online</span>':'● Offline'} · Streak ${streak} din</div>
+        </div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:0.6rem; margin:0;">
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Total Time</div><div class="stat-value" style="font-size:1.2rem;">${(totalMin/60).toFixed(1)}h</div></div>
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Today</div><div class="stat-value blue" style="font-size:1.2rem;">${todayMin}m</div></div>
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Chapters</div><div class="stat-value purple" style="font-size:1.2rem;">${sylDone}</div></div>
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Mocks</div><div class="stat-value warn" style="font-size:1.2rem;">${mocksCount}</div></div>
+        <div class="card" style="padding:0.7rem;"><div class="stat-label">Mistakes</div><div class="stat-value" style="font-size:1.2rem; color:var(--danger);">${mistakes}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+  // ============ FLASHCARDS ============
+let fcIndex = 0;
+let fcRevealed = false;
+
+function renderFlashcards() {
+  const list = $('#fcList');
+  const display = $('#fcDisplay');
+  const empty = $('#fcEmpty');
+  if (!list) return;
+
+  if ($('#fcCount')) $('#fcCount').textContent = `(${store.flashcards.length})`;
+
+  if (!store.flashcards.length) {
+    if (display) display.style.display = 'none';
+    if (empty) empty.style.display = 'block';
+    list.innerHTML = '';
     return;
   }
-  viewer.innerHTML = `
-    <h3>${ch}</h3>
-    <p>${data.summary}</p>
-    <div class="formula-box">${data.formulas}</div>
-    <div class="key-points"><strong>Key Points:</strong>
-      <ul>${data.points.map(p => `<li>${p}</li>`).join('')}</ul>
-    </div>
-  `;
+  if (display) display.style.display = 'flex';
+  if (empty) empty.style.display = 'none';
+  if (fcIndex >= store.flashcards.length) fcIndex = 0;
+
+  const fc = store.flashcards[fcIndex];
+  if ($('#fcSubjectLabel')) $('#fcSubjectLabel').textContent = fc.subject;
+  if ($('#fcQuestionShow')) $('#fcQuestionShow').textContent = fc.question;
+  if ($('#fcAnswerShow')) $('#fcAnswerShow').textContent = fc.answer;
+  const fcEl = $('#fcDisplay');
+  if (fcEl) {
+    if (fcRevealed) fcEl.classList.add('revealed');
+    else fcEl.classList.remove('revealed');
+  }
+
+  list.innerHTML = store.flashcards.map((f, i) => `
+    <div class="log-item">
+      <div class="score" style="font-size:0.65rem; width:70px;">${esc(f.subject)}</div>
+      <div class="info"><div class="t">${esc(f.question)}</div><div class="d">${esc(f.answer)}</div></div>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`).join('');
+  list.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => {
+    store.flashcards.splice(e.target.dataset.idx, 1);
+    if (fcIndex >= store.flashcards.length) fcIndex = 0;
+    saveAll(); renderFlashcards();
+  }));
 }
 
-document.getElementById('cnSubject')?.addEventListener('change', populateChapterSelect);
-document.getElementById('cnLoad')?.addEventListener('click', loadChapterNotes);
-document.getElementById('cnToFlash')?.addEventListener('click', () => {
-  const sub = document.getElementById('cnSubject').valuevalue;
-  const ch = document.getElementById('cnChapter').value;
-  const data = CHAPTER_NOTES[sub]?.[ch];
-  if (!data) return;
-  data.points.forEach(p => {
-    store.flashcards.push({ question: `${ch}: Key point`, answer: p, subject: sub.toUpperCase().slice(0,4) });
+if ($('#addFc')) $('#addFc').addEventListener('click', () => {
+  const q = $('#fcQuestion').value.trim();
+  const a = $('#fcAnswer').value.trim();
+  const s = $('#fcSubject').value;
+  if (!q || !a) return;
+  store.flashcards.push({ question: q, answer: a, subject: s });
+  $('#fcQuestion').value = ''; $('#fcAnswer').value = '';
+  saveAll(); renderFlashcards();
+});
+
+if ($('#fcDisplay')) $('#fcDisplay').addEventListener('click', () => {
+  fcRevealed = !fcRevealed;
+  renderFlashcards();
+});
+if ($('#fcReveal')) $('#fcReveal').addEventListener('click', (e) => {
+  e.stopPropagation();
+  fcRevealed = !fcRevealed;
+  renderFlashcards();
+});
+if ($('#fcNext')) $('#fcNext').addEventListener('click', () => {
+  fcIndex = (fcIndex + 1) % store.flashcards.length;
+  fcRevealed = false;
+  renderFlashcards();
+});
+if ($('#fcPrev')) $('#fcPrev').addEventListener('click', () => {
+  fcIndex = (fcIndex - 1 + store.flashcards.length) % store.flashcards.length;
+  fcRevealed = false;
+  renderFlashcards();
+});
+if ($('#fcShuffle')) $('#fcShuffle').addEventListener('click', () => {
+  for (let i = store.flashcards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [store.flashcards[i], store.flashcards[j]] = [store.flashcards[j], store.flashcards[i]];
+  }
+  fcIndex = 0; fcRevealed = false;
+  saveAll(); renderFlashcards();
+});
+
+// ============ STUDY LOG ============
+function renderStudyLog() {
+  const list = $('#slList'); if (!list) return;
+  if (!store.studyLog.length) { list.innerHTML = '<div class="empty">Koi entry nahi.</div>'; return; }
+  const sorted = [...store.studyLog].reverse();
+  list.innerHTML = sorted.map((e, i) => {
+    const origIdx = store.studyLog.length - 1 - i;
+    return `<div class="study-log-entry">
+      <div class="sl-time">${e.mins}m</div>
+      <div class="sl-content">${esc(e.content)}</div>
+      <div class="sl-subject">${e.subject}</div>
+      <button class="task-del" data-idx="${origIdx}">×</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => {
+    store.studyLog.splice(e.target.dataset.idx, 1);
+    saveAll(); renderStudyLog();
+  }));
+}
+
+if ($('#addSl')) $('#addSl').addEventListener('click', () => {
+  const c = $('#slContent').value.trim();
+  const m = parseInt($('#slMinutes').value);
+  const s = $('#slSubject').value;
+  if (!c) return;
+  store.studyLog.push({ content: c, subject: s, mins: isNaN(m) ? 0 : m, date: Date.now() });
+  $('#slContent').value = ''; $('#slMinutes').value = '';
+  // Also update calendar
+  const d = new Date().toISOString().slice(0, 10);
+  store.studyCalendar[d] = (store.studyCalendar[d] || 0) + (isNaN(m) ? 0 : m);
+  saveAll(); renderStudyLog(); renderCalendar();
+});
+
+// ============ REVISION ============
+function renderRevision() {
+  const list = $('#revList'); if (!list) return;
+  if (!store.revision.length) { list.innerHTML = '<div class="empty">Koi topic nahi.</div>'; return; }
+  const now = Date.now();
+  list.innerHTML = store.revision.map((r, i) => {
+    const due = r.nextDate && r.nextDate <= now;
+    const daysAgo = Math.floor((now - r.createdAt) / 86400000);
+    const nextIn = r.nextDate ? Math.ceil((r.nextDate - now) / 86400000) : 0;
+    return `<div class="revision-item ${due?'due':''}">
+      <div class="rev-date">${due ? '⚠ Due now' : (nextIn > 0 ? nextIn + ' din mein' : 'Today')}</div>
+      <div class="rev-name">${esc(r.topic)}</div>
+      <div class="rev-stage">Stage ${r.stage} · ${esc(r.subject)}</div>
+      <button class="task-del" data-done="${i}" title="Revised">✓</button>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('[data-idx]').forEach(b => b.addEventListener('click', e => {
+    store.revision.splice(e.target.dataset.idx, 1);
+    saveAll(); renderRevision();
+  }));
+  list.querySelectorAll('[data-done]').forEach(b => b.addEventListener('click', e => {
+    const i = parseInt(e.target.dataset.done);
+    const r = store.revision[i];
+    const intervals = [1, 3, 7, 30, 90];
+    r.stage = (r.stage || 1) + 1;
+    const days = intervals[Math.min(r.stage - 1, intervals.length - 1)];
+    r.nextDate = Date.now() + days * 86400000;
+    saveAll(); renderRevision(); renderDashboard();
+  }));
+}
+
+if ($('#addRev')) $('#addRev').addEventListener('click', () => {
+  const t = $('#revTopic').value.trim();
+  const s = $('#revSubject').value;
+  if (!t) return;
+  store.revision.push({ topic: t, subject: s, stage: 1, createdAt: Date.now(), nextDate: Date.now() + 86400000 });
+  $('#revTopic').value = '';
+  saveAll(); renderRevision(); renderDashboard();
+});
+
+// ============ CALENDAR ============
+let calMonth = new Date().getMonth();
+let calYear = new Date().getFullYear();
+
+function renderCalendar() {
+  const grid = $('#calGrid'); if (!grid) return;
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  if ($('#calMonth')) $('#calMonth').textContent = `${monthNames[calMonth]} ${calYear}`;
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10);
+
+  let html = '';
+  for (let i = 0; i < firstDay; i++) html += `<div></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const mins = store.studyCalendar[dateStr] || 0;
+    const hrs = (mins/60).toFixed(1);
+    let cls = 'cal-day';
+    if (mins > 360) cls += ' studied-high';
+    else if (mins > 0) cls += ' studied';
+    if (dateStr === todayStr) cls += ' today';
+    html += `<div class="${cls}" title="${hrs}h studied">
+      <div class="cal-num">${d}</div>
+      ${mins > 0 ? `<div class="cal-hrs">${hrs}h</div>` : ''}
+    </div>`;
+  }
+  grid.innerHTML = html;
+}
+
+if ($('#calPrev')) $('#calPrev').addEventListener('click', () => {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+});
+if ($('#calNext')) $('#calNext').addEventListener('click', () => {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+});
+
+// ============ WEAK TOPICS ============
+function renderWeakTopics() {
+  const list = $('#wtList'); if (!list) return;
+  if (!store.weakTopics.length) { list.innerHTML = '<div class="empty">Koi weak topic nahi.</div>'; return; }
+  const sorted = [...store.weakTopics].sort((a,b) => b.count - a.count);
+  list.innerHTML = sorted.map((w, i) => `
+    <div class="weak-topic">
+      <div class="wt-count">${w.count}×</div>
+      <div class="wt-name">${esc(w.name)}</div>
+      <button class="task-del" data-idx="${store.weakTopics.indexOf(w)}">×</button>
+    </div>
+  `).join('');
+  list.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => {
+    store.weakTopics.splice(e.target.dataset.idx, 1);
+    saveAll(); renderWeakTopics(); renderDashboard();
+  }));
+}
+
+if ($('#addWt')) $('#addWt').addEventListener('click', () => {
+  const n = $('#wtName').value.trim();
+  const c = parseInt($('#wtCount').value) || 1;
+  if (!n) return;
+  store.weakTopics.push({ name: n, count: c });
+  $('#wtName').value = ''; $('#wtCount').value = '1';
+  saveAll(); renderWeakTopics(); renderDashboard();
+});
+
+// ============ BOOKMARKS ============
+function renderBookmarks() {
+  const list = $('#bmList'); if (!list) return;
+  if (!store.bookmarks.length) { list.innerHTML = '<div class="empty">Koi bookmark nahi.</div>'; return; }
+  list.innerHTML = store.bookmarks.map((b, i) => {
+    const icons = { PDF: '📄', YouTube: '▶️', Link: '🔗', Notes: '✏️' };
+    return `<div class="bookmark-item">
+      <div class="bm-icon">${icons[b.type] || '🔗'}</div>
+      <div class="bm-info">
+        <div class="bm-title">${esc(b.title)}</div>
+        <div class="bm-type">${b.type}</div>
+      </div>
+      <a href="${esc(b.url)}" target="_blank" rel="noopener" class="btn sm primary">Open</a>
+      <button class="task-del" data-idx="${i}">×</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.task-del').forEach(b => b.addEventListener('click', e => {
+    store.bookmarks.splice(e.target.dataset.idx, 1);
+    saveAll(); renderBookmarks(); renderDashboard();
+  }));
+}
+
+if ($('#addBm')) $('#addBm').addEventListener('click', () => {
+  const t = $('#bmTitle').value.trim();
+  const u = $('#bmUrl').value.trim();
+  const ty = $('#bmType').value;
+  if (!t || !u) return;
+  store.bookmarks.push({ title: t, url: u, type: ty });
+  $('#bmTitle').value = ''; $('#bmUrl').value = '';
+  saveAll(); renderBookmarks(); renderDashboard();
+});
+
+// ============ AI COACH ============
+function getSyllabusProgress() {
+  const out = { phy:{done:0,total:0}, chem:{done:0,total:0}, math:{done:0,total:0} };
+  ['phy','chem','math'].forEach(sub => {
+    out[sub].total = SYLLABUS[sub].length;
+    for (let i = 0; i < SYLLABUS[sub].length; i++) if (store.syllabus[`${sub}_${i}`]) out[sub].done++;
   });
-  saveAll();
-  alert('Key points added to Flashcards');
+  return out;
+}
+
+function generateInsights() {
+  const insights = [];
+  const syl = getSyllabusProgress();
+  const todayPct = Math.min(100, (store.todayMinutes/(8*60))*100);
+  if (todayPct === 0) insights.push({ icon:'◉', color:'warn', title:'Aaj 0 minute', body:'Timer start kar.' });
+  else if (todayPct < 50) insights.push({ icon:'◉', color:'warn', title:`${store.todayMinutes} min aaj`, body:`Goal ka ${todayPct.toFixed(0)}% bhara.` });
+  else insights.push({ icon:'✓', color:'accent', title:`${store.todayMinutes} min aaj`, body:`Goal ka ${todayPct.toFixed(0)}% bhara.` });
+
+  const subPct = { phy:(syl.phy.done/syl.phy.total)*100, chem:(syl.chem.done/syl.chem.total)*100, math:(syl.math.done/syl.math.total)*100 };
+  const weakest = Object.entries(subPct).sort((a,b) => a[1]-b[1])[0];
+  const weakLabel = { phy:'Physics', chem:'Chemistry', math:'Math' }[weakest[0]];
+  if (weakest[1] < 60) insights.push({ icon:'⚠', color:'warn', title:`${weakLabel} peeche (${weakest[1].toFixed(0)}%)`, body:`${syl[weakest[0]].done}/${syl[weakest[0]].total} chapters done.` });
+
+  if (store.streak >= 7) insights.push({ icon:'◆', color:'accent', title:`${store.streak} din streak`, body:'Consistency hi topper ka raaz hai.' });
+
+  const pending = store.tasks.filter(t => !t.done);
+  if (pending.length) insights.push({ icon:'◷', color:'purple', title:`Pending: ${pending[0].text}`, body:`${pending[0].subject} ka task.` });
+
+  const revDue = store.revision.filter(r => r.nextDate && r.nextDate <= Date.now());
+  if (revDue.length) insights.push({ icon:'🔄', color:'warn', title:`${revDue.length} revision due`, body:'Revision section check kar.' });
+
+  return insights.slice(0, 6);
+}
+
+function renderInsights() {
+  const grid = $('#aiInsights'); if (!grid) return;
+  grid.innerHTML = generateInsights().map(i => {
+    const cls = i.color === 'accent' ? '' : i.color === 'warn' ? 'warn' : 'purple';
+    return `<div class="card"><div class="stat-label">${i.icon} Insight</div><div style="font-size:0.9rem; font-weight:700; margin:0.3rem 0;" class="stat-value ${cls}">${esc(i.title)}</div><div class="stat-sub">${esc(i.body)}</div></div>`;
+  }).join('');
+}
+
+function aiAnswer(q) {
+  const query = q.toLowerCase();
+  const syl = getSyllabusProgress();
+  if (/aaj|today|kya karu|plan/.test(query)) return `Aaj: ${store.todayMinutes} min ho gaye. Goal 480 min. Weak subject pe 2h de.`;
+  if (/weak|peeche/.test(query)) {
+    const weak = Object.entries({ Physics:(syl.phy.done/syl.phy.total)*100, Chemistry:(syl.chem.done/syl.chem.total)*100, Math:(syl.math.done/syl.math.total)*100 }).sort((a,b) => a[1]-b[1])[0];
+    return `${weak[0]} weak hai (${weak[1].toFixed(0)}% done).`;
+  }
+  if (/progress|kitna/.test(query)) {
+    const total = syl.phy.total + syl.chem.total + syl.math.total;
+    const done = syl.phy.done + syl.chem.done + syl.math.done;
+    return `Syllabus: ${done}/${total} (${((done/total)*100).toFixed(0)}%).`;
+  }
+  if (/streak/.test(query)) return `Streak: ${store.streak} din.`;
+  if (/time|hours|ghante/.test(query)) return `Total: ${(store.totalMinutes/60).toFixed(1)}h. Today: ${store.todayMinutes}m.`;
+  return `Try: "aaj kya karu", "weak", "progress", "streak"`;
+}
+
+if ($('#aiSend')) $('#aiSend').addEventListener('click', () => {
+  const q = $('#aiInput').value.trim(); if (!q) return;
+  const reply = aiAnswer(q);
+  $('#aiChat').insertAdjacentHTML('afterbegin', `<div class="card" style="border-left:3px solid var(--accent-2);"><div class="stat-label">Tune poocha</div><div style="font-size:0.85rem; margin:0.3rem 0 0.7rem;">${esc(q)}</div><div class="stat-label">Axiom Coach</div><div style="font-size:0.85rem; white-space:pre-wrap; color:var(--accent);">${esc(reply)}</div></div>`);
+  $('#aiInput').value = '';
 });
-document.getElementById('cnToRev')?.addEventListener('click', () => {
-  const ch = document.getElementById('cnChapter').value;
-  if (!ch) return;
-  store.revision.push({ topic: ch, subject: document.getElementById('cnSubject').value.toUpperCase().slice(0,4), stage: 1, createdAt: Date.now(), nextDate: Date.now() + 86400000 });
-  saveAll();
-  alert('Added to Revision schedule');
+if ($('#aiInput')) $('#aiInput').addEventListener('keydown', e => e.key === 'Enter' && $('#aiSend').click());
+
+if ($('#aiGoogleSearch')) $('#aiGoogleSearch').addEventListener('click', () => {
+  const q = $('#aiInput').value.trim();
+  if (!q) return alert('Search query daal, boss man.');
+  window.open('https://www.google.com/search?q=' + encodeURIComponent(q + ' PDF'), '_blank', 'noopener');
 });
 
-// Call on init
-populateChapterSelect();
+// ============ STUDY ROOMS ============
+let roomChannel = null;
+let currentRoom = null;
+let roomMemberCount = 1;
+let knownMembers = new Set();
 
-// ========== REST OF YOUR ORIGINAL JS (auth, friends, chat, timer, etc.) ==========
-// Paste your entire original script here. Only the new CHAPTER_NOTES + render functions are added.
+function genRoomCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+function enterRoom(code, name, userName) {
+  if (roomChannel) roomChannel.close();
+  currentRoom = code; roomMemberCount = 1; knownMembers = new Set([userName]);
+  roomChannel = new BroadcastChannel('jee_room_' + code);
+  roomChannel.onmessage = (e) => {
+    const msg = e.data;
+    if (msg.type === 'chat') appendRoomMsg(msg.user, msg.text, msg.time, msg.user === userName);
+    else if (msg.type === 'hello') {
+      if (!knownMembers.has(msg.user)) { knownMembers.add(msg.user); roomMemberCount = knownMembers.size; $('#roomMembers').textContent = roomMemberCount; appendRoomSys(`${msg.user} room mein aa gaya`); }
+      roomChannel.postMessage({ type: 'iamhere', user: userName });
+    } else if (msg.type === 'iamhere') {
+      if (!knownMembers.has(msg.user)) { knownMembers.add(msg.user); roomMemberCount = knownMembers.size; $('#roomMembers').textContent = roomMemberCount; }
+    } else if (msg.type === 'bye') {
+      if (knownMembers.has(msg.user)) { knownMembers.delete(msg.user); roomMemberCount = knownMembers.size; $('#roomMembers').textContent = roomMemberCount; appendRoomSys(`${msg.user} chala gaya`); }
+    }
+  };
+  roomChannel.postMessage({ type: 'hello', user: userName });
+  $('#roomActive').style.display = 'block';
+  $('#roomTitle').textContent = name;
+  $('#roomCodeDisplay').textContent = code;
+  $('#chatBox').innerHTML = '';
+  appendRoomSys(`Room "${name}" joined as ${userName}`);
+  $('#roomMembers').textContent = roomMemberCount;
+}
+
+function leaveRoom() {
+  if (roomChannel) { roomChannel.postMessage({ type: 'bye', user: currentUser.username }); roomChannel.close(); roomChannel = null; }
+  currentRoom = null; roomMemberCount = 1; knownMembers = new Set();
+  $('#roomActive').style.display = 'none'; $('#chatBox').innerHTML = '';
+}
+
+function sendRoomMsg() {
+  const input = $('#chatInput'); const text = input.value.trim();
+  if (!text || !roomChannel) return;
+  const time = new Date().toLocaleTimeString();
+  roomChannel.postMessage({ type: 'chat', user: currentUser.username, text, time });
+  appendRoomMsg(currentUser.username, text, time, true);
+  input.value = '';
+}
+
+function appendRoomMsg(user, text, time, isMine) {
+  const box = $('#chatBox'); const div = document.createElement('div');
+  div.style.cssText = `align-self: ${isMine?'flex-end':'flex-start'}; max-width:75%; background:${isMine?'linear-gradient(135deg, rgba(0,229,160,0.2), rgba(102,170,255,0.15))':'var(--surface-2)'}; border:1px solid ${isMine?'rgba(0,229,160,0.3)':'var(--border)'}; border-radius:12px; padding:0.55rem 0.85rem; font-size:0.85rem; word-wrap:break-word;`;
+  div.innerHTML = `<div style="font-size:0.65rem; color:${isMine?'var(--accent)':'var(--accent-2)'}; margin-bottom:0.2rem; font-weight:700; text-transform:uppercase;">${esc(user)} · ${esc(time)}</div><div>${esc(text)}</div>`;
+  box.appendChild(div); box.scrollTop = box.scrollHeight;
+}
+
+function appendRoomSys(text) {
+  const box = $('#chatBox'); const div = document.createElement('div');
+  div.style.cssText = `align-self:center; font-size:0.7rem; color:var(--muted); padding:0.3rem 0.7rem; background:var(--surface-2); border-radius:99px; border:1px solid var(--border);`;
+  div.textContent = text; box.appendChild(div); box.scrollTop = box.scrollHeight;
+}
+
+if ($('#createRoomBtn')) $('#createRoomBtn').addEventListener('click', () => { const name = $('#roomNameInput').value.trim() || 'Study Room'; enterRoom(genRoomCode(), name, currentUser.username); });
+if ($('#joinRoomBtn')) $('#joinRoomBtn').addEventListener('click', () => { const code = $('#roomCodeInput').value.trim().toUpperCase(); if (!code) return alert('Room code daal.'); enterRoom(code, 'Room ' + code, currentUser.username); });
+if ($('#leaveRoomBtn')) $('#leaveRoomBtn').addEventListener('click', leaveRoom);
+if ($('#sendMsgBtn')) $('#sendMsgBtn').addEventListener('click', sendRoomMsg);
+if ($('#chatInput')) $('#chatInput').addEventListener('keydown', e => e.key === 'Enter' && sendRoomMsg());
+if ($('#copyCodeBtn')) $('#copyCodeBtn').addEventListener('click', () => { if (!currentRoom) return; navigator.clipboard.writeText(currentRoom).then(() => { const b = $('#copyCodeBtn'); b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy Code', 1500); }); });
+
+// ============ ADMIN ============
+if ($('#adminEnterBtn')) $('#adminEnterBtn').addEventListener('click', () => {
+  const p = $('#adminPassword').value;
+  if (p === ADMIN_PASSWORD) { $('#adminGate').style.display = 'none'; $('#adminContent').style.display = 'block'; renderAdminUsers(); }
+  else { const e = $('#adminError'); e.textContent = 'Galat password.'; e.classList.add('show'); }
+});
+if ($('#adminExitBtn')) $('#adminExitBtn').addEventListener('click', () => { $('#adminGate').style.display = 'block'; $('#adminContent').style.display = 'none'; $('#adminPassword').value = ''; $('#adminError').classList.remove('show'); });
+
+function renderAdminUsers() {
+  const list = $('#adminUserList'); if (!list) return;
+  const users = Object.entries(allUsers);
+  $('#adminTotalUsers').textContent = users.length;
+  get(ref(db, 'friendRequests')).then(snap => {
+    if (snap.exists()) {
+      const all = snap.val(); let fc = 0, pc = 0;
+      Object.values(all).forEach(r => { if (r.status === 'accepted') fc++; if (r.status === 'pending') pc++; });
+      $('#adminTotalFriends').textContent = fc; $('#adminPendingReqs').textContent = pc;
+    }
+  });
+  list.innerHTML = users.map(([u, data]) => {
+    const p = data.progress || {};
+    const on = isOnline(data);
+    return `<div class="friend-item">
+      <div class="friend-avatar">${esc(u[0].toUpperCase())}<span class="online-dot ${on?'on':'off'}"></span></div>
+      <div class="friend-info"><div class="friend-name">${esc(data.username || u)}</div><div class="friend-sub">${data.class ? CLASS_CONFIG[data.class].label : 'Class ?'} · ${((p.totalMinutes||0)/60).toFixed(1)}h · streak ${p.streak||0} · ${on?'● Online':'● Offline'}</div></div>
+      <div class="friend-actions"><button class="danger" data-del-user="${u}">Delete</button></div>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('[data-del-user]').forEach(b => b.addEventListener('click', async () => {
+    const u = b.dataset.delUser;
+    if (!confirm(`Delete user "${u}"?`)) return;
+    await remove(ref(db, 'users/' + u));
+  }));
+}
+
+// ============ BACKUP ============
+if ($('#exportBtn')) $('#exportBtn').addEventListener('click', () => {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('jee_')) data[k] = localStorage.getItem(k); }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `jee-backup-${currentUser.username}-${new Date().toISOString().slice(0,10)}.json`; a.click();
+  URL.revokeObjectURL(url);
+});
+if ($('#importBtn')) $('#importBtn').addEventListener('click', () => $('#importFile').click());
+if ($('#importFile')) $('#importFile').addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try { const data = JSON.parse(ev.target.result); for (const k in data) localStorage.setItem(k, data[k]); alert('Restore ho gaya.'); location.reload(); }
+    catch (err) { alert('File corrupt.'); }
+  };
+  reader.readAsText(file);
+});
+if ($('#wipeBtn')) $('#wipeBtn').addEventListener('click', () => {
+  if (!confirm('Pakka? Sab data delete.')) return;
+  if (!confirm('Last warning.')) return;
+  const keys = []; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('jee_')) keys.push(k); }
+  keys.forEach(k => localStorage.removeItem(k)); localStorage.removeItem('jee_session'); location.reload();
+});
+
+// ============ EVENT LISTENERS (data entry) ============
+if ($('#addTask')) $('#addTask').addEventListener('click', () => {
+  const t = $('#taskInput').value.trim(); if (!t) return;
+  store.tasks.push({ text: t, subject: $('#taskSubject').value, done: false });
+  $('#taskInput').value = ''; saveAll(); renderTasks();
+});
+if ($('#taskInput')) $('#taskInput').addEventListener('keydown', e => e.key === 'Enter' && $('#addTask').click());
+
+if ($('#addNote')) $('#addNote').addEventListener('click', () => {
+  const t = $('#noteTitle').value.trim(), b = $('#noteBody').value.trim();
+  if (!t && !b) return;
+  store.notes.push({ title: t || 'Untitled', body: b });
+  $('#noteTitle').value = ''; $('#noteBody').value = ''; saveAll(); renderNotes();
+});
+
+if ($('#addFormula')) $('#addFormula').addEventListener('click', () => {
+  const t = $('#fTitle').value.trim(), b = $('#fBody').value.trim();
+  if (!t || !b) return;
+  store.formulas.push({ title: t, body: b });
+  $('#fTitle').value = ''; $('#fBody').value = ''; saveAll(); renderFormulas();
+});
+
+if ($('#addPyq')) $('#addPyq').addEventListener('click', () => {
+  const t = $('#pyqTopic').value.trim(), s = parseInt($('#pyqSolved').value), tot = parseInt($('#pyqTotal').value);
+  if (!t || isNaN(s) || isNaN(tot)) return;
+  store.pyq.push({ topic: t, solved: s, total: tot });
+  $('#pyqTopic').value = ''; $('#pyqSolved').value = ''; $('#pyqTotal').value = ''; saveAll(); renderPyq();
+});
+
+if ($('#addMock')) $('#addMock').addEventListener('click', () => {
+  const n = $('#mockName').value.trim(), s = parseFloat($('#mockScore').value), tot = parseFloat($('#mockTotal').value);
+  if (!n || isNaN(s) || isNaN(tot) || tot <= 0) return;
+  store.mocks.push({ name: n, score: s, total: tot });
+  $('#mockName').value = ''; $('#mockScore').value = ''; $('#mockTotal').value = ''; saveAll(); renderMocks();
+});
+
+if ($('#addMis')) $('#addMis').addEventListener('click', () => {
+  const s = $('#misSubject').value.trim(), d = $('#misDesc').value.trim();
+  if (!s || !d) return;
+  store.mistakes.push({ subject: s, desc: d });
+  $('#misSubject').value = ''; $('#misDesc').value = ''; saveAll(); renderMistakes();
+});
+
+if ($('#addMk')) $('#addMk').addEventListener('click', () => {
+  const c = $('#mkChapter').value.trim(), s = parseFloat($('#mkScore').value), tot = parseFloat($('#mkTotal').value);
+  if (!c || isNaN(s) || isNaN(tot) || tot <= 0) return;
+  store.marks.push({ chapter: c, score: s, total: tot });
+  $('#mkChapter').value = ''; $('#mkScore').value = ''; $('#mkTotal').value = ''; saveAll(); renderMarks();
+});
+
+if ($('#addTt')) $('#addTt').addEventListener('click', () => {
+  const d = $('#ttDay').value, t = $('#ttTime').value.trim(), tk = $('#ttTask').value.trim();
+  if (!t || !tk) return;
+  store.timetable.push({ day: d, time: t, task: tk });
+  $('#ttTime').value = ''; $('#ttTask').value = ''; saveAll(); renderTimetable();
+});
+
+if ($('#addPdf')) $('#addPdf').addEventListener('click', () => {
+  const t = $('#pdfTitle').value.trim(), u = $('#pdfUrl').value.trim();
+  if (!t || !u) return;
+  store.pdfs.push({ title: t, url: u });
+  $('#pdfTitle').value = ''; $('#pdfUrl').value = ''; saveAll(); renderPdfs();
+});
+
+if ($('#addPw')) $('#addPw').addEventListener('click', () => {
+  const n = $('#pwName').value.trim(), u = $('#pwUrl').value.trim();
+  if (!n || !u) return;
+  store.pwLinks.push({ name: n, url: u });
+  $('#pwName').value = ''; $('#pwUrl').value = ''; saveAll(); renderPw();
+});
+
+$$('.subject-add').forEach(b => b.addEventListener('click', () => { store.subjects[b.dataset.subject] += 1; saveAll(); renderSubjects(); }));
+
+// ============ TIMER ============
+let timerTotal = 25*60, timerLeft = timerTotal, timerId = null, timerRunning = false, sessionStart = null;
+function fmt(s){ const m = Math.floor(s/60), sec = s%60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
+function renderTimer(){ if ($('#timerDisplay')) $('#timerDisplay').textContent = fmt(timerLeft); }
+if ($('#timerStart')) $('#timerStart').addEventListener('click', () => {
+  if (timerRunning) return; timerRunning = true; sessionStart = Date.now();
+  timerId = setInterval(() => {
+    timerLeft--; renderTimer();
+    if (timerLeft <= 0) {
+      clearInterval(timerId); timerRunning = false; logSession();
+      try { const ac = new (window.AudioContext||window.webkitAudioContext)(); const osc = ac.createOscillator(), g = ac.createGain(); osc.connect(g); g.connect(ac.destination); osc.frequency.value = 880; g.gain.setValueAtTime(0.2, ac.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+0.6); osc.start(); osc.stop(ac.currentTime+0.6); } catch(e){}
+      alert('Time up, boss man.'); timerLeft = timerTotal; renderTimer();
+    }
+  }, 1000);
+});
+if ($('#timerPause')) $('#timerPause').addEventListener('click', () => { if (!timerRunning) return; clearInterval(timerId); timerRunning = false; logSession(); });
+if ($('#timerReset')) $('#timerReset').addEventListener('click', () => { clearInterval(timerId); timerRunning = false; logSession(); timerLeft = timerTotal; renderTimer(); });
+$$('[data-preset]').forEach(b => b.addEventListener('click', () => {
+  clearInterval(timerId); timerRunning = false; logSession();
+  timerTotal = parseInt(b.dataset.preset) * 60; timerLeft = timerTotal;
+  $('#timerMode').textContent = b.dataset.mode || 'Focus'; renderTimer();
+}));
+function logSession() {
+  if (!sessionStart) return;
+  const mins = Math.floor((Date.now()-sessionStart)/60000);
+  if (mins > 0) {
+    store.todayMinutes += mins;
+    store.totalMinutes += mins;
+    const d = new Date().toISOString().slice(0, 10);
+    store.studyCalendar[d] = (store.studyCalendar[d] || 0) + mins;
+    saveAll();
+  }
+  sessionStart = null;
+}
+
+// ============ EXAM ============
+let examTotal = 180*60, examLeft = examTotal, examId = null, examRunning = false;
+function fmtExam(s){ const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60; return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
+function renderExam(){ if ($('#examDisplay')) $('#examDisplay').textContent = fmtExam(examLeft); }
+if ($('#examStart')) $('#examStart').addEventListener('click', () => {
+  if (examRunning) return; examRunning = true;
+  examId = setInterval(() => {
+    examLeft--; renderExam();
+    if (examLeft <= 0) { clearInterval(examId); examRunning = false; alert('Exam over!'); examLeft = examTotal; renderExam(); }
+  }, 1000);
+});
+if ($('#examPause')) $('#examPause').addEventListener('click', () => { clearInterval(examId); examRunning = false; });
+if ($('#examReset')) $('#examReset').addEventListener('click', () => { clearInterval(examId); examRunning = false; examLeft = examTotal; renderExam(); });
+$$('[data-exam]').forEach(b => b.addEventListener('click', () => { clearInterval(examId); examRunning = false; examTotal = parseInt(b.dataset.exam)*60; examLeft = examTotal; renderExam(); }));
+
+// ============ BG PARTICLES ============
+(function bg() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = []; const COUNT = 70;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  for (let i = 0; i < COUNT; i++) particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*1.6+0.4, hue: Math.random() > 0.5 ? 160 : 215 });
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < COUNT; i++) {
+      const a = particles[i];
+      for (let j = i + 1; j < COUNT; j++) {
+        const b = particles[j]; const dx = a.x - b.x, dy = a.y - b.y; const d2 = dx*dx + dy*dy;
+        if (d2 < 16000) { const alpha = (1 - d2/16000) * 0.22; ctx.strokeStyle = `hsla(${a.hue}, 80%, 60%, ${alpha})`; ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+      }
+    }
+    for (const p of particles) { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > W) p.vx *= -1; if (p.y < 0 || p.y > H) p.vy *= -1; ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.8)`; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ============ INIT ============
+function initAll() {
+  updateUserBox(); renderStreak(); renderDashboard(); renderTasks(); renderNotes(); renderFormulas();
+  renderPyq(); renderMocks(); renderMistakes(); renderMarks(); renderTimetable(); renderPdfs();
+  renderPw(); renderSubjects(); renderSyllabus(); renderTimer(); renderExam(); renderInsights(); rotateQuote();
+  renderFlashcards(); renderStudyLog(); renderRevision(); renderCalendar(); renderWeakTopics(); renderBookmarks();
+  listenUsers(); listenFriendRequests();
+  setInterval(rotateQuote, 30000);
+  setInterval(() => { if (document.getElementById('assistant').classList.contains('active')) renderInsights(); }, 30000);
+  setInterval(() => { if (document.getElementById('calendar').classList.contains('active')) renderCalendar(); }, 60000);
+}
+
+if (!checkSession()) { console.log('No session, showing auth'); }
 </script>
 </body>
 </html>
