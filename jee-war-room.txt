@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE WAR ROOM</title>
+<style>
+:root{--bg:#06060a;--surface:rgba(18,18,26,.9);--surface-2:#1a1a26;--border:#1e1e2e;--accent:#00e5a0;--accent-2:#66aaff;--accent-3:#b366ff;--danger:#ff5566;--warn:#ffaa44;--text:#e8e8f0;--muted:#7788aa}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:Segoe UI,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.sidebar{background:rgba(10,10,16,.95);border-right:1px solid var(--border);padding:1.2rem .8rem;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:.2rem}
+.logo{font-size:1.15rem;font-weight:800;color:var(--accent);padding:0 .5rem;margin-bottom:.6rem}
+.logo span{display:block;font-size:.62rem;color:var(--muted);font-weight:400;letter-spacing:.12em;text-transform:uppercase;margin-top:.15rem}
+.user-box{background:linear-gradient(135deg,rgba(102,170,255,.12),rgba(179,102,255,.12));border:1px solid rgba(102,170,255,.3);border-radius:10px;padding:.55rem .75rem;margin:.4rem;display:flex;align-items:center;gap:.55rem}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#06060a;flex-shrink:0}
+.user-name{font-weight:700;font-size:.78rem}
+.user-sub{color:var(--muted);font-size:.62rem}
+.streak-box{background:linear-gradient(135deg,rgba(0,229,160,.15),rgba(102,170,255,.1));border:1px solid rgba(0,229,160,.3);border-radius:10px;padding:.55rem .75rem;margin:.3rem .4rem .8rem}
+.streak-box .num{font-size:1.35rem;font-weight:800;color:var(--accent);line-height:1}
+.streak-box .lbl{color:var(--muted);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em}
+.nav-btn{background:transparent;border:none;color:var(--muted);text-align:left;padding:.55rem .75rem;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:.55rem;width:100%}
+.nav-btn:hover{background:var(--surface-2);color:var(--text)}
+.nav-btn.active{background:linear-gradient(90deg,rgba(0,229,160,.15),transparent);color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.logout-btn{background:rgba(255,85,102,.1);border:1px solid rgba(255,85,102,.3);color:var(--danger);padding:.45rem;border-radius:8px;font-size:.72rem;cursor:pointer;font-family:inherit;margin:.4rem}
+.main{padding:1.6rem 2rem;overflow-y:auto;max-height:100vh}
+.page{display:none}.page.active{display:block}
+h1{font-size:1.5rem;margin-bottom:.2rem}h1 .accent{color:var(--accent)}
+.subtitle{color:var(--muted);font-size:.85rem;margin-bottom:1.4rem}
+h2{font-size:1rem;margin:1.3rem 0 .7rem;color:var(--accent-2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.9rem;margin-bottom:1.2rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.stat-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem}
+.stat-value{font-size:1.7rem;font-weight:800;color:var(--accent);line-height:1}
+.stat-value.blue{color:var(--accent-2)}.stat-value.purple{color:var(--accent-3)}.stat-value.warn{color:var(--warn)}
+.stat-sub{font-size:.72rem;color:var(--muted);margin-top:.35rem}
+.countdown{background:linear-gradient(135deg,rgba(255,85,102,.12),rgba(179,102,255,.1));border:1px solid rgba(255,85,102,.3);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.countdown .label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.countdown .big{font-size:2rem;font-weight:800;color:var(--danger);line-height:1}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:.55rem 1rem;border-radius:8px;font-size:.82rem;cursor:pointer;font-family:inherit}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);color:#06060a;border-color:var(--accent);font-weight:700}
+.btn.primary:hover{opacity:.88;color:#06060a}
+.btn.danger{color:var(--danger)}.btn.sm{padding:.35rem .7rem;font-size:.75rem}
+input[type=text],input[type=number],input[type=password],input[type=date],textarea,select{background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:.6rem .8rem;border-radius:8px;font-family:inherit;font-size:.85rem;width:100%;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+.input-row{display:flex;gap:.55rem;margin-bottom:.9rem;flex-wrap:wrap}
+.input-row input,.input-row select{flex:1;min-width:120px}
+.task{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:.7rem .9rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.7rem}
+.task.done{opacity:.45}.task.done .task-text{text-decoration:line-through}
+.task input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent)}
+.task-text{flex:1;font-size:.86rem}
+.task-subject{font-size:.62rem;padding:.12rem .45rem;border-radius:4px;background:var(--surface-2);color:var(--accent-2);text-transform:uppercase;font-weight:600}
+.task-del{background:none;border:none;color:#445566;cursor:pointer;font-size:1.05rem}
+.timer-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.8rem;text-align:center;margin-bottom:1.2rem}
+.timer-display{font-size:4rem;font-weight:800;color:var(--accent);margin-bottom:.8rem;line-height:1}
+.timer-mode{display:inline-block;font-size:.7rem;padding:.2rem .65rem;background:var(--surface-2);border-radius:99px;margin-bottom:.6rem;color:var(--accent-2);text-transform:uppercase;letter-spacing:.1em}
+.timer-btns{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+.subject-row{display:flex;align-items:center;gap:.8rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;margin-bottom:.55rem}
+.subject-name{width:90px;font-size:.85rem;font-weight:700}
+.subject-name.phy{color:#ff6b6b}.subject-name.chem{color:#66ff99}.subject-name.math{color:#66aaff}
+.subject-bar-wrap{flex:1;background:var(--surface-2);height:8px;border-radius:99px;overflow:hidden}
+.subject-bar{height:100%;border-radius:99px;transition:width .4s}
+.subject-bar.phy{background:linear-gradient(90deg,#ff6b6b,#ffaa44)}
+.subject-bar.chem{background:linear-gradient(90deg,#66ff99,#00e5a0)}
+.subject-bar.math{background:linear-gradient(90deg,#66aaff,#b366ff)}
+.subject-hours{font-size:.75rem;color:var(--muted);width:50px;text-align:right}
+.subject-add{background:var(--surface-2);border:1px solid var(--border);color:var(--accent);padding:.28rem .55rem;border-radius:6px;font-size:.72rem;cursor:pointer;font-family:inherit}
+.chapter-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.45rem}
+.chapter{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem .8rem;display:flex;align-items:center;gap:.55rem;font-size:.8rem}
+.chapter.done{opacity:.5}.chapter.done span{text-decoration:line-through}
+.chapter input{width:15px;height:15px;accent-color:var(--accent)}
+.progress-wrap{background:var(--surface-2);border-radius:99px;height:8px;overflow:hidden;margin-top:.5rem}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:99px;transition:width .4s}
+.motivation{background:linear-gradient(135deg,rgba(0,229,160,.08),rgba(179,102,255,.08));border:1px solid rgba(0,229,160,.25);border-radius:12px;padding:1.3rem;margin-bottom:1.2rem;text-align:center}
+.motivation .quote{font-size:.95rem;font-style:italic;line-height:1.55}
+.motivation .author{font-size:.7rem;color:var(--accent);margin-top:.4rem;text-transform:uppercase;letter-spacing:.1em}
+.empty{text-align:center;padding:1.6rem;color:#445566;font-size:.85rem}
+.auth-modal{position:fixed;inset:0;z-index:9998;background:rgba(6,6,10,.98);display:flex;align-items:center;justify-content:center;padding:1.5rem}
+.auth-modal.hide{display:none}
+.auth-box{background:linear-gradient(135deg,rgba(18,18,26,.98),rgba(26,26,38,.98));border:1px solid var(--border);border-radius:20px;padding:2.2rem 1.8rem;max-width:420px;width:100%}
+.auth-box .brand{text-align:center;margin-bottom:1.6rem}
+.auth-box .brand h2{font-size:1.6rem;font-weight:800;color:var(--accent)}
+.auth-box .brand p{color:var(--muted);font-size:.75rem;margin-top:.25rem;letter-spacing:.12em;text-transform:uppercase}
+.auth-tabs{display:flex;gap:.35rem;background:var(--surface-2);padding:.28rem;border-radius:10px;margin-bottom:1.2rem}
+.auth-tab{flex:1;background:transparent;border:none;color:var(--muted);padding:.55rem;border-radius:8px;font-size:.82rem;font-family:inherit;cursor:pointer;font-weight:600}
+.auth-tab.active{background:var(--accent);color:#06060a}
+.auth-field{margin-bottom:.85rem}
+.auth-field label{display:block;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem}
+.auth-submit{width:100%;background:var(--accent);color:#06060a;border:none;padding:.8rem;border-radius:10px;font-size:.9rem;font-weight:700;font-family:inherit;cursor:pointer;margin-top:.4rem}
+.auth-error{background:rgba(255,85,102,.15);border:1px solid rgba(255,85,102,.3);color:var(--danger);padding:.55rem .75rem;border-radius:8px;font-size:.78rem;margin-bottom:.85rem;display:none}
+.auth-error.show{display:block}
+.auth-hint{text-align:center;color:var(--muted);font-size:.7rem;margin-top:.85rem}
+.cn-viewer{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.3rem;line-height:1.6}
+.cn-viewer h3{color:var(--accent);margin-bottom:.45rem;font-size:1.1rem}
+.cn-viewer .cn-sum{font-size:.9rem;margin-bottom:.7rem}
+.cn-viewer .cn-box{background:var(--surface-2);border-left:3px solid var(--accent-3);padding:.8rem .95rem;margin:.7rem 0;border-radius:8px;font-family:Courier New,monospace;font-size:.8rem;white-space:pre-wrap;color:var(--accent-2)}
+.cn-viewer ul{padding-left:1.15rem;color:var(--muted);font-size:.84rem}
+.cn-viewer li{margin-bottom:.28rem}
+.flashcard{background:linear-gradient(135deg,rgba(0,229,160,.08),rgba(179,102,255,.08));border:1px solid var(--border);border-radius:14px;padding:1.4rem;min-height:160px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:pointer}
+.flashcard .fc-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.7rem}
+.flashcard .fc-question{font-size:1.05rem;font-weight:700}
+.flashcard .fc-answer{font-size:.95rem;color:var(--accent);margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border);display:none}
+.flashcard.revealed .fc-answer{display:block}
+.flashcard-nav{display:flex;gap:.45rem;justify-content:center;margin-top:.9rem;flex-wrap:wrap}
+.note{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.9rem;position:relative}
+.note-title{font-weight:700;font-size:.88rem;margin-bottom:.35rem;color:var(--accent-2);padding-right:1.4rem}
+.note-body{font-size:.78rem;color:var(--muted);line-height:1.5;white-space:pre-wrap}
+.note-del{position:absolute;top:.65rem;right:.65rem;background:none;border:none;color:#445566;cursor:pointer}
+.note-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.85rem}
+.formula-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent-3);border-radius:10px;padding:.9rem;margin-bottom:.6rem}
+.formula-card .f-title{font-size:.85rem;font-weight:700;color:var(--accent-3);margin-bottom:.25rem}
+.formula-card .f-body{font-size:.8rem;color:var(--muted);font-family:Courier New,monospace;line-height:1.45;white-space:pre-wrap}
+.log-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.9rem;flex-wrap:wrap}
+.log-item .score{font-size:1.15rem;font-weight:800;color:var(--accent);width:65px}
+.log-item .score.bad{color:var(--danger)}.log-item .score.mid{color:var(--warn)}
+.revision-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.65rem .9rem;margin-bottom:.45rem;display:flex;align-items:center;gap:.7rem}
+.revision-item.due{border-left:3px solid var(--warn);background:rgba(255,170,68,.08)}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem;margin-top:.7rem}
+.cal-day{aspect-ratio:1;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted)}
+.cal-day.studied{background:linear-gradient(135deg,rgba(0,229,160,.3),rgba(102,170,255,.2));border-color:var(--accent);color:var(--text);font-weight:700}
+.cal-day.today{border:2px solid var(--accent)}
+.weak-topic{background:rgba(255,85,102,.1);border:1px solid rgba(255,85,102,.3);border-radius:8px;padding:.55rem .85rem;margin-bottom:.45rem;display:flex;align-items:center;gap:.7rem}
+.weak-topic .wt-count{font-size:1rem;font-weight:800;color:var(--danger);width:36px}
+@media(max-width:800px){
+.app{grid-template-columns:1fr}
+.sidebar{position:fixed;bottom:0;left:0;right:0;top:auto;height:auto;flex-direction:row;padding:.35rem;border-right:none;border-top:1px solid var(--border);z-index:100;overflow-x:auto}
+.logo,.user-box,.streak-box,.logout-btn{display:none}
+.nav-btn{flex-direction:column;font-size:.58rem;padding:.35rem .5rem;gap:.1rem;white-space:nowrap}
+.main{padding:1.1rem;padding-bottom:5rem}
+.timer-display{font-size:3rem}
+}
+</style>
+</head>
+<body>
+<div class="auth-modal" id="authModal">
+  <div class="auth-box">
+    <div class="brand"><h2>JEE WAR ROOM</h2><p>Boss man, apna account bana</p></div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Login</button>
+      <button class="auth-tab" data-tab="signup">Sign Up</button>
+    </div>
+    <div class="auth-error" id="authError"></div>
+    <div id="loginForm">
+      <div class="auth-field"><label>Username</label><input type="text" id="loginUsername" placeholder="tera username..." autocomplete="off"></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="loginPassword" placeholder="password..."></div>
+      <button class="auth-submit" id="loginBtn">Login</button>
+      <p class="auth-hint">Naya user? Upar Sign Up pe click kar</p>
+    </div>
+    <div id="signupForm" style="display:none">
+      <div class="auth-field"><label>Username</label><input type="text" id="signupUsername" placeholder="apna username..." autocomplete="off"></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="signupPassword" placeholder="password (min 4 char)..."></div>
+      <div class="auth-field"><label>Confirm Password</label><input type="password" id="signupPassword2" placeholder="password dobara..."></div>
+      <button class="auth-submit" id="signupBtn">Create Account</button>
+      <p class="auth-hint">Data is browser me save hota hai (localStorage)</p>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none">
+  <aside class="sidebar">
+    <div class="logo">JEE<span>WAR ROOM</span></div>
+    <div class="user-box">
+      <div class="user-avatar" id="userAvatar">?</div>
+      <div><div class="user-name" id="userNameDisplay">—</div><div class="user-sub" id="userSubDisplay">Student</div></div>
+    </div>
+    <div class="streak-box"><div class="num" id="streakNum">0</div><div class="lbl">day streak</div></div>
+    <button class="nav-btn active" data-page="dashboard">◈ Dashboard</button>
+    <button class="nav-btn" data-page="routine">◷ Routine</button>
+    <button class="nav-btn" data-page="timer">◉ Timer</button>
+    <button class="nav-btn" data-page="subjects">◐ Subjects</button>
+    <button class="nav-btn" data-page="syllabus">✓ Syllabus</button>
+    <button class="nav-btn" data-page="chapternotes">📖 Chapter Notes</button>
+    <button class="nav-btn" data-page="flashcards">📇 Flashcards</button>
+    <button class="nav-btn" data-page="studylog">📝 Study Log</button>
+    <button class="nav-btn" data-page="revision">🔄 Revision</button>
+    <button class="nav-btn" data-page="calendar">📅 Calendar</button>
+    <button class="nav-btn" data-page="weaktopics">⚠ Weak Topics</button>
+    <button class="nav-btn" data-page="notes">✎ Notes</button>
+    <button class="nav-btn" data-page="formulas">∑ Formulas</button>
+    <button class="nav-btn" data-page="pyq">◆ PYQ Log</button>
+    <button class="nav-btn" data-page="mocks">▲ Mock Tests</button>
+    <button class="nav-btn" data-page="mistakes">⚠ Mistake Log</button>
+    <button class="nav-btn" data-page="backup">⬇ Backup</button>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </aside>
+
+  <main class="main">
+    <section class="page active" id="dashboard">
+      <h1>Dashboard <span class="accent">//</span></h1>
+      <p class="subtitle">Aaj ka scene, boss man.</p>
+      <div class="countdown">
+        <div><div class="label">JEE Main Countdown</div><div class="big" id="jeeCountdown">--</div><div class="stat-sub" id="jeeDateSub">Loading...</div></div>
+        <div><div class="label">Days Left</div><div class="big" id="daysLeft" style="color:var(--accent)">--</div></div>
+      </div>
+      <div class="motivation"><div class="quote" id="motivationQuote">"Consistency beats intensity."</div><div class="author" id="motivationAuthor">— JEE War Room</div></div>
+      <div class="grid">
+        <div class="card"><div class="stat-label">Tasks Pending</div><div class="stat-value" id="statTasks">0</div></div>
+        <div class="card"><div class="stat-label">Today's Study</div><div class="stat-value blue" id="statTime">0m</div></div>
+        <div class="card"><div class="stat-label">Total Hours</div><div class="stat-value purple" id="statTotal">0h</div></div>
+        <div class="card"><div class="stat-label">Mocks</div><div class="stat-value warn" id="statMocks">0</div></div>
+      </div>
+      <h2>Daily Goal (8h)</h2>
+      <div class="card"><div class="progress-wrap"><div class="progress-bar" id="dailyProgress" style="width:0%"></div></div><div class="stat-sub" id="dailyProgressText" style="margin-top:.5rem">0 / 8 hours</div></div>
+      <div class="grid" style="margin-top:1rem">
+        <div class="card"><div class="stat-label">Flashcards</div><div class="stat-value" id="statFlash" style="font-size:1.3rem">0</div></div>
+        <div class="card"><div class="stat-label">Revision Due</div><div class="stat-value warn" id="statRevDue" style="font-size:1.3rem">0</div></div>
+        <div class="card"><div class="stat-label">Weak Topics</div><div class="stat-value" id="statWeak" style="font-size:1.3rem;color:var(--danger)">0</div></div>
+      </div>
+    </section>
+
+    <section class="page" id="chapternotes">
+      <h1>Chapter Notes <span class="accent">//</span></h1>
+      <p class="subtitle">Har chapter ke high-yield notes + formulas.</p>
+      <div class="input-row">
+        <select id="cnSubject" style="max-width:150px"><option value="phy">Physics</option><option value="chem">Chemistry</option><option value="math">Math</option></select>
+        <select id="cnChapter" style="flex:2"></select>
+        <button class="btn primary" id="cnLoad">Load Notes</button>
+      </div>
+      <div id="cnViewer" class="cn-viewer"><div class="empty">Subject aur chapter choose karke Load Notes dabao.</div></div>
+      <div style="margin-top:1rem;display:flex;gap:.55rem;flex-wrap:wrap">
+        <button class="btn sm" id="cnToFlash">+ Flashcards</button>
+        <button class="btn sm" id="cnToRev">+ Revision</button>
+        <button class="btn sm" id="cnToFormula">+ Formula sheet</button>
+      </div>
+    </section>
+
+    <section class="page" id="routine">
+      <h1>Daily Routine</h1>
+      <p class="subtitle">Aaj ka plan. Ek ek karke tick karo.</p>
+      <div class="input-row">
+        <input type="text" id="taskInput" placeholder="Task likho...">
+        <select id="taskSubject" style="max-width:120px"><option value="PHY">Physics</option><option value="CHEM">Chemistry</option><option value="MATH">Math</option><option value="GEN">General</option></select>
+        <button class="btn primary" id="addTask">+ Add</button>
+      </div>
+      <div id="taskList"></div>
+    </section>
+
+    <section class="page" id="timer">
+      <h1>Study Timer</h1>
+      <p class="subtitle">Pomodoro. Focus karo, break lo.</p>
+      <div class="timer-box">
+        <div class="timer-mode" id="timerMode">Focus</div>
+        <div class="timer-display" id="timerDisplay">25:00</div>
+        <div class="timer-btns">
+          <button class="btn primary" id="timerStart">Start</button>
+          <button class="btn" id="timerPause">Pause</button>
+          <button class="btn danger" id="timerReset">Reset</button>
+        </div>
+        <div style="margin-top:1.2rem;display:flex;gap:.45rem;justify-content:center;flex-wrap:wrap">
+          <button class="btn sm" data-preset="25" data-mode="Focus">25 focus</button>
+          <button class="btn sm" data-preset="45" data-mode="Focus">45 focus</button>
+          <button class="btn sm" data-preset="60" data-mode="Focus">60 focus</button>
+          <button class="btn sm" data-preset="5" data-mode="Break">5 break</button>
+          <button class="btn sm" data-preset="10" data-mode="Break">10 break</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="subjects">
+      <h1>Subjects</h1>
+      <p class="subtitle">Har subject pe kitna time diya.</p>
+      <div class="subject-row"><div class="subject-name phy">Physics</div><div class="subject-bar-wrap"><div class="subject-bar phy" id="barPhy" style="width:0%"></div></div><div class="subject-hours" id="hrsPhy">0h</div><button class="subject-add" data-subject="phy">+1h</button></div>
+      <div class="subject-row"><div class="subject-name chem">Chemistry</div><div class="subject-bar-wrap"><div class="subject-bar chem" id="barChem" style="width:0%"></div></div><div class="subject-hours" id="hrsChem">0h</div><button class="subject-add" data-subject="chem">+1h</button></div>
+      <div class="subject-row"><div class="subject-name math">Math</div><div class="subject-bar-wrap"><div class="subject-bar math" id="barMath" style="width:0%"></div></div><div class="subject-hours" id="hrsMath">0h</div><button class="subject-add" data-subject="math">+1h</button></div>
+    </section>
+
+    <section class="page" id="syllabus">
+      <h1>JEE Syllabus Tracker</h1>
+      <p class="subtitle">Chapter complete hue toh tick karo.</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">
+        <div class="card"><div class="stat-label">Physics</div><div class="stat-value" id="sylPhyPct">0%</div></div>
+        <div class="card"><div class="stat-label">Chemistry</div><div class="stat-value blue" id="sylChemPct">0%</div></div>
+        <div class="card"><div class="stat-label">Math</div><div class="stat-value purple" id="sylMathPct">0%</div></div>
+        <div class="card"><div class="stat-label">Overall</div><div class="stat-value warn" id="sylTotalPct">0%</div></div>
+      </div>
+      <h2>Physics</h2><div class="chapter-list" id="sylPhy"></div>
+      <h2>Chemistry</h2><div class="chapter-list" id="sylChem"></div>
+      <h2>Math</h2><div class="chapter-list" id="sylMath"></div>
+    </section>
+
+    <section class="page" id="flashcards">
+      <h1>Flashcards <span class="accent">//</span></h1>
+      <p class="subtitle">Click karke answer dekho.</p>
+      <div class="input-row">
+        <input type="text" id="fcQuestion" placeholder="Question / Term">
+        <input type="text" id="fcAnswer" placeholder="Answer">
+        <select id="fcSubject" style="max-width:110px"><option value="PHY">Physics</option><option value="CHEM">Chemistry</option><option value="MATH">Math</option><option value="GEN">General</option></select>
+        <button class="btn primary" id="addFc">+ Add</button>
+      </div>
+      <div style="max-width:560px;margin:1rem auto">
+        <div class="flashcard" id="fcDisplay" style="display:none"><div class="fc-label" id="fcSubjectLabel">PHYSICS</div><div class="fc-question" id="fcQuestionShow">—</div><div class="fc-answer" id="fcAnswerShow">—</div></div>
+        <div class="empty" id="fcEmpty">Koi flashcard nahi.</div>
+        <div class="flashcard-nav">
+          <button class="btn" id="fcPrev">← Prev</button>
+          <button class="btn primary" id="fcReveal">Reveal</button>
+          <button class="btn" id="fcNext">Next →</button>
+        </div>
+      </div>
+      <h2>All Flashcards</h2><div id="fcList"></div>
+    </section>
+
+    <section class="page" id="studylog">
+      <h1>Study Log <span class="accent">//</span></h1>
+      <p class="subtitle">Aaj kya padha, kitna time diya.</p>
+      <div class="input-row">
+        <input type="text" id="slContent" placeholder="Kya padha?">
+        <select id="slSubject" style="max-width:110px"><option value="PHY">Physics</option><option value="CHEM">Chemistry</option><option value="MATH">Math</option><option value="GEN">General</option></select>
+        <input type="number" id="slMinutes" placeholder="Minutes" style="max-width:100px">
+        <button class="btn primary" id="addSl">+ Log</button>
+      </div>
+      <div id="slList"></div>
+    </section>
+
+    <section class="page" id="revision">
+      <h1>Revision Schedule <span class="accent">//</span></h1>
+      <p class="subtitle">Spaced repetition — 1, 3, 7, 30 din.</p>
+      <div class="input-row">
+        <input type="text" id="revTopic" placeholder="Topic name...">
+        <select id="revSubject" style="max-width:110px"><option value="PHY">Physics</option><option value="CHEM">Chemistry</option><option value="MATH">Math</option><option value="GEN">General</option></select>
+        <button class="btn primary" id="addRev">+ Add</button>
+      </div>
+      <div id="revList"></div>
+    </section>
+
+    <section class="page" id="calendar">
+      <h1>Streak Calendar <span class="accent">//</span></h1>
+      <p class="subtitle">Mahine ka calendar.</p>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem">
+          <button class="btn sm" id="calPrev">← Prev</button>
+          <div style="font-weight:700;color:var(--accent)" id="calMonth">—</div>
+          <button class="btn sm" id="calNext">Next →</button>
+        </div>
+        <div class="calendar-grid" id="calGrid"></div>
+      </div>
+    </section>
+
+    <section class="page" id="weaktopics">
+      <h1>Weak Topics <span class="accent">//</span></h1>
+      <p class="subtitle">Jo weak lage, yahan daalo.</p>
+      <div class="input-row">
+        <input type="text" id="wtName" placeholder="Topic name...">
+        <select id="wtSubject" style="max-width:110px"><option value="PHY">Physics</option><option value="CHEM">Chemistry</option><option value="MATH">Math</option></select>
+        <button class="btn primary" id="addWt">+ Add</button>
+      </div>
+      <div id="wtList"></div>
+    </section>
+
+    <section class="page" id="notes">
+      <h1>Notes <span class="accent">//</span></h1>
+      <p class="subtitle">Apne short notes.</p>
+      <div class="input-row">
+        <input type="text" id="noteTitle" placeholder="Title">
+        <button class="btn primary" id="addNote">+ Add</button>
+      </div>
+      <textarea id="noteBody" placeholder="Note body..." style="margin-bottom:.9rem;min-height:100px"></textarea>
+      <div class="note-grid" id="noteList"></div>
+    </section>
+
+    <section class="page" id="formulas">
+      <h1>Formula Sheet <span class="accent">//</span></h1>
+      <p class="subtitle">Important formulas ek jagah.</p>
+      <div class="input-row">
+        <input type="text" id="fTitle" placeholder="Title">
+        <button class="btn primary" id="addFormula">+ Add</button>
+      </div>
+      <textarea id="fBody" placeholder="Formulas..." style="margin-bottom:.9rem;min-height:90px;font-family:Courier New,monospace"></textarea>
+      <div id="formulaList"></div>
+    </section>
+
+    <section class="page" id="pyq">
+      <h1>PYQ Log <span class="accent">//</span></h1>
+      <p class="subtitle">Previous year questions track karo.</p>
+      <div class="input-row">
+        <input type="text" id="pyqTopic" placeholder="Topic / Paper">
+        <input type="number" id="pyqScore" placeholder="Score %" style="max-width:110px">
+        <button class="btn primary" id="addPyq">+ Add</button>
+      </div>
+      <div id="pyqList"></div>
+    </section>
+
+    <section class="page" id="mocks">
+      <h1>Mock Tests <span class="accent">//</span></h1>
+      <p class="subtitle">Mock scores daalo.</p>
+      <div class="input-row">
+        <input type="text" id="mockName" placeholder="Mock name">
+        <input type="number" id="mockScore" placeholder="Score" style="max-width:110px">
+        <button class="btn primary" id="addMock">+ Add</button>
+      </div>
+      <div id="mockList"></div>
+    </section>
+
+    <section class="page" id="mistakes">
+      <h1>Mistake Log <span class="accent">//</span></h1>
+      <p class="subtitle">Galatiyan likho, dobara mat karna.</p>
+      <div class="input-row">
+        <input type="text" id="mistakeText" placeholder="Mistake kya hui?">
+        <select id="mistakeSubject" style="max-width:110px"><option value="PHY">Physics</option><option value="CHEM">Chemistry</option><option value="MATH">Math</option></select>
+        <button class="btn primary" id="addMistake">+ Add</button>
+      </div>
+      <div id="mistakeList"></div>
+    </section>
+
+    <section class="page" id="backup">
+      <h1>Backup <span class="accent">//</span></h1>
+      <p class="subtitle">Data export / import karo.</p>
+      <div class="input-row">
+        <button class="btn primary" id="exportBtn">⬇ Export JSON</button>
+        <button class="btn" id="importBtn">⬆ Import JSON</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none">
+      </div>
+      <div class="card"><div class="stat-sub">Export se poora data download hoga. Naye device pe Import se restore kar sakte ho.</div></div>
+    </section>
+  </main>
+</div>
+
+<script>
+const SYLLABUS = {
+  phy: ['Units & Measurements','Kinematics','Laws of Motion','Work Energy Power','Rotational Motion','Gravitation','Mechanical Properties of Solids','Mechanical Properties of Fluids','Thermal Properties','Thermodynamics','Kinetic Theory','Oscillations','Waves','Electrostatics','Current Electricity','Moving Charges & Magnetism','Magnetism & Matter','EMI','AC','EM Waves','Ray Optics','Wave Optics','Dual Nature','Atoms','Nuclei','Semiconductors'],
+  chem: ['Some Basic Concepts','Structure of Atom','Classification of Elements','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','s-Block','p-Block','Organic Basics','Hydrocarbons','Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','Metallurgy','p-Block (Gr 13-14)','d & f Block','Coordination Compounds','Haloalkanes','Alcohols Phenols Ethers','Aldehydes Ketones Acids','Amines','Biomolecules','Polymers','Chemistry in Everyday Life'],
+  math: ['Sets Relations Functions','Complex Numbers','Quadratic Equations','Matrices','Determinants','Permutations Combinations','Binomial Theorem','Sequences & Series','Limits','Continuity & Differentiability','Differentiation','Application of Derivatives','Integrals','Application of Integrals','Differential Equations','Straight Lines','Circles','Conic Sections','3D Geometry','Vectors','Statistics','Probability','Trigonometry','Inverse Trigonometry','Mathematical Reasoning']
+};
+
+const CHAPTER_NOTES = {
+phy: {
+"Units & Measurements":{s:"SI units, dimensions, significant figures, error propagation.",f:"[F]=MLT-2\\n[E]=ML2T-2\\n%err(A^n)=n(%err A)",p:["Least count = 1 MSD - 1 VSD","Same dimensions only can be added","Angle, strain are dimensionless"]},
+"Kinematics":{s:"1D motion + projectile. Graphs: slope & area.",f:"v=u+at\\ns=ut+1/2 at^2\\nv^2=u^2+2as\\nR=u^2 sin2θ/g\\nH=u^2 sin^2θ/2g\\nT=2u sinθ/g",p:["Area under v-t = displacement","v_AB = v_A - v_B","Max range at 45° on level ground"]},
+"Laws of Motion":{s:"Newton laws, friction, circular motion.",f:"F=ma\\nfk=μk N\\na=g(sinθ-μ cosθ)\\nFc=mv^2/r\\ntanθ=v^2/(rg)",p:["Friction opposes relative tendency","Lift: N=m(g±a)","Pseudo force -ma in non-inertial frame"]},
+"Work Energy Power":{s:"Work-energy theorem, collisions.",f:"W=Fs cosθ\\nKE=1/2 mv^2\\nWnet=ΔKE\\nP=F·v\\ne=sep/approach",p:["PE only for conservative forces","Momentum conserved if no external impulse"]},
+"Rotational Motion":{s:"τ=Iα, rolling without slipping.",f:"τ=Iα\\nL=Iω\\nKErot=1/2 Iω^2\\nI=Icm+Md^2\\nv=ωR\\nIsphere=2/5 MR^2",p:["Net external torque 0 ⇒ L conserved","Bottom point of pure roll is at rest"]},
+"Gravitation":{s:"Inverse-square gravity, orbits, escape.",f:"F=Gm1m2/r^2\\ng=GM/R^2\\nv_orb=sqrt(GM/r)\\nv_esc=sqrt(2GM/R)\\nT^2∝a^3",p:["V=-GM/r","Geostationary is equatorial","Inside uniform sphere g∝r"]},
+"Mechanical Properties of Solids":{s:"Stress, strain, moduli.",f:"Y=stress/strain\\nU=1/2×stress×strain\\nB=-ΔP/(ΔV/V)",p:["Hooke law in elastic region only"]},
+"Mechanical Properties of Fluids":{s:"Bernoulli, viscosity, surface tension.",f:"P=P0+ρgh\\nBernoulli: P+ρgh+1/2ρv^2=const\\nF=6πηrv\\nh=2σ cosθ/(ρgr)",p:["Faster flow ⇒ lower pressure","Soap bubble excess P=4σ/r"]},
+"Thermal Properties":{s:"Expansion, calorimetry, conduction.",f:"ΔL=αLΔT\\nQ=mcΔT\\nQ=mL\\nH=kAΔT/d",p:["Water anomaly near 4°C"]},
+"Thermodynamics":{s:"First law, processes, engines.",f:"ΔU=Q+W\\nη=1-T2/T1\\nW_iso=nRT ln(V2/V1)\\nPV^γ=const",p:["ΔU depends only on T for ideal gas","Carnot max efficiency"]},
+"Kinetic Theory":{s:"Ideal gas, rms, degrees of freedom.",f:"PV=nRT\\nvrms=sqrt(3RT/M)\\nP=1/3 ρ vrms^2\\nγ=1+2/f",p:["Avg KE per molecule =(f/2)kT"]},
+"Oscillations":{s:"SHM, spring, pendulum.",f:"x=A sin(ωt+φ)\\nω=sqrt(k/m)\\nT=2π sqrt(L/g)\\nE=1/2 k A^2",p:["a ∝ −x","At mean: v max, a=0"]},
+"Waves":{s:"Progressive/standing waves, Doppler.",f:"v=fλ\\nv_string=sqrt(T/μ)\\nbeats=|f1-f2|\\nopen pipe f=nv/(2L)",p:["Node: displacement 0"]},
+"Electrostatics":{s:"Coulomb, field, potential, capacitors.",f:"F=kq1q2/r^2\\nE=kq/r^2\\nV=kq/r\\nC=εA/d\\nU=1/2 CV^2",p:["Flux=q/ε0","Inside conductor E=0"]},
+"Current Electricity":{s:"Ohm, Kirchhoff, meters.",f:"V=IR\\nR=ρL/A\\nP=I^2R\\nε=V+Ir\\nWheatstone P/Q=R/S",p:["Kirchhoff junction & loop"]},
+"Moving Charges & Magnetism":{s:"Lorentz force, Biot-Savart.",f:"F=q(v×B)\\nr=mv/(qB)\\nB_wire=μ0I/(2πr)\\nF=IlB sinθ",p:["Magnetic force does no work","Parallel currents attract"]},
+"Magnetism & Matter":{s:"Dipoles, materials.",f:"τ=mB sinθ\\nU=-m·B",p:["Ferro has domains"]},
+"EMI":{s:"Faraday, Lenz, inductance.",f:"ε=-dφ/dt\\nφ=LI\\nU=1/2 LI^2",p:["Lenz opposes change","Motional emf=Blv"]},
+"AC":{s:"Reactance, LCR, resonance.",f:"XL=ωL\\nXC=1/(ωC)\\nZ=sqrt(R^2+(XL-XC)^2)\\nω0=1/sqrt(LC)",p:["Resonance: XL=XC, Z min"]},
+"EM Waves":{s:"EM spectrum, displacement current.",f:"c=1/sqrt(μ0ε0)\\nE/B=c",p:["E, B, direction mutually perpendicular"]},
+"Ray Optics":{s:"Mirrors, lenses, TIR.",f:"1/v+1/u=1/f\\n1/v-1/u=1/f\\nn1 sini=n2 sinr\\nsinC=1/n",p:["Power in dioptre adds in contact"]},
+"Wave Optics":{s:"YDSE, diffraction, polarisation.",f:"β=λD/d\\npath diff=d sinθ",p:["Coherent sources needed"]},
+"Dual Nature":{s:"Photoelectric, de Broglie.",f:"E=hf\\nKmax=hf-φ\\nλ=h/p",p:["Intensity affects current not Kmax"]},
+"Atoms":{s:"Bohr model.",f:"En=-13.6/n^2 eV\\n1/λ=R(1/n1^2-1/n2^2)",p:["Lyman UV, Balmer visible"]},
+"Nuclei":{s:"Binding energy, radioactivity.",f:"BE=Δm c^2\\nN=N0 e^{-λt}\\nT1/2=ln2/λ",p:["BE/nucleon peaks near Fe"]},
+"Semiconductors":{s:"Bands, diodes, transistors.",f:"σ=neμ",p:["n-type: electrons majority","p-type: holes"]}
+},
+chem: {
+"Some Basic Concepts":{s:"Mole concept, stoichiometry.",f:"n=m/M=N/NA\\nlimiting reagent decides yield",p:["Balance equation first"]},
+"Structure of Atom":{s:"Bohr, quantum numbers, config.",f:"E=-13.6 Z^2/n^2\\nn,l,ml,ms",p:["Aufbau, Pauli, Hund","Cr and Cu exceptions"]},
+"Classification of Elements":{s:"Periodic trends.",f:"IE, EA, EN increase across period",p:["IE exceptions Be>B, N>O"]},
+"Chemical Bonding":{s:"VSEPR, hybridisation, MOT.",f:"bond order=1/2(Nb-Na)\\nμ=q×d",p:["sp linear, sp2 trigonal, sp3 tetrahedral","O2 paramagnetic"]},
+"States of Matter":{s:"Gas laws, real gases.",f:"PV=nRT\\nZ=PV/nRT",p:["Graham: rate∝1/sqrt(M)"]},
+"Thermodynamics":{s:"Enthalpy, Gibbs, Hess.",f:"ΔH=ΔU+Δng RT\\nΔG=ΔH-TΔS\\nΔG°=-RT ln K",p:["ΔG<0 spontaneous"]},
+"Equilibrium":{s:"Kc, Kp, pH, buffers, Ksp.",f:"Kp=Kc(RT)^Δn\\npH=-log[H+]\\npH=pKa+log(salt/acid)",p:["Catalyst does not shift K"]},
+"Redox Reactions":{s:"Ox numbers, balancing.",f:"equivalent = n-factor × mole",p:["OIL RIG"]},
+"Hydrogen":{s:"Isotopes, water, hydrides.",f:"H2O2 oxidant and reductant",p:["Hard water: Ca/Mg"]},
+"s-Block":{s:"Alkali & alkaline earth.",f:"trends down the group",p:["Na yellow flame","Li–Mg diagonal"]},
+"p-Block":{s:"Groups 13–18 trends.",f:"inert pair effect down group",p:["Boron electron deficient"]},
+"Organic Basics":{s:"IUPAC, effects, isomerism.",f:"3° carbocation > 2° > 1°",p:["SN1 vs SN2"]},
+"Hydrocarbons":{s:"Alkanes, alkenes, alkynes, EAS.",f:"Markovnikov vs peroxide\\no,p directors: -OH,-NH2",p:["Aromatic: EAS"]},
+"Solid State":{s:"Lattices, packing.",f:"Z: scc1 bcc2 fcc4\\nfcc packing 74%",p:["Bragg nλ=2d sinθ"]},
+"Solutions":{s:"Colligative properties.",f:"π=iCRT\\nΔTf=i Kf m\\nM=n/V(L)",p:["Raoult: P=x P°"]},
+"Electrochemistry":{s:"Cells, Nernst, Faraday.",f:"E=E°-(0.059/n)log Q\\nW=ZIt",p:["Anode is oxidation"]},
+"Chemical Kinetics":{s:"Rate law, half-life, Arrhenius.",f:"rate=k[A]^n\\nt1/2(1st)=ln2/k\\nk=Ae^{-Ea/RT}",p:["Order is experimental"]},
+"Surface Chemistry":{s:"Adsorption, colloids.",f:"Freundlich x/m = k P^{1/n}",p:["Physisorption vs chemisorption"]},
+"Metallurgy":{s:"Extraction, refining.",f:"Ellingham diagrams",p:["Calcination vs roasting"]},
+"p-Block (Gr 13-14)":{s:"B, Al, C, Si compounds.",f:"diborane banana bond",p:["CO neutral oxide"]},
+"d & f Block":{s:"Transition trends, colour.",f:"colour from d-d transitions",p:["Variable oxidation states"]},
+"Coordination Compounds":{s:"Werner, CFT, isomerism.",f:"CN6 octahedral, CN4 tet/sq planar",p:["Strong field → low spin"]},
+"Haloalkanes":{s:"SN1/SN2/E1/E2.",f:"SN2 inversion primary\\nSN1 tertiary",p:["Aryl halides resist SN"]},
+"Alcohols Phenols Ethers":{s:"-OH and ethers.",f:"phenol more acidic than alcohol",p:["Williamson is SN2"]},
+"Aldehydes Ketones Acids":{s:"Nucleophilic addition, named rxns.",f:"Tollens, Aldol, Cannizzaro, Haloform",p:["Aldehyde more reactive than ketone"]},
+"Amines":{s:"Basicity, diazonium.",f:"ArNH2 less basic",p:["Hinsberg test"]},
+"Biomolecules":{s:"Carbs, proteins, nucleic acids.",f:"glucose C6H12O6\\npeptide = amide",p:["DNA: A-T, G-C"]},
+"Polymers":{s:"Addition vs condensation.",f:"n monomer → polymer",p:["PVC, nylon-6,6, bakelite"]},
+"Chemistry in Everyday Life":{s:"Drugs, soaps, detergents.",f:"soap = Na salt of fatty acid",p:["Antacids, antibiotics"]}
+},
+math: {
+"Sets Relations Functions":{s:"Sets, relations, functions.",f:"n(A∪B)=n(A)+n(B)-n(A∩B)",p:["Inverse exists iff bijective"]},
+"Complex Numbers":{s:"Argand, modulus, De Moivre.",f:"z=x+iy\\n|z|=sqrt(x^2+y^2)\\n(cisθ)^n=cis nθ",p:["i^2=-1"]},
+"Quadratic Equations":{s:"Roots, discriminant.",f:"x=(-b±sqrt(b^2-4ac))/2a\\nsum=-b/a product=c/a",p:["Complex roots in pairs if real coeffs"]},
+"Matrices":{s:"Operations, inverse.",f:"(AB)^T=B^T A^T\\nA A^{-1}=I",p:["Multiplication not commutative"]},
+"Determinants":{s:"Properties, Cramer.",f:"|A|=0 ⇒ singular",p:["Equal rows ⇒ det 0"]},
+"Permutations Combinations":{s:"Counting.",f:"nPr=n!/(n-r)!\\nnCr=n!/(r!(n-r)!)",p:["Circular (n-1)!"]},
+"Binomial Theorem":{s:"Expansion, general term.",f:"(a+b)^n=Σ C(n,r) a^{n-r} b^r",p:["Sum of coeffs: put x=1"]},
+"Sequences & Series":{s:"AP, GP, special series.",f:"Sn=n/2(2a+(n-1)d)\\nΣn=n(n+1)/2\\nΣn^2=n(n+1)(2n+1)/6",p:["Infinite GP |r|<1: S=a/(1-r)"]},
+"Limits":{s:"Standard limits.",f:"lim sinx/x=1\\nlim (1+1/x)^x=e",p:["0/0 → L'Hôpital if valid"]},
+"Continuity & Differentiability":{s:"Continuity, Rolle, LMVT.",f:"LHD=RHD for differentiability",p:["Differentiable ⇒ continuous"]},
+"Differentiation":{s:"Rules, chain, parametric.",f:"(uv)'=u'v+uv'\\n(u/v)'=(u'v-uv')/v^2",p:["dy/dx=(dy/dt)/(dx/dt)"]},
+"Application of Derivatives":{s:"Tangents, maxima minima.",f:"f'=0 candidates\\nf''>0 local min",p:["Check endpoints on closed interval"]},
+"Integrals":{s:"Standard integrals, by parts.",f:"∫x^n=x^{n+1}/(n+1)\\n∫u dv=uv-∫v du",p:["+C for indefinite"]},
+"Application of Integrals":{s:"Area under curves.",f:"A=∫|f-g| dx",p:["Split where curves cross"]},
+"Differential Equations":{s:"Separable, linear.",f:"dy/dx+Py=Q\\nIF=e^{∫P dx}",p:["Use given condition for particular soln"]},
+"Straight Lines":{s:"Slope, forms, distance.",f:"y-y1=m(x-x1)\\nd=|ax+by+c|/sqrt(a^2+b^2)",p:["Perpendicular: m1 m2=-1"]},
+"Circles":{s:"Equation, tangent.",f:"(x-h)^2+(y-k)^2=r^2\\nr=sqrt(g^2+f^2-c)",p:["Tangent length from point"]},
+"Conic Sections":{s:"Parabola, ellipse, hyperbola.",f:"y^2=4ax\\nx^2/a^2+y^2/b^2=1\\ne=c/a",p:["e<1 ellipse, e=1 parabola, e>1 hyperbola"]},
+"3D Geometry":{s:"Lines and planes in space.",f:"l^2+m^2+n^2=1\\nax+by+cz+d=0",p:["Skew vs intersecting vs parallel"]},
+"Vectors":{s:"Dot, cross, scalar triple.",f:"a·b=|a||b|cosθ\\n|a×b|=|a||b|sinθ",p:["Coplanar if scalar triple=0"]},
+"Statistics":{s:"Mean, variance, SD.",f:"mean=Σx/n\\nvariance=Σ(x-mean)^2/n",p:["SD same unit as data"]},
+"Probability":{s:"Conditional, Bayes, binomial.",f:"P(A|B)=P(A∩B)/P(B)\\nC(n,r)p^r(1-p)^{n-r}",p:["Independent: P(A∩B)=P(A)P(B)"]},
+"Trigonometry":{s:"Identities, equations.",f:"sin^2+cos^2=1\\nsin2A=2sinA cosA",p:["General soln of sinθ=sinα"]},
+"Inverse Trigonometry":{s:"Ranges and properties.",f:"sin^{-1}x+cos^{-1}x=π/2",p:["Principal values matter"]},
+"Mathematical Reasoning":{s:"Statements, connectives.",f:"¬(p∧q)=¬p∨¬q\\np→q ≡ ¬p∨q",p:["Converse, inverse, contrapositive"]}
+}
+};
+
+const QUOTES = [
+  {q:"Consistency beats intensity.",a:"JEE War Room"},
+  {q:"Padh lo aaj, warna kal bhi yahi scene hoga.",a:"Boss Man"},
+  {q:"Small daily improvements are the key.",a:"Focus"},
+  {q:"JEE is a marathon, not a sprint.",a:"Reality"}
+];
+
+let currentUser = null;
+let store = null;
+let timerSec = 25*60, timerLeft = 25*60, timerRun = null, timerMode = 'Focus';
+let fcIdx = 0, calDate = new Date();
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function usersKey(){ return 'jee_wr_users_v1'; }
+function dataKey(u){ return 'jee_wr_data_' + u.toLowerCase(); }
+
+function loadUsers(){
+  try { return JSON.parse(localStorage.getItem(usersKey())||'{}'); } catch(e){ return {}; }
+}
+function saveUsers(u){ localStorage.setItem(usersKey(), JSON.stringify(u)); }
+
+function defaultStore(){
+  return {
+    tasks:[], flashcards:[], studyLog:[], revision:[], notes:[], formulas:[],
+    pyq:[], mocks:[], mistakes:[], weakTopics:[],
+    subjects:{phy:0,chem:0,math:0},
+    syllabus:{phy:{},chem:{},math:{}},
+    calendar:{}, streak:0, lastStudyDate:null, todayMinutes:0
+  };
+}
+
+function loadStore(u){
+  try {
+    const raw = localStorage.getItem(dataKey(u));
+    if(!raw) return defaultStore();
+    return Object.assign(defaultStore(), JSON.parse(raw));
+  } catch(e){ return defaultStore(); }
+}
+function saveStore(){
+  if(!currentUser) return;
+  localStorage.setItem(dataKey(currentUser), JSON.stringify(store));
+}
+
+function showAuthError(msg){
+  const el = $('authError');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+function clearAuthError(){ $('authError').classList.remove('show'); $('authError').textContent=''; }
+
+function login(username, password){
+  const users = loadUsers();
+  const key = username.toLowerCase().trim();
+  if(!users[key]) return showAuthError('User nahi mila.');
+  if(users[key].password !== password) return showAuthError('Password galat hai.');
+  currentUser = key;
+  store = loadStore(key);
+  enterApp();
+}
+function signup(username, password){
+  const users = loadUsers();
+  const key = username.toLowerCase().trim();
+  if(key.length < 2) return showAuthError('Username chhota hai.');
+  if(password.length < 4) return showAuthError('Password min 4 char.');
+  if(users[key]) return showAuthError('Username already exists.');
+  users[key] = { password, createdAt: Date.now() };
+  saveUsers(users);
+  currentUser = key;
+  store = defaultStore();
+  saveStore();
+  enterApp();
+}
+
+function enterApp(){
+  $('authModal').classList.add('hide');
+  $('app').style.display = '';
+  $('userNameDisplay').textContent = currentUser;
+  $('userAvatar').textContent = (currentUser[0]||'?').toUpperCase();
+  updateStreak();
+  renderAll();
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
+  const q = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  $('motivationQuote').textContent = '"'+q.q+'"';
+  $('motivationAuthor').textContent = '— '+q.a;
+}
+
+function logout(){
+  currentUser = null; store = null;
+  $('app').style.display = 'none';
+  $('authModal').classList.remove('hide');
+  $('loginUsername').value=''; $('loginPassword').value='';
+  clearAuthError();
+}
+
+function updateCountdown(){
+  // Next JEE Main approx Jan 2027 session
+  const target = new Date('2027-01-28T09:00:00+05:30');
+  const now = new Date();
+  const diff = target - now;
+  if(diff <= 0){ $('jeeCountdown').textContent='LIVE / PASSED'; $('daysLeft').textContent='0'; return; }
+  const days = Math.floor(diff/86400000);
+  const hrs = Math.floor((diff%86400000)/3600000);
+  const mins = Math.floor((diff%3600000)/60000);
+  $('jeeCountdown').textContent = days+'d '+hrs+'h '+mins+'m';
+  $('daysLeft').textContent = String(days);
+  $('jeeDateSub').textContent = 'Target: 28 Jan 2027 (approx)';
+}
+
+function updateStreak(){
+  const today = new Date().toISOString().slice(0,10);
+  if(store.lastStudyDate === today){
+    // keep
+  } else {
+    const y = new Date(); y.setDate(y.getDate()-1);
+    const ys = y.toISOString().slice(0,10);
+    if(store.lastStudyDate === ys){
+      // continued
+    } else if(store.lastStudyDate && store.lastStudyDate !== today){
+      // broken handled when studying
+    }
+  }
+  $('streakNum').textContent = store.streak || 0;
+}
+
+function markStudy(minutes){
+  const today = new Date().toISOString().slice(0,10);
+  store.todayMinutes = (store.calendar[today]||0);
+  if(store.lastStudyDate !== today){
+    const y = new Date(); y.setDate(y.getDate()-1);
+    const ys = y.toISOString().slice(0,10);
+    if(store.lastStudyDate === ys) store.streak = (store.streak||0)+1;
+    else store.streak = 1;
+    store.lastStudyDate = today;
+  }
+  store.calendar[today] = (store.calendar[today]||0) + minutes;
+  store.todayMinutes = store.calendar[today];
+  saveStore();
+  updateStreak();
+}
+
+function renderDashboard(){
+  const pending = (store.tasks||[]).filter(t=>!t.done).length;
+  $('statTasks').textContent = pending;
+  const today = new Date().toISOString().slice(0,10);
+  const tm = store.calendar[today]||0;
+  $('statTime').textContent = tm >= 60 ? (tm/60).toFixed(1)+'h' : tm+'m';
+  const totalH = (store.subjects.phy+store.subjects.chem+store.subjects.math);
+  $('statTotal').textContent = totalH.toFixed(1)+'h';
+  $('statMocks').textContent = (store.mocks||[]).length;
+  const pct = Math.min(100, (tm/480)*100);
+  $('dailyProgress').style.width = pct+'%';
+  $('dailyProgressText').textContent = (tm/60).toFixed(1)+' / 8 hours';
+  $('statFlash').textContent = (store.flashcards||[]).length;
+  const now = Date.now();
+  $('statRevDue').textContent = (store.revision||[]).filter(r=>r.nextDate<=now).length;
+  $('statWeak').textContent = (store.weakTopics||[]).length;
+  $('streakNum').textContent = store.streak||0;
+}
+
+function renderTasks(){
+  const list = $('taskList');
+  if(!store.tasks.length){ list.innerHTML='<div class="empty">Koi task nahi.</div>'; return; }
+  list.innerHTML = store.tasks.map((t,i)=>`
+    <div class="task ${t.done?'done':''}">
+      <input type="checkbox" ${t.done?'checked':''} data-i="${i}" class="task-check">
+      <div class="task-text">${esc(t.text)}</div>
+      <span class="task-subject">${esc(t.subject)}</span>
+      <button class="task-del" data-i="${i}">×</button>
+    </div>`).join('');
+  list.querySelectorAll('.task-check').forEach(el=>el.onchange=()=>{store.tasks[+el.dataset.i].done=el.checked;saveStore();renderTasks();renderDashboard();});
+  list.querySelectorAll('.task-del').forEach(el=>el.onclick=()=>{store.tasks.splice(+el.dataset.i,1);saveStore();renderTasks();renderDashboard();});
+}
+
+function renderSubjects(){
+  const max = Math.max(1, store.subjects.phy, store.subjects.chem, store.subjects.math);
+  [['phy','Phy'],['chem','Chem'],['math','Math']].forEach(([k,L])=>{
+    $('hrs'+L).textContent = store.subjects[k].toFixed(1)+'h';
+    $('bar'+L).style.width = (store.subjects[k]/max*100)+'%';
+  });
+}
+
+function renderSyllabus(){
+  ['phy','chem','math'].forEach(sub=>{
+    const box = $('syl'+sub[0].toUpperCase()+sub.slice(1));
+    const chs = SYLLABUS[sub];
+    const done = chs.filter(c=>store.syllabus[sub][c]).length;
+    const pct = Math.round(done/chs.length*100);
+    $('syl'+sub[0].toUpperCase()+sub.slice(1)+'Pct').textContent = pct+'%';
+    box.innerHTML = chs.map(c=>`
+      <label class="chapter ${store.syllabus[sub][c]?'done':''}">
+        <input type="checkbox" ${store.syllabus[sub][c]?'checked':''} data-sub="${sub}" data-ch="${esc(c)}">
+        <span>${esc(c)}</span>
+      </label>`).join('');
+  });
+  const all = [...SYLLABUS.phy,...SYLLABUS.chem,...SYLLABUS.math];
+  const allDone = all.filter(c=>store.syllabus.phy[c]||store.syllabus.chem[c]||store.syllabus.math[c]).length;
+  // fix overall
+  let d=0,t=0;
+  ['phy','chem','math'].forEach(s=>{t+=SYLLABUS[s].length;d+=SYLLABUS[s].filter(c=>store.syllabus[s][c]).length;});
+  $('sylTotalPct').textContent = Math.round(d/t*100)+'%';
+  document.querySelectorAll('#sylPhy input, #sylChem input, #sylMath input').forEach(el=>{
+    el.onchange=()=>{store.syllabus[el.dataset.sub][el.dataset.ch]=el.checked;saveStore();renderSyllabus();};
+  });
+}
+
+function cnFill(){
+  const sub = $('cnSubject').value;
+  $('cnChapter').innerHTML = SYLLABUS[sub].map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');
+}
+function cnShow(){
+  const sub=$('cnSubject').value, ch=$('cnChapter').value;
+  const data=(CHAPTER_NOTES[sub]||{})[ch];
+  const v=$('cnViewer');
+  if(!data){v.innerHTML='<div class="empty">Notes nahi mile.</div>';return;}
+  v.innerHTML=`<h3>${esc(ch)}</h3><div class="cn-sum">${esc(data.s)}</div><div class="cn-box">${esc(data.f.replace(/\\\\n/g,'\\n'))}</div><ul>${data.p.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul>`;
+}
+
+function renderFlashcards(){
+  const arr=store.flashcards||[];
+  if(!arr.length){
+    $('fcDisplay').style.display='none';
+    $('fcEmpty').style.display='';
+    $('fcList').innerHTML='';
+    return;
+  }
+  $('fcEmpty').style.display='none';
+  $('fcDisplay').style.display='';
+  if(fcIdx>=arr.length) fcIdx=0;
+  const f=arr[fcIdx];
+  $('fcSubjectLabel').textContent=f.subject||'GEN';
+  $('fcQuestionShow').textContent=f.question;
+  $('fcAnswerShow').textContent=f.answer;
+  $('fcDisplay').classList.remove('revealed');
+  $('fcList').innerHTML=arr.map((f,i)=>`<div class="task"><div class="task-text"><b>${esc(f.question)}</b> — ${esc(f.answer)}</div><span class="task-subject">${esc(f.subject)}</span><button class="task-del" data-i="${i}">×</button></div>`).join('');
+  $('fcList').querySelectorAll('.task-del').forEach(el=>el.onclick=()=>{store.flashcards.splice(+el.dataset.i,1);saveStore();renderFlashcards();renderDashboard();});
+}
+
+function renderStudyLog(){
+  const arr=store.studyLog||[];
+  $('slList').innerHTML = arr.length? arr.map((x,i)=>`
+    <div class="task"><div class="task-text">${esc(x.content)} <span style="color:var(--muted);font-size:.75rem">(${x.minutes}m)</span></div>
+    <span class="task-subject">${esc(x.subject)}</span>
+    <button class="task-del" data-i="${i}">×</button></div>`).join('') : '<div class="empty">Koi log nahi.</div>';
+  $('slList').querySelectorAll('.task-del').forEach(el=>el.onclick=()=>{store.studyLog.splice(+el.dataset.i,1);saveStore();renderStudyLog();});
+}
+
+function renderRevision(){
+  const now=Date.now();
+  const arr=store.revision||[];
+  $('revList').innerHTML = arr.length? arr.map((r,i)=>{
+    const due=r.nextDate<=now;
+    const d=new Date(r.nextDate).toLocaleDateString();
+    return `<div class="revision-item ${due?'due':''}"><div class="rev-date" style="width:90px;font-size:.7rem;color:var(--muted)">${d}</div>
+    <div style="flex:1;font-weight:600">${esc(r.topic)}</div>
+    <span class="task-subject">${esc(r.subject)}</span>
+    <button class="btn sm" data-i="${i}" data-act="done">Done</button>
+    <button class="task-del" data-i="${i}">×</button></div>`;
+  }).join('') : '<div class="empty">Koi revision nahi.</div>';
+  $('revList').querySelectorAll('[data-act=done]').forEach(el=>el.onclick=()=>{
+    const r=store.revision[+el.dataset.i];
+    const stages=[1,3,7,30];
+    r.stage=Math.min((r.stage||1)+1,4);
+    r.nextDate=Date.now()+stages[Math.min(r.stage-1,3)]*86400000;
+    saveStore();renderRevision();renderDashboard();
+  });
+  $('revList').querySelectorAll('.task-del').forEach(el=>el.onclick=()=>{store.revision.splice(+el.dataset.i,1);saveStore();renderRevision();renderDashboard();});
+}
+
+function renderCalendar(){
+  const y=calDate.getFullYear(), m=calDate.getMonth();
+  $('calMonth').textContent = calDate.toLocaleString('en',{month:'long',year:'numeric'});
+  const first=new Date(y,m,1).getDay();
+  const days=new Date(y,m+1,0).getDate();
+  const today=new Date().toISOString().slice(0,10);
+  let html='';
+  for(let i=0;i<first;i++) html+='<div class="cal-day"></div>';
+  for(let d=1;d<=days;d++){
+    const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const mins=store.calendar[key]||0;
+    const cls=['cal-day'];
+    if(mins>0) cls.push('studied');
+    if(key===today) cls.push('today');
+    html+=`<div class="${cls.join(' ')}"><div>${d}</div>${mins?`<div style="font-size:.55rem">${mins}m</div>`:''}</div>`;
+  }
+  $('calGrid').innerHTML=html;
+}
+
+function renderWeak(){
+  const arr=store.weakTopics||[];
+  $('wtList').innerHTML=arr.length?arr.map((w,i)=>`
+    <div class="weak-topic"><div class="wt-count">!</div><div style="flex:1">${esc(w.name)}</div>
+    <span class="task-subject">${esc(w.subject)}</span>
+    <button class="task-del" data-i="${i}">×</button></div>`).join(''):'<div class="empty">Koi weak topic nahi.</div>';
+  $('wtList').querySelectorAll('.task-del').forEach(el=>el.onclick=()=>{store.weakTopics.splice(+el.dataset.i,1);saveStore();renderWeak();renderDashboard();});
+}
+
+function renderNotes(){
+  const arr=store.notes||[];
+  $('noteList').innerHTML=arr.length?arr.map((n,i)=>`
+    <div class="note"><button class="note-del" data-i="${i}">×</button>
+    <div class="note-title">${esc(n.title)}</div><div class="note-body">${esc(n.body)}</div></div>`).join(''):'<div class="empty">Koi note nahi.</div>';
+  $('noteList').querySelectorAll('.note-del').forEach(el=>el.onclick=()=>{store.notes.splice(+el.dataset.i,1);saveStore();renderNotes();});
+}
+
+function renderFormulas(){
+  const arr=store.formulas||[];
+  $('formulaList').innerHTML=arr.length?arr.map((f,i)=>`
+    <div class="formula-card"><button class="task-del" style="float:right" data-i="${i}">×</button>
+    <div class="f-title">${esc(f.title)}</div><div class="f-body">${esc(f.body)}</div></div>`).join(''):'<div class="empty">Koi formula nahi.</div>';
+  $('formulaList').querySelectorAll('.task-del').forEach(el=>el.onclick=()=>{store.formulas.splice(+el.dataset.i,1);saveStore();renderFormulas();});
+}
+
+function renderPyq(){
+  const arr=store.pyq||[];
+  $('pyqList').innerHTML=arr.length?arr.map((p,i)=>{
+    const sc=p.score; const cls=sc>=70?'':sc>=40?'mid':'bad';
+    return `<div class="log-item"><div class="score ${cls}">${sc}%</div><div class="info"><div class="t">${esc(p.topic)}</div></div>
+    <button class="task-del" data-i="${i}">×</button></div>`;
+  }).join(''):'<div class="empty">Koi PYQ nahi.</div>';
+  $('pyqList').querySelectorAll('.task-del').forEach(el=>el.onclick=()=>{store.pyq.splice(+el.dataset.i,1);saveStore();renderPyq();});
+}
+
+function renderMocks(){
+  const arr=store.mocks||[];
+  $('mockList').innerHTML=arr.length?arr.map((m,i)=>{
+    const sc=m.score; const cls=sc>=150?'':sc>=100?'mid':'bad';
+    return `<div class="log-item"><div class="score ${cls}">${sc}</div><div class="info"><div class="t">${esc(m.name)}</div></div>
+    <button class="task-del" data-i="${i}">×</button></div>`;
+  }).join(''):'<div class="empty">Koi mock nahi.</div>';
+  $('mockList').querySelectorAll('.task-del').forEach(el=>el.onclick=()=>{store.mocks.splice(+el.dataset.i,1);saveStore();renderMocks();renderDashboard();});
+}
+
+function renderMistakes(){
+  const arr=store.mistakes||[];
+  $('mistakeList').innerHTML=arr.length?arr.map((m,i)=>`
+    <div class="task"><div class="task-text">${esc(m.text)}</div><span class="task-subject">${esc(m.subject)}</span>
+    <button class="task-del" data-i="${i}">×</button></div>`).join(''):'<div class="empty">Koi mistake nahi (achha!).</div>';
+  $('mistakeList').querySelectorAll('.task-del').forEach(el=>el.onclick=()=>{store.mistakes.splice(+el.dataset.i,1);saveStore();renderMistakes();});
+}
+
+function renderAll(){
+  renderDashboard(); renderTasks(); renderSubjects(); renderSyllabus();
+  renderFlashcards(); renderStudyLog(); renderRevision(); renderCalendar();
+  renderWeak(); renderNotes(); renderFormulas(); renderPyq(); renderMocks(); renderMistakes();
+  cnFill();
+}
+
+function fmtTime(s){ const m=Math.floor(s/60), ss=s%60; return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
+function tickTimer(){
+  if(timerLeft<=0){
+    clearInterval(timerRun); timerRun=null;
+    if(timerMode==='Focus'){ markStudy(timerSec/60); const sub=prompt('Kaunsa subject? phy/chem/math','phy'); if(sub&&store.subjects[sub]!=null){store.subjects[sub]+=(timerSec/60);saveStore();renderSubjects();renderDashboard();} }
+    alert(timerMode+' complete!');
+    return;
+  }
+  timerLeft--; $('timerDisplay').textContent=fmtTime(timerLeft);
+}
+
+// Events
+document.querySelectorAll('.auth-tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.auth-tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  const tab=t.dataset.tab;
+  $('loginForm').style.display=tab==='login'?'':'none';
+  $('signupForm').style.display=tab==='signup'?'':'none';
+  clearAuthError();
+});
+$('loginBtn').onclick=()=>{clearAuthError();login($('loginUsername').value,$('loginPassword').value);};
+$('signupBtn').onclick=()=>{
+  clearAuthError();
+  if($('signupPassword').value!==$('signupPassword2').value) return showAuthError('Password match nahi karta.');
+  signup($('signupUsername').value,$('signupPassword').value);
+};
+$('loginPassword').onkeydown=e=>{if(e.key==='Enter')$('loginBtn').click();};
+$('logoutBtn').onclick=logout;
+
+document.querySelectorAll('.nav-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const page=$(b.dataset.page); if(page) page.classList.add('active');
+  if(b.dataset.page==='chapternotes') cnFill();
+});
+
+$('addTask').onclick=()=>{
+  const t=$('taskInput').value.trim(); if(!t) return;
+  store.tasks.unshift({text:t,subject:$('taskSubject').value,done:false});
+  $('taskInput').value=''; saveStore(); renderTasks(); renderDashboard();
+};
+document.querySelectorAll('.subject-add').forEach(b=>b.onclick=()=>{
+  store.subjects[b.dataset.subject]+=1; markStudy(60); saveStore(); renderSubjects(); renderDashboard();
+});
+
+$('timerStart').onclick=()=>{if(timerRun)return; timerRun=setInterval(tickTimer,1000);};
+$('timerPause').onclick=()=>{clearInterval(timerRun);timerRun=null;};
+$('timerReset').onclick=()=>{clearInterval(timerRun);timerRun=null;timerLeft=timerSec;$('timerDisplay').textContent=fmtTime(timerLeft);};
+document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{
+  clearInterval(timerRun);timerRun=null;
+  timerSec=+b.dataset.preset*60; timerLeft=timerSec; timerMode=b.dataset.mode;
+  $('timerMode').textContent=timerMode; $('timerDisplay').textContent=fmtTime(timerLeft);
+});
+
+$('cnSubject').onchange=()=>{cnFill();};
+$('cnLoad').onclick=cnShow;
+$('cnChapter').onchange=cnShow;
+$('cnToFlash').onclick=()=>{
+  const sub=$('cnSubject').value, ch=$('cnChapter').value, data=(CHAPTER_NOTES[sub]||{})[ch];
+  if(!data) return;
+  const tag=sub==='phy'?'PHY':sub==='chem'?'CHEM':'MATH';
+  data.p.forEach(pt=>store.flashcards.push({question:ch,answer:pt,subject:tag}));
+  saveStore(); renderFlashcards(); renderDashboard(); alert('Flashcards me add ho gaya.');
+};
+$('cnToRev').onclick=()=>{
+  const sub=$('cnSubject').value, ch=$('cnChapter').value;
+  const tag=sub==='phy'?'PHY':sub==='chem'?'CHEM':'MATH';
+  store.revision.push({topic:ch,subject:tag,stage:1,nextDate:Date.now()+86400000});
+  saveStore(); renderRevision(); renderDashboard(); alert('Revision me add ho gaya.');
+};
+$('cnToFormula').onclick=()=>{
+  const sub=$('cnSubject').value, ch=$('cnChapter').value, data=(CHAPTER_NOTES[sub]||{})[ch];
+  if(!data) return;
+  store.formulas.push({title:ch,body:data.f.replace(/\\\\n/g,'\\n')});
+  saveStore(); renderFormulas(); alert('Formula sheet me add ho gaya.');
+};
+
+$('addFc').onclick=()=>{
+  const q=$('fcQuestion').value.trim(), a=$('fcAnswer').value.trim();
+  if(!q||!a) return;
+  store.flashcards.push({question:q,answer:a,subject:$('fcSubject').value});
+  $('fcQuestion').value=''; $('fcAnswer').value=''; saveStore(); renderFlashcards(); renderDashboard();
+};
+$('fcReveal').onclick=()=>$('fcDisplay').classList.toggle('revealed');
+$('fcPrev').onclick=()=>{if(!store.flashcards.length)return; fcIdx=(fcIdx-1+store.flashcards.length)%store.flashcards.length; renderFlashcards();};
+$('fcNext').onclick=()=>{if(!store.flashcards.length)return; fcIdx=(fcIdx+1)%store.flashcards.length; renderFlashcards();};
+
+$('addSl').onclick=()=>{
+  const c=$('slContent').value.trim(); const m=+$('slMinutes').value||0;
+  if(!c||!m) return;
+  store.studyLog.unshift({content:c,subject:$('slSubject').value,minutes:m,at:Date.now()});
+  markStudy(m); $('slContent').value=''; $('slMinutes').value=''; saveStore(); renderStudyLog(); renderDashboard();
+};
+$('addRev').onclick=()=>{
+  const t=$('revTopic').value.trim(); if(!t) return;
+  store.revision.push({topic:t,subject:$('revSubject').value,stage:1,nextDate:Date.now()+86400000});
+  $('revTopic').value=''; saveStore(); renderRevision(); renderDashboard();
+};
+$('calPrev').onclick=()=>{calDate.setMonth(calDate.getMonth()-1);renderCalendar();};
+$('calNext').onclick=()=>{calDate.setMonth(calDate.getMonth()+1);renderCalendar();};
+$('addWt').onclick=()=>{
+  const n=$('wtName').value.trim(); if(!n) return;
+  store.weakTopics.push({name:n,subject:$('wtSubject').value});
+  $('wtName').value=''; saveStore(); renderWeak(); renderDashboard();
+};
+$('addNote').onclick=()=>{
+  const t=$('noteTitle').value.trim(), b=$('noteBody').value.trim();
+  if(!t) return;
+  store.notes.unshift({title:t,body:b});
+  $('noteTitle').value=''; $('noteBody').value=''; saveStore(); renderNotes();
+};
+$('addFormula').onclick=()=>{
+  const t=$('fTitle').value.trim(), b=$('fBody').value.trim();
+  if(!t||!b) return;
+  store.formulas.unshift({title:t,body:b});
+  $('fTitle').value=''; $('fBody').value=''; saveStore(); renderFormulas();
+};
+$('addPyq').onclick=()=>{
+  const t=$('pyqTopic').value.trim(), s=+$('pyqScore').value;
+  if(!t||isNaN(s)) return;
+  store.pyq.unshift({topic:t,score:s});
+  $('pyqTopic').value=''; $('pyqScore').value=''; saveStore(); renderPyq();
+};
+$('addMock').onclick=()=>{
+  const n=$('mockName').value.trim(), s=+$('mockScore').value;
+  if(!n||isNaN(s)) return;
+  store.mocks.unshift({name:n,score:s});
+  $('mockName').value=''; $('mockScore').value=''; saveStore(); renderMocks(); renderDashboard();
+};
+$('addMistake').onclick=()=>{
+  const t=$('mistakeText').value.trim(); if(!t) return;
+  store.mistakes.unshift({text:t,subject:$('mistakeSubject').value});
+  $('mistakeText').value=''; saveStore(); renderMistakes();
+};
+
+$('exportBtn').onclick=()=>{
+  const blob=new Blob([JSON.stringify({user:currentUser,store},null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='jee-war-room-backup.json'; a.click();
+};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  try{
+    const data=JSON.parse(await f.text());
+    if(data.store){ store=Object.assign(defaultStore(),data.store); saveStore(); renderAll(); alert('Import ho gaya.'); }
+  }catch(err){ alert('Invalid JSON'); }
+};
+
+// Auto login if only one way - no, require login always for multi user
+// Session restore
+(function(){
+  const last = localStorage.getItem('jee_wr_last_user');
+  if(last){
+    const users=loadUsers();
+    if(users[last]){
+      // soft restore optional - keep login gate
+    }
+  }
+})();
+</script>
+</body>
+</html>
